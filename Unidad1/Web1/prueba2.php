@@ -6,8 +6,9 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>html</h1>
     <?php
-        echo "<h1>miau</h1>";
+        echo "<p>php</p>";
     ?>
 </body>
 </html>
