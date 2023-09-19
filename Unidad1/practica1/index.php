@@ -10,8 +10,8 @@
 <body>
     <h2>Rellena tu CV</h2>
 
-    <!-- FORMULARIO -->
-    <form action="index.html" method="post" enctype="multipart/form-data">
+    <!-- FORMULARIO                     GET PARA VER Q FUNCIONA-->
+    <form action="recogida.php" method="get" enctype="multipart/form-data">
 
         <!-- CASILLAS CON TEXTO -->
         <label for="nombre">Nombre</label></br>
