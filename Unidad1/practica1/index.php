@@ -10,7 +10,7 @@
 <body>
     <h2>Rellena tu CV</h2>
 
-    <!-- FORMULARIO                     GET PARA VER Q FUNCIONA-->
+    <!-- FORMULARIO                     GET PARA VER Q FUNCIONA SE USA   POST PARA CONTRASEÑAS ENCTYPE PARA LA SUBIDA DE ARCHIVOS-->
     <form action="recogida.php" method="get" enctype="multipart/form-data">
 
         <!-- CASILLAS CON TEXTO -->
@@ -30,14 +30,14 @@
         <!-- PARA ESCOGER UNO -->
         Sexo</br>
 
-        <input type="radio" name="sexo" id="hombre">
+        <input type="radio" name="sexo" id="hombre" value="hombre">
         <label for="hombre">Hombre</label>
         </br>
-        <input type="radio" name="sexo" id="mujer">
+        <input type="radio" name="sexo" id="mujer" value="mujer">
         <label for="mujer">Mujer</label>
 
-        <!-- SUBIR ARCHIVOS -->
-        <p>Incluir mi foto <input type="file" name="foto" id="foto"></p>
+        <!-- SUBIR ARCHIVOS FILTRANDO LOS ARCHIVOS QUE SE PUEDEN SUBIR-->
+        <p>Incluir mi foto <input accept="image/*" type="file" name="foto" id="foto"></p>
 
         <!-- LISTA DESPLEGABLE -->
         Nacido en:
