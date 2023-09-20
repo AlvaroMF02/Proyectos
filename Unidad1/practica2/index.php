@@ -8,25 +8,23 @@
 </head>
 
 <body>
-    <h1>Esta es mi supre páginaaa</h1>
+    <h1>Esta es mi supre página</h1>
 
-    <form action="recogida.php" action="post">
+    <form action="recogida.php" method="post">
 
         <p><label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre">
-        </p>
+            <input type="text" name="nombre" id="nombre"></p>
 
         <p>Nacido en:
             <select name="nacimiento" id="nacimiento">
-                <option value="nacimiento">Málaga</option>
-                <option value="nacimiento">Almería</option>
-                <option value="nacimiento">Jaén</option>
-            </select>
-        </p>
+                <option value="Malaga">Málaga</option>
+                <option value="Almeria">Almería</option>
+                <option value="Jaen">Jaén</option>
+            </select></p>
 
-        Sexo: <label for="sexo">Hombre</label>
+        Sexo: <label for="hombre">Hombre</label>
         <input type="radio" name="sexo" id="hombre" value="hombre">
-        <label for="sexo">Mujer</label>
+        <label for="mujer">Mujer</label>
         <input type="radio" name="sexo" id="mujer" value="mujer"> </br>
 
         <p>Aficiones:
@@ -35,8 +33,7 @@
             <label for="lectura">Lectura</label>
             <input type="checkbox" name="lectura" id="lectura">
             <label for="otros">Otros</label>
-            <input type="checkbox" name="otros" id="otros">
-        </p>
+            <input type="checkbox" name="otros" id="otros"></p>
         
 
 
