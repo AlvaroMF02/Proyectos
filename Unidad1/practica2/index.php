@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <h1>Esta es mi supre página</h1>
+    <h1>Esta es mi supre páginaaa</h1>
 
     <form action="recogida.php" action="post">
 
