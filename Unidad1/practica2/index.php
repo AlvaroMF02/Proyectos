@@ -37,12 +37,12 @@
             <label for="otros">Otros</label>
             <input type="checkbox" name="otros" id="otros">
         </p>
+        
 
 
+        <p>Comentarios: <textarea id="comentario" name="comentario"></textarea> </p>
 
-        <p>Comentarios: <textarea id="comentario" name="comentario"></textarea></p>
-
-        <button type="submit" name="enviar">Enviar</button>
+        <button type="submit" name="enviar"> Enviar</button>
     </form>
 </body>
 
