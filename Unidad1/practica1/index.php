@@ -11,7 +11,7 @@
     <h2>Rellena tu CV</h2>
 
     <!-- FORMULARIO                     GET PARA VER Q FUNCIONA SE USA   POST PARA CONTRASEÑAS ENCTYPE PARA LA SUBIDA DE ARCHIVOS-->
-    <form action="recogida.php" method="get" enctype="multipart/form-data">
+    <form action="recogida.php" method="post" enctype="multipart/form-data">
 
         <!-- CASILLAS CON TEXTO -->
         <label for="nombre">Nombre</label></br>
@@ -43,18 +43,18 @@
         Nacido en:
         <select name="nacimi" id="nacimi">
             <option value="malaga">Málaga</option>
-            <option value="jaen">Jaén</option>
+            <option value="jaen" selected>Jaén</option>
             <option value="sevilla">Sevilla</option>
         </select>
 
         <!-- AREA DE TEXTO -->
         <p>Comentarios:
-            <textarea></textarea>
+            <textarea id="coment" name="comentarios"></textarea>
         </p>
 
         <!-- BOTONES -->
-        <p><input type="checkbox" name="boletin" id="boletin">
-            <label for="boletin">Suscribirse al boletín de novedades</label>
+        <p><input type="checkbox" checked name="subscripcion" id="subscripcion">
+            <label for="subscripcion">Suscribirse al boletín de novedades</label>
         </p>
 
         <button type="submit">Guardar cambios</button>
