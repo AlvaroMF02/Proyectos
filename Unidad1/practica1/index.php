@@ -57,7 +57,7 @@
             <label for="subscripcion">Suscribirse al boletín de novedades</label>
         </p>
 
-        <button type="submit">Guardar cambios</button>
+        <button type="submit" name="botonSub">Guardar cambios</button>
         <button type="reset">Borrar los datos introducidos</button>
     </form>
 </body>
