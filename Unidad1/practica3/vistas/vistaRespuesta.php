@@ -8,22 +8,9 @@
     </head>
 
     <body>
-        <!-- -->
         <h1>DATOS RECOGIDOS</h1>
 
         <?php
-        /* ARRAY ESCALAR Y ASOCIATIVO
-    $a[0] = 3;
-    $a[1] = 6;
-    $a[2] = -1;
-    $a[3] = 8;
-
-    // RECORRIDO DEL ARRAY
-    for ($i=0; $i < count($a); $i++) { 
-        echo("<p>Número " .$a[$i]." </p>");
-    }*/
-
-
         // MOSTRAR DATOS DEL FORMULARIO $_POST= ARRAY CON LOS DATOS
         echo "<p><b>Nombre: </b>" . $_POST["nombre"] . "</p>";
         echo "<p><b>Apellidos: </b>" . $_POST["apellidos"] . "</p>";

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- EN ESTA VISTA SE ENCEUNTRA TODO EL HTML -->
     <html lang="en">
 
     <head>

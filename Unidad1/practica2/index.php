@@ -1,46 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+    $errorForm = false;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <h1>Esta es mi supre página</h1>
-
-    <form action="recogida.php" method="post">
-
-        <p><label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre"></p>
-
-        <p>Nacido en:
-            <select name="nacimiento" id="nacimiento">
-                <option value="Malaga">Málaga</option>
-                <option value="Almeria">Almería</option>
-                <option value="Jaen">Jaén</option>
-            </select></p>
-
-        Sexo: <label for="hombre">Hombre</label>
-        <input type="radio" name="sexo" id="hombre" value="hombre">
-        <label for="mujer">Mujer</label>
-        <input type="radio" name="sexo" id="mujer" value="mujer"> </br>
-
-        <p>Aficiones:
-            <label for="deportes">Deportes</label>
-            <input type="checkbox" name="deportes" id="deportes">
-            <label for="lectura">Lectura</label>
-            <input type="checkbox" name="lectura" id="lectura">
-            <label for="otros">Otros</label>
-            <input type="checkbox" name="otros" id="otros"></p>
+    if (isset($_POST["enviar"])) {
         
+        // ERROR PAR ALOS CAMPOS REQUERIDOS POR SI SE PONEN VACIOS
+        $errorNombr = $_POST["nombre"] == "";
+        $errorSexo = !isset($_POST["sexo"]);
 
+        $errorForm = $errorNombr || $errorSexo;
+    }
 
-        <p>Comentarios: <textarea id="comentario" name="comentario"></textarea> </p>
-
-        <button type="submit" name="enviar"> Enviar</button>
-    </form>
-</body>
-
-</html>
+    //  SI SE PRESIONA EL BOTON Y NO HAY ERRORES
+    if (isset($_POST["enviar"]) && !$errorForm) {
+        require "vistas/vistasRespuestas.php";
+    }else{
+        require "vistas/vistasFormulario.php";
+    }
+?>
