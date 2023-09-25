@@ -1,6 +1,15 @@
 <?php
 $error_form = false;
 
+if (isset($_POST["botonBor"])) {    // SE PUEDE BORRAR DE DOS MANERAS
+    // SALTANDO AL INDEX OTRA VEZ 
+    //header("Location:index.php");
+    //exit;
+
+    // ELIMINANDO EL $_POST PARA QUE NO HAYA NADA (MEJOR)
+    unset($_POST);
+}
+
 if (isset($_POST["botonSub"])) {    // SE COMPRUEBA ERRORES COMO DEJAR EL NOMBRE VACIO
 
     $error_nombre = $_POST["nombre"] == "";

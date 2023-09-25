@@ -94,7 +94,7 @@
             </p>
 
             <button type="submit" name="botonSub">Guardar cambios</button>
-            <button type="reset">Borrar los datos introducidos</button>
+            <button type="submit" name="botonBor">Borrar los datos introducidos</button>
 
         </form>
     </body>
