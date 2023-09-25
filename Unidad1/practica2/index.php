@@ -1,5 +1,5 @@
 <?php
-    $errorForm = false;
+    $errorForm = false; // NO HACE FALTA Q SEA FALSO DESDE EL PRINCIPIO
 
     if (isset($_POST["enviar"])) {
         

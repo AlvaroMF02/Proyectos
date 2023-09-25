@@ -1,3 +1,20 @@
+<?php
+    // CREAR FUNCION
+    function enArray($valor,$arr){
+        $esta = false;
+
+        for ($i=0; $i < count($arr); $i++) { 
+            if ($arr[$i]==$valor) {
+                $esta=true;
+                break;                  // ROMPO PARA Q NO SIGA MIRANDO
+            }
+        }
+
+        return $esta;
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +33,7 @@
             <input type="text" name="nombre" id="nombre" value="<?php if(isset($_POST['nombre'])) echo $_POST['nombre'] ?>">
             <?php
                 if (isset($_POST["enviar"]) && $errorNombr) {
-                    echo "* Campo obligatorio *";
+                    echo "<span class='error'>* Campo obligatorio *</span>";
                 }
             ?>
         </p>
@@ -35,19 +52,19 @@
     
         <?php
                 if (isset($_POST["enviar"]) && $errorSexo) {
-                    echo "* Campo obligatorio *";
+                    echo "<span class='error'>* Campo obligatorio *</span>";
                 }
             ?>
         </br>
 
         <p>Aficiones:
-            <!-- ARRAY EN NAME -->
-            <label for="deportes">Deportes</label>
-            <input type="checkbox" name="aficiones[]" id="deportes" value="Deportes">
+            <!-- ARRAY EN NAME //// FUNCION INARRAY-->
+            <label for="deportes">Deportes</label>  <!-- UTILIZAR LA FUNCION-->
+            <input type="checkbox" name="aficiones[]" id="deportes" value="deportes" <?php if(isset($_POST["aficiones"]) && enArray("deportes", $_POST["aficiones"])) echo "checked"?>>
             <label for="lectura">Lectura</label>
-            <input type="checkbox" name="aficiones[]" id="lectura" value="Lectura">
+            <input type="checkbox" name="aficiones[]" id="lectura" value="lectura" <?php if(isset($_POST["aficiones"]) && enArray("lectura", $_POST["aficiones"])) echo "checked"?>>
             <label for="otros">Otros</label>
-            <input type="checkbox" name="aficiones[]" id="otros" value="Otros"></p>
+            <input type="checkbox" name="aficiones[]" id="otros" value="otros" <?php if(isset($_POST["aficiones"]) && enArray("otros", $_POST["aficiones"])) echo "checked"?>></p>
         
 
 

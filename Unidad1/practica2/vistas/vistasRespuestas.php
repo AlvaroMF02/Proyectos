@@ -38,7 +38,23 @@
             }
 
             // FORMA BUENA
-            
+            /*
+            echo "<b>Las aficiones seleccionadas han sido:</b>";
+            echo "<ol>";
+            for ($i=0; $i < count($_POST["aficiones[]"]); $i++) { 
+                if ($_POST["aficiones[".$i."]"] == "deportes") {
+                    echo "<li>Deportes</li>";
+                }
+                if ($_POST["aficiones[".$i."]"] == "lectura") {
+                    echo "<li>Lectura</li>";
+                }
+                if ($_POST["aficiones[".$i."]"] == "otros") {
+                    echo "<li>Otros</li>";
+                }
+
+            }
+            echo "</ol>";
+            */
             
             /* FORMA MALA
             if ($deport && $lect && $otros) {
