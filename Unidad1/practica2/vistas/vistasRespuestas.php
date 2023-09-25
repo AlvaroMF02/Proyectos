@@ -36,7 +36,11 @@
             if (isset($_POST["otros"])) {
                 $otros = true;
             }
+
+            // FORMA BUENA
             
+            
+            /* FORMA MALA
             if ($deport && $lect && $otros) {
                 echo "<b>Las aficiones seleccionadas han sido:</b>";
                 echo "<ol><li>Deportes</li><li>Lectura</li><li>Otros</li></ol>";
@@ -61,6 +65,7 @@
             }else{
                 echo "<b>No has seleccionado ninguna afición</b>";
             }
+            */
 
 
             if ($_POST["comentario"] != "") {

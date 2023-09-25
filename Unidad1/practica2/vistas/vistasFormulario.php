@@ -41,12 +41,13 @@
         </br>
 
         <p>Aficiones:
+            <!-- ARRAY EN NAME -->
             <label for="deportes">Deportes</label>
-            <input type="checkbox" name="deportes" id="deportes">
+            <input type="checkbox" name="aficiones[]" id="deportes" value="Deportes">
             <label for="lectura">Lectura</label>
-            <input type="checkbox" name="lectura" id="lectura">
+            <input type="checkbox" name="aficiones[]" id="lectura" value="Lectura">
             <label for="otros">Otros</label>
-            <input type="checkbox" name="otros" id="otros"></p>
+            <input type="checkbox" name="aficiones[]" id="otros" value="Otros"></p>
         
 
 

@@ -12,8 +12,10 @@
 
     //  SI SE PRESIONA EL BOTON Y NO HAY ERRORES
     if (isset($_POST["enviar"]) && !$errorForm) {
+        // TE LLEVA A LA RESPUESTA 
         require "vistas/vistasRespuestas.php";
     }else{
+        // TE REDIRIJE A LA MISMA PAGINA, SIN BORRAR CAMPOS ESCRITOS Y MARCANDO LOS ERRORES
         require "vistas/vistasFormulario.php";
     }
 ?>
