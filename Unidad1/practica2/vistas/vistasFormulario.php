@@ -59,7 +59,7 @@
 
         <p>Aficiones:
             <!-- ARRAY EN NAME //// FUNCION INARRAY-->
-            <label for="deportes">Deportes</label>  <!-- UTILIZAR LA FUNCION-->
+            <label for="deportes">Deportes</label>  <!-- UTILIZAR LA FUNCION CREADA, SI DA TRUE LO PONE CHECKED-->
             <input type="checkbox" name="aficiones[]" id="deportes" value="deportes" <?php if(isset($_POST["aficiones"]) && enArray("deportes", $_POST["aficiones"])) echo "checked"?>>
             <label for="lectura">Lectura</label>
             <input type="checkbox" name="aficiones[]" id="lectura" value="lectura" <?php if(isset($_POST["aficiones"]) && enArray("lectura", $_POST["aficiones"])) echo "checked"?>>
