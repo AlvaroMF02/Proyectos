@@ -60,11 +60,11 @@
         <p>Aficiones:
             <!-- ARRAY EN NAME //// FUNCION INARRAY-->
             <label for="deportes">Deportes</label>  <!-- UTILIZAR LA FUNCION CREADA, SI DA TRUE LO PONE CHECKED-->
-            <input type="checkbox" name="aficiones[]" id="deportes" value="deportes" <?php if(isset($_POST["aficiones"]) && enArray("deportes", $_POST["aficiones"])) echo "checked"?>>
+            <input type="checkbox" name="aficiones[]" id="deportes" value="Deportes" <?php if(isset($_POST["aficiones"]) && enArray("deportes", $_POST["aficiones"])) echo "checked"?>>
             <label for="lectura">Lectura</label>
-            <input type="checkbox" name="aficiones[]" id="lectura" value="lectura" <?php if(isset($_POST["aficiones"]) && enArray("lectura", $_POST["aficiones"])) echo "checked"?>>
+            <input type="checkbox" name="aficiones[]" id="lectura" value="Lectura" <?php if(isset($_POST["aficiones"]) && enArray("lectura", $_POST["aficiones"])) echo "checked"?>>
             <label for="otros">Otros</label>
-            <input type="checkbox" name="aficiones[]" id="otros" value="otros" <?php if(isset($_POST["aficiones"]) && enArray("otros", $_POST["aficiones"])) echo "checked"?>></p>
+            <input type="checkbox" name="aficiones[]" id="otros" value="Otros" <?php if(isset($_POST["aficiones"]) && enArray("otros", $_POST["aficiones"])) echo "checked"?>></p>
         
 
 

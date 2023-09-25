@@ -22,6 +22,27 @@
                 echo "<p><b>El sexo es:</b> Vacio </p>";
             }
 
+            // FORMA BUENA COMPLETITO
+            if (!isset($_POST["aficiones"])) {
+                echo"<p><b>No has seleccionado ninguna afición</b></p>";
+
+            }else if (count($_POST["aficiones"]) == 1) {
+                echo"<p><b>La afición seleccionada ha sido:</b></p>";
+                echo"<ol>";
+                echo "<li>".$_POST["aficiones"][0]."</li>";
+                echo"</ol>";
+            }else{
+                echo"<p><b>Las aficiones seleccionadas han sido:</b></p>";
+                echo"<ol>";
+                for ($i=0; $i < count($_POST["aficiones"]); $i++) { 
+                    echo "<li>".$_POST["aficiones"][$i]."</li>";
+                }
+                echo"</ol>";
+            }
+           
+            
+
+            /* FORMA MALA
             // AFICIONES ESCOGIDAS DEPENDIENDO DE CADA ELECCION
             $deport = false;
             $lect = false;
@@ -36,27 +57,7 @@
             if (isset($_POST["otros"])) {
                 $otros = true;
             }
-
-            // FORMA BUENA
-            /*
-            echo "<b>Las aficiones seleccionadas han sido:</b>";
-            echo "<ol>";
-            for ($i=0; $i < count($_POST["aficiones[]"]); $i++) { 
-                if ($_POST["aficiones[".$i."]"] == "deportes") {
-                    echo "<li>Deportes</li>";
-                }
-                if ($_POST["aficiones[".$i."]"] == "lectura") {
-                    echo "<li>Lectura</li>";
-                }
-                if ($_POST["aficiones[".$i."]"] == "otros") {
-                    echo "<li>Otros</li>";
-                }
-
-            }
-            echo "</ol>";
-            */
             
-            /* FORMA MALA
             if ($deport && $lect && $otros) {
                 echo "<b>Las aficiones seleccionadas han sido:</b>";
                 echo "<ol><li>Deportes</li><li>Lectura</li><li>Otros</li></ol>";
