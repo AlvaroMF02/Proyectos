@@ -12,12 +12,10 @@
     $lenguajes_cliente[1] = 6;
     $lenguajes_servidor[2] = 8;
 
-
-    echo "Contiene ".count($nombres). " elementos </br>";
-
-    foreach($nombres as $lenguajes){
-        echo $info."</br>";
+    foreach($lenguajes as $indi => $num){
+        echo $indi;
     }
+
     ?>
     
 </body>
