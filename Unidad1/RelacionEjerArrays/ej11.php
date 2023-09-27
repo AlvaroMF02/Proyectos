@@ -9,7 +9,7 @@
 
     <?php
 
-    
+    echo "Meter arrays en un array con array_merge(): <br>";
     $animales = array("Lagartija","Araña","Perro","Gato","Ratón");
     $numeros = array("12","34","52","12");
     $arboles = array("Sauce","Pino","Naranjo","Chopo","Perro","34");

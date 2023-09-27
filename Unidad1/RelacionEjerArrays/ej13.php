@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 12</title>
+    <title>Ejercicio 13</title>
 </head>
 <body>
 
     <?php
 
-    
+    echo "Mostrar array anterior inverso:<br>";
     $animales = array("Lagartija","Araña","Perro","Gato","Ratón");
     $numeros = array("12","34","52","12");
     $arboles = array("Sauce","Pino","Naranjo","Chopo","Perro","34");

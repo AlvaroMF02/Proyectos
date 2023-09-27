@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 12</title>
+    <title>Ejercicio 14</title>
 </head>
 <body>
 
@@ -22,7 +22,7 @@
     echo "</table>";
 
     // ELIMINA REAL MADRID  UNSET
-        
+    unset($estadios_futbol["Real Madrid"]);
 
     // MOSTRAR OTRA VEZ
     echo "<h3>tabla sin madrid</h3>";

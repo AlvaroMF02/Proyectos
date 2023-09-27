@@ -15,21 +15,23 @@
     }
 
     // CALCULAR MEDIA IMPARES
+    echo "Media de los pares: ";
     $cantPares = 0;
     $suma = 0;
     for ($i=0; $i < count($numeros); $i++) { 
         if ($numeros[$i]%2==0) {
             $cantPares ++;
-            $suma += $numeros[$i];
+            $suma += $i;
         }
     }
     $media = $suma/$cantPares;
     echo $media ."</br>";
 
+    echo "Números impares: ";
     // MOSTRAR IMPARES
     for ($i=0; $i < count($numeros); $i++) { 
         if ($numeros[$i]%2!=0) {
-            echo $numeros[$i];
+            echo $numeros[$i]." ";
         }
     }
 
