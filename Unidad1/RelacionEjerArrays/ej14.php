@@ -9,7 +9,6 @@
 
     <?php
 
-    
     $estadios_futbol = array("Barcelona"=>"Camp Nou","Real Madrid"=>"Santiago Bernabeu","Valencia"=>"Mestalla","Real Sociedad"=>"Anoeta");
 
     // MOSTRAR EN UNA TABLA CON INDICE Y VALOR
@@ -17,14 +16,24 @@
     foreach($estadios_futbol as $indice => $valor){
         echo "<tr>";
         echo "<td>".$indice."</td>";
-        echo "</tr>";
-        echo "<tr>";
         echo "<td>".$valor."</td>";
         echo "</tr>";
     }
     echo "</table>";
-    // ELIMINA REAL MADRID
+
+    // ELIMINA REAL MADRID  UNSET
+        
+
     // MOSTRAR OTRA VEZ
+    echo "<h3>tabla sin madrid</h3>";
+    echo "<table>";
+    foreach($estadios_futbol as $indice => $valor){
+        echo "<tr>";
+        echo "<td>".$indice."</td>";
+        echo "<td>".$valor."</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
 
     ?>
     
