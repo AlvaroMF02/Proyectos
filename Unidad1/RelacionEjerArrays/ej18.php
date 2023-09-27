@@ -17,8 +17,11 @@
     foreach($deportes as $valor){
         echo "Valores: ".$valor."<br>";
     }
-    echo "<p>Total: ".count($deportes)."</p>"
+    echo "<p>Total: ".count($deportes)."</p>";
 
+    echo "<p>Puntero en 1º elemento: ".current($deportes)."</p>";
+    echo "<p>Puntero en laultima posicion: ".end($deportes)."</p>";
+    echo "<p>Retroceder una posicion: ".prev($deportes)."</p>";
     ?>
     
 </body>
