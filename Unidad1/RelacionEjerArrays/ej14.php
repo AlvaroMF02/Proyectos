@@ -25,15 +25,12 @@
     unset($estadios_futbol["Real Madrid"]);
 
     // MOSTRAR OTRA VEZ
-    echo "<h3>tabla sin madrid</h3>";
-    echo "<table>";
+    echo "<h3>Lista sin madrid</h3>";
+    echo "<ol>";
     foreach($estadios_futbol as $indice => $valor){
-        echo "<tr>";
-        echo "<td>".$indice."</td>";
-        echo "<td>".$valor."</td>";
-        echo "</tr>";
+        echo "<li>".$indice.": ".$valor."</li>";
     }
-    echo "</table>";
+    echo "</ol>";
 
     ?>
     
