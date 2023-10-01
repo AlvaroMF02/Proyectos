@@ -2,10 +2,6 @@
 $error_form = false;
 
 if (isset($_POST["enviar"])) {
-    unset($_POST);
-}
-
-if (isset($_POST["enviar"])) {
 
     $errorPalab1 = $_POST["palabra1"] == "";
     $errorPalab2 = $_POST["palabra2"] == "";
