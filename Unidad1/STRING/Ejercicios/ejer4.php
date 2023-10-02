@@ -7,19 +7,9 @@ if (isset($_POST["enviar"])) {
 
     $longText1 = strlen($texto1);
 
-    $errorText1 = $texto1 == "" || $longText1 < 3;
+    $errorText1 = $texto1 == "";
 
     $errroForm = $errorText1;
-}
-
-function quitar_espacio($palabra){
- $res = "";
- for ($i = 0; $i < strlen($palabra); $i++) {
-    if ($palabra[$i] != " ") {
-    $res .= $palabra[$i];
-    }
- }
- return $res;
 }
 ?>
 
@@ -82,40 +72,49 @@ function quitar_espacio($palabra){
     <?php
     if (isset($_POST["enviar"]) && !$errroForm) {
 
-        $textoMayus = strtoupper($texto1);
-
-        $textoMayus = quitar_espacio($textoMayus);
-
         
 
-        $i = 0;
-        $j = strlen($textoMayus)-1;
-        $bien = true;
+        $texto1 = strtoupper($texto1);
+        $resultado = 0;
 
-        while ($i < $j && $bien) {
-            if ($textoMayus[$i] == $textoMayus[$j]) {
-                $i++;
-                $j--;
-            } else {
-                $bien = false;
+        for ($i = 0; $i < strlen($texto1); $i++) {
+
+            switch ($texto1[$i]) {
+                case 'M':
+                    $resultado += 1000;
+                    break;
+
+                case 'D':
+                    $resultado += 500;
+                    break;
+
+                case 'C':
+                    $resultado += 100;
+                    break;
+
+                case 'L':
+                    $resultado += 50;
+                    break;
+
+                case 'X':
+                    $resultado += 10;
+                    break;
+
+                case 'V':
+                    $resultado += 5;
+                    break;
+
+                case 'I':
+                    $resultado += 1;
+                    break;
             }
         }
 
-        if ($bien) {
-            $respuesta = $texto1 . " es Palindromo";
-
-        } else {
-
-            $respuesta = $texto1 . " no es Palindromo";
-        }
-
         echo "</br>";
         echo "</br>";
-        
-
         echo "<div class='verdoso'>";
         echo "<h2>Romanos a árabes - Formulario</h2>";
-        echo "La palabra " . $respuesta;
+        echo "El número " . $texto1 . " se escribe en cifras árabes " . $resultado;
         echo "</div>";
     }
 
