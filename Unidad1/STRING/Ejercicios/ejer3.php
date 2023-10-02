@@ -11,7 +11,18 @@ if (isset($_POST["enviar"])) {
 
     $errroForm = $errorText1;
 }
+
+function quitar_espacio($palabra){
+ $res = "";
+ for ($i = 0; $i < strlen($palabra); $i++) {
+    if ($palabra[$i] != " ") {
+    $res .= $palabra[$i];
+    }
+ }
+ return $res;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +58,7 @@ if (isset($_POST["enviar"])) {
 
 <body>
     <div id="principal">
-        <form action="ejer2.php" method="post">
+        <form action="ejer3.php" method="post">
             <h2>Palíndromos / capicuas - Formulario</h2>
 
             <p>Dime una frase y te diré si es palíndroma.</p>
@@ -73,35 +84,34 @@ if (isset($_POST["enviar"])) {
 
         $textoMayus = strtoupper($texto1);
 
-        $i=0;
-        $j = $longText1-1;
+        $textoMayus = quitar_espacio($textoMayus);
+
+        
+
+        $i = 0;
+        $j = strlen($textoMayus)-1;
         $bien = true;
 
-        while ($i<$j && $bien) {
-            if ($textoMayus[$i]==$textoMayus[$j]) {
+        while ($i < $j && $bien) {
+            if ($textoMayus[$i] == $textoMayus[$j]) {
                 $i++;
                 $j--;
-            }else{
+            } else {
                 $bien = false;
             }
         }
 
         if ($bien) {
-            if (is_numeric($texto1)) {
-                $respuesta = $texto1."es Capicua";
-            }else{
-                $respuesta = $texto1." es Palindromo";
-            }
-        }else{
-            if (is_numeric($texto1)) {
-                $respuesta = $texto1." no es Capicua";
-            }else{
-                $respuesta = $texto1." no es Palindromo";
-            }
+            $respuesta = $texto1 . " es Palindromo";
+
+        } else {
+
+            $respuesta = $texto1 . " no es Palindromo";
         }
 
         echo "</br>";
         echo "</br>";
+        
 
         echo "<div class='verdoso'>";
         echo "<h2>Palíndromos / capicuas - Respuesta</h2>";
