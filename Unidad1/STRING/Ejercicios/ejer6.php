@@ -67,7 +67,7 @@ if (isset($_POST["enviar"])) {
                 ?>
             </p>
 
-            <button type="submit" name="enviar">Comparar</button>
+            <button type="submit" name="enviar">Quitar acentos</button>
         </form>
     </div>
 
@@ -77,9 +77,7 @@ if (isset($_POST["enviar"])) {
 
         $resultado = 0;
 
-        
-
-
+        // CODIGO ASCII DESDE EL 128 HASTA 165 || 224 HASTA 237
 
         echo "</br>";
         echo "</br>";
@@ -87,7 +85,7 @@ if (isset($_POST["enviar"])) {
         echo "<h2>Quita acentos - Formulario</h2>";
 
         // CAMBIAR FORMATO DE LA SALIDA
-        echo "El número " . $texto1 . " se escribe en números romanos " . $resultado;
+        echo  $texto1 . " sin acentos: " . $minuscula;
 
 
         echo "</div>";
