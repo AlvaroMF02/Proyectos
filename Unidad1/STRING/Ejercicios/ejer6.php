@@ -20,7 +20,7 @@ if (isset($_POST["enviar"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 5</title>
+    <title>Ejercicio 6</title>
     <style>
         form {
             background-color: lightblue;
@@ -48,13 +48,15 @@ if (isset($_POST["enviar"])) {
 
 <body>
     <div id="principal">
-        <form action="ejer5.php" method="post">
-            <h2>Árabes a romanos - Formulario</h2>
+        <form action="ejer6.php" method="post">
+            <h2>Quita acentos - Formulario</h2>
 
-            <p>Dime un número y lo convertiré a números romanos.</p>
+            <p>Escribe un texto y le quitaré los acentos.</p>
 
-            <p><label for="c1">Número:</label>
-                <input type="text" id="c1" name="texto1" value="<?php if (isset($_POST["texto1"])) echo $texto1 ?>">
+            <p><label for="c1">Texto:</label>
+                <!-- value="<?php if (isset($_POST["texto1"])) echo $texto1 ?>" -->
+                
+                <textarea name="texto1" id="c1" cols="15" rows="4"></textarea>
                 <?php
                 if (isset($_POST["enviar"]) && $errorText1) {
 
@@ -75,13 +77,6 @@ if (isset($_POST["enviar"])) {
 
         $resultado = 0;
 
-
-        // SIN HACER
-        for ($i=0; $i < strlen($texto); $i++) { 
-            if ($texto[$i]==1000) {
-                
-            }
-        }
         
 
 
@@ -89,8 +84,9 @@ if (isset($_POST["enviar"])) {
         echo "</br>";
         echo "</br>";
         echo "<div class='verdoso'>";
-        echo "<h2>Árabes a romanos - Formulario</h2>";
+        echo "<h2>Quita acentos - Formulario</h2>";
 
+        // CAMBIAR FORMATO DE LA SALIDA
         echo "El número " . $texto1 . " se escribe en números romanos " . $resultado;
 
 

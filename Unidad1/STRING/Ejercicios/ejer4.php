@@ -107,8 +107,14 @@ if (isset($_POST["enviar"])) {
                 case 'I':
                     $resultado += 1;
                     break;
+
+                // SI EL NUMERO NO EXISTE
+                default:
+                    $resultado = -1;
+                    break;
             }
         }
+
 
         
 
@@ -118,6 +124,8 @@ if (isset($_POST["enviar"])) {
         echo "<h2>Romanos a árabes - Formulario</h2>";
         if($resultado>5000){
             echo "El número supera los 5000 ";
+        }else if($resultado < 0){
+            echo "El número no existe porque has puesto una letra inválida";
         }else{
             echo "El número " . $texto1 . " se escribe en cifras árabes " . $resultado;
         }
