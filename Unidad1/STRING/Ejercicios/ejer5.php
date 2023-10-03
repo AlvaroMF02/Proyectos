@@ -65,24 +65,49 @@ if (isset($_POST["enviar"])) {
                 ?>
             </p>
 
-            <button type="submit" name="enviar">Comparar</button>
+            <button type="submit" name="enviar">Convertir</button>
         </form>
     </div>
 
     <?php
     if (isset($_POST["enviar"]) && !$errroForm) {
 
+        $resultado = "";
 
-        $resultado = 0;
+        while ($texto1 > 0) { 
 
+            if ($texto1 - 1000 >= 0) {
+                $texto1 -= 1000;
+                $resultado .= "M";
 
-        // SIN HACER
-        for ($i=0; $i < strlen($texto); $i++) { 
-            if ($texto[$i]==1000) {
+            }else if ($texto1 - 500 >= 0) {
+                $texto1 -= 500;
+                $resultado .= "D";
+
+            }else if ($texto1 - 100 >= 0) {
+                $texto1 -= 100;
+                $resultado .= "C";
+
+            }else if ($texto1 - 50 >= 0) {
+                $texto1 -= 50;
+                $resultado .= "L";
+
+            }else if ($texto1 - 10 >= 0) {
+                $texto1 -= 10;
+                $resultado .= "X";
+
+            }else if ($texto1 - 5 >= 0) {
+                $texto1 -= 5;
+                $resultado .= "V";
                 
+            }else if ($texto1 - 1 >= 0) {
+                $texto1 -= 1;
+                $resultado .= "I";
             }
         }
         
+
+
 
 
 
