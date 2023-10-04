@@ -72,6 +72,8 @@ if (isset($_POST["enviar"])) {
     <?php
     if (isset($_POST["enviar"]) && !$errroForm) {
 
+        $valorInicial = $texto1;
+
         $resultado = "";
 
         while ($texto1 > 0) { 
@@ -115,8 +117,12 @@ if (isset($_POST["enviar"])) {
         echo "</br>";
         echo "<div class='verdoso'>";
         echo "<h2>Árabes a romanos - Formulario</h2>";
-
-        echo "El número " . $texto1 . " se escribe en números romanos " . $resultado;
+        if ($valorInicial > 5000) {
+            echo "El numero no puede ser mayr que 5000";
+        }else{
+            echo "El número " . $valorInicial . " se escribe en números romanos " . $resultado;
+        }
+        
 
 
         echo "</div>";
