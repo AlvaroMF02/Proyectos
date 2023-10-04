@@ -15,7 +15,7 @@
         echo "<p><b>Nombre: </b>" . $_POST["nombre"] . "</p>";
         echo "<p><b>Apellidos: </b>" . $_POST["apellidos"] . "</p>";
         echo "<p><b>Contraseña: </b>" . $_POST["contraseña"] . "</p>";
-
+        echo "<p><b>DNI: </b>" . $_POST["dni"] . "</p>";
         // ISSET PARA VER SI HAY O NO DEFINIDAS
         if (isset($_POST["sexo"])) {
             echo "<p><b>Sexo: </b>" . $_POST["sexo"] . "</p>";
