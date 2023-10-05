@@ -57,13 +57,12 @@ if (isset($_POST["enviar"])) {
                 <input type="text" id="c1" name="texto1" value="<?php if (isset($_POST["texto1"])) echo $texto1 ?>">
                 <?php
                 if (isset($_POST["enviar"])) {
-                    
+
                     if ($errorText1) {
                         echo "* Campo obligatorio *";
-                    }elseif ($errorNum) {
+                    } elseif ($errorNum) {
                         echo "* Solo se admiten números *";
                     }
-
                 }
                 ?>
             </p>
@@ -75,11 +74,11 @@ if (isset($_POST["enviar"])) {
     <?php
     if (isset($_POST["enviar"]) && !$errroForm) {
 
-        
 
-        
 
-        $resultado = str_replace(".",",",$texto1);
+
+
+        $resultado = str_replace(",", ".", $texto1);
 
 
 
@@ -89,11 +88,11 @@ if (isset($_POST["enviar"])) {
         echo "<h2>Unifica separador decimal - Formulario</h2>";
 
         echo "Números originales<br>";
-        echo " &nbsp;&nbsp;&nbsp;&nbsp;".$texto1;
+        echo " &nbsp;&nbsp;&nbsp;&nbsp;" . $texto1;
         $resultado;
         echo "<br>Números corregidos<br>";
-        echo " &nbsp;&nbsp;&nbsp;&nbsp;".$resultado;
-        
+        echo " &nbsp;&nbsp;&nbsp;&nbsp;" . $resultado;
+
 
 
         echo "</div>";
