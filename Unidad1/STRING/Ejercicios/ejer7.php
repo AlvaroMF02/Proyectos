@@ -5,11 +5,9 @@ if (isset($_POST["enviar"])) {
 
     $texto1 = trim($_POST["texto1"]);
 
-    $errorNum = !is_numeric($texto1);
-
     $errorText1 = $texto1 == "";
 
-    $errroForm = $errorText1 || $errorNum;
+    $errroForm = $errorText1;
 }
 ?>
 
@@ -60,8 +58,6 @@ if (isset($_POST["enviar"])) {
 
                     if ($errorText1) {
                         echo "* Campo obligatorio *";
-                    } elseif ($errorNum) {
-                        echo "* Solo se admiten números *";
                     }
                 }
                 ?>
@@ -86,6 +82,7 @@ if (isset($_POST["enviar"])) {
         echo "</br>";
         echo "<div class='verdoso'>";
         echo "<h2>Unifica separador decimal - Formulario</h2>";
+
 
         echo "Números originales<br>";
         echo " &nbsp;&nbsp;&nbsp;&nbsp;" . $texto1;
