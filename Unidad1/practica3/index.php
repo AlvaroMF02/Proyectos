@@ -28,13 +28,13 @@ if (isset($_POST["botonSub"])) {    // SE COMPRUEBA ERRORES COMO DEJAR EL NOMBRE
     $error_sexo = !isset($_POST["sexo"]);           // SI NO EXISTE
     $error_coment = $_POST["comentarios"] == "";
     $error_dni = $_POST["dni"] == "" || !dniBienEscrito(strtoupper($_POST["dni"])) || !dniValido(strtoupper($_POST["dni"]));
-
+    $error_archivo = $_FILES["archivo"]["name"] == "" && $_FILES["archivo"]["error"] || !getimagesize($_FILES["archivo"]["tmp_name"]) || $_FILES["archivo"]["size"] > 500 * 1024;
     // ERROR SI HAY UNO ERROR DE LOS ANTERIORES
-    $error_form = $error_nombre || $error_apellido || $error_clave || $error_sexo || $error_dni ||$error_coment;
+    $error_form = $error_nombre || $error_archivo || $error_apellido || $error_clave || $error_sexo || $error_dni ||$error_coment;
 }
 
 if (isset($_POST["botonSub"]) && !$error_form) {    // SI NO HAY ERRORES Y SE PULSA EL BOTON SUBMIT SE VUELVE A PORNER LA PAGINA
     require "vistas/vistaRespuesta.php";
 } else {
     require "vistas/vistaFormulario.php";
-}?>
+}
