@@ -23,6 +23,7 @@
     <!-- VALIDAR FORMULARIO -->
     <form action="index.php" method="post" enctype="multipart/form-data">
 
+        <p>
         <!-- CASILLAS CON TEXTO -->
         <label for="nombre">Nombre</label></br>
         <input type="text" name="nombre" id="nombre" value="<?php if (isset($_POST["nombre"])) echo $_POST["nombre"] ?>">
@@ -31,19 +32,21 @@
             echo "<span class='error'>Campo vacío </span>";
         }
         ?>
-        </br>
+        </p>
 
 
 
-        <label for="apellidos">Apellidos</label></br>
-        <input type="text" name="apellidos" id="apellidos" value="<?php if (isset($_POST["apellidos"])) echo $_POST["apellidos"] ?>">
+        <p>
+        <label for="usuario">Usuario</label></br>
+        <input type="text" name="usuario" id="usuario" value="<?php if (isset($_POST["usuario"])) echo $_POST["usuario"] ?>">
         <?php
         if (isset($_POST["botonSub"]) && $error_apellido) {
             echo "<span class='error'>Campo vacío </span>";
         }
         ?>
-        </br>
+        </p>
 
+        <p>
         <!-- CASILLA PARA CONTRASEÑAS -->
         <label for="contr">Contraseña</label></br>
         <input type="password" name="contraseña" id="contr">
@@ -52,8 +55,9 @@
             echo "<span class='error'>Campo vacío </span>";
         }
         ?>
-        </br>
+        </p>
 
+        <p>
         <!-- DNI -->
         <label for="dni">DNI</label></br>
         <input type="text" name="dni" id="dni" placeholder="DNI: 11223344Z" value="<?php if (isset($_POST["dni"])) echo $_POST["dni"] ?>">
@@ -63,15 +67,16 @@
             if ($_POST["dni"] == "") {
                 echo "<span class='error'>Campo vacío </span>";
             } else if (!dniBienEscrito(strtoupper($_POST["dni"]))) {
-                echo "<span class='error'> El DNI no esta bien escrito </span>";
+                echo "<span class='error'>* Debes rellenar el DNI con 8 dígitos seguidos de una letra *</span>";
             } else {
-                echo "<span class='error'>DNI invalido </span>";
+                echo "<span class='error'>* DNI no valido *</span>";
             }
         }
         ?>
-        </br>
+        </p>
 
         <!-- PARA ESCOGER UNO -->
+        <p>
         Sexo
         <?php
         if (isset($_POST["botonSub"]) && $error_sexo) {
@@ -85,12 +90,12 @@
         </br>
         <input <?php if (isset($_POST["sexo"]) && $_POST["sexo"] == "mujer") echo "checked" ?> type="radio" name="sexo" id="mujer" value="mujer">
         <label for="mujer">Mujer</label>
-
+        </p>
 
 
         <!-- SUBIR ARCHIVOS FILTRANDO LOS ARCHIVOS QUE SE PUEDEN SUBIR-->
         <p>
-            <label for="archivo">Seleccione un archivo de imagen (max 500 KB):</label>
+            <label for="archivo">Incluir mi foto (Archivo de tipo imagen Máx 500 KB):</label>
             <input accept="image/*" type="file" name="archivo" id="foto">
             <?php
             if (isset($_POST["enviar"]) && $error_archivo) {
@@ -109,27 +114,10 @@
             ?>
         </p>
 
-        <!-- LISTA DESPLEGABLE -->
-        Nacido en:
-        <select name="nacimi" id="nacimi">
-            <option value="malaga" <?php if (!isset($_POST["nacimi"]) || isset($_POST["nacimi"]) && $_POST["nacimi"] == "malaga") echo "selected" ?>>Málaga</option>
-            <option value="jaen" <?php if (!isset($_POST["nacimi"]) || isset($_POST["nacimi"]) && $_POST["nacimi"] == "jaen") echo "selected" ?>>Jaén</option>
-            <option value="sevilla" <?php if (!isset($_POST["nacimi"]) || isset($_POST["nacimi"]) && $_POST["nacimi"] == "sevilla") echo "selected" ?>>Sevilla</option>
-        </select>
-
-        <!-- AREA DE TEXTO -->
-        <p>Comentarios:
-            <textarea id="coment" name="comentarios"><?php if (isset($_POST["comentarios"])) echo $_POST["comentarios"] ?></textarea>
-            <?php
-            if (isset($_POST["botonSub"]) && $error_coment) {
-                echo "<span class='error'>Campo vacio </span>";
-            }
-            ?>
-        </p>
 
         <!-- BOTONES -->
         <p><input type="checkbox" checked name="subscripcion" id="subscripcion">
-            <label for="subscripcion">Suscribirse al boletín de novedades</label>
+            <label for="subscripcion">Suscribirme al boletín de Novedades</label>
         </p>
 
         <button type="submit" name="botonSub">Guardar cambios</button>
