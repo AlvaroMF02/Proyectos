@@ -50,7 +50,10 @@
         }*/
         echo "<p>".sprintf("%03d",$i)."</p>";
     }
-    
+
+    // VALOR ABSOLUTO
+    echo "<p>".abs(-8)."</p>";
+
     ?>
 </body>
 </html>
