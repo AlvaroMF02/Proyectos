@@ -98,7 +98,7 @@
             <label for="archivo">Incluir mi foto (Archivo de tipo imagen Máx 500 KB):</label>
             <input accept="image/*" type="file" name="archivo" id="foto">
             <?php
-            if (isset($_POST["enviar"]) && $error_archivo) {
+            if (isset($_POST["botonSub"]) && $error_archivo) {
 
                 if ($_FILES["archivo"]["name"] != "") {
 
