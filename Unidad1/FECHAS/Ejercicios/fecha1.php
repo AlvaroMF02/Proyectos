@@ -2,18 +2,19 @@
 
     if(isset($_POST["enviar"])){
 
-        // ESTA VACIO
-        $erroFecha1 = $_POST["fecha1"]=="";
-        $erroFecha2 = $_POST["fecha2"]=="";
+        $buenosSeparadores1 = substr($_POST["fecha1"],2,1) =="/" && substr($_POST["fecha1"],5,1) =="/";
+        $arrayNumeros1=explode("/",$_POST["fecha1"]);
+        $numerosBuenos1 = is_numeric($arrayNumeros1[0]) && is_numeric($arrayNumeros1[1]) && is_numeric($arrayNumeros1[2]);
+        $fechaValida = checkdate($arrayNumeros1[1],$arrayNumeros1[0],$arrayNumeros1[2]);
+        $error_fecha1 = $_POST["fecha1"]=="" || strlen($_POST["fecha1"])!=10 || !$buenosSeparadores1 || !$numerosBuenos1 || !$fechaValida;
 
-        // SE PASA DE TAMAÑO (ESTÁ MAL ESCRITO)
-        $errorTamFech1 = strlen($_POST["fecha1"])>10;
-        $errorTamFech2 = strlen($_POST["fecha2"])>10;
+        $buenosSeparadores1 = substr($_POST["fecha1"],2,1) =="/" && substr($_POST["fecha1"],5,1) =="/";
+        $arrayNumeros1=explode("/",$_POST["fecha1"]);
+        $numerosBuenos1 = is_numeric($arrayNumeros1[0]) && is_numeric($arrayNumeros1[1]) && is_numeric($arrayNumeros1[2]);
+        $fechaValida = checkdate($arrayNumeros1[1],$arrayNumeros1[0],$arrayNumeros1[2]);
+        $error_fecha1 = $_POST["fecha1"]=="" || strlen($_POST["fecha1"])!=10 || !$buenosSeparadores1 || !$numerosBuenos1 || !$fechaValida;
 
-        //FECHA INVALIDA
-        //$errorFormFech1 = checkdate($_POST["fecha1"]);
 
-        $errorFormu = $erroFecha1 || $erroFecha2;
     }
 ?>
 
@@ -25,22 +26,90 @@
     <meta charset="UTF-8">
     <title>Ejercicio 1</title>
     <style>
+        form {
+            background-color: lightblue;
+            margin-left: 20%;
+            margin-right: 20%;
+            padding: 1%;
+            border-color: black;
+            border: 3px solid black;
+        }
+
+        .verdoso {
+            background-color: lightgreen;
+            margin-left: 20%;
+            margin-right: 20%;
+            padding: 1%;
+            border-color: black;
+            border: 3px solid black;
+        }
+
+        h2 {
+            text-align: center
+        }
         .titulo{
             text-align: center;
         }
     </style>
 </head>
 <body>
+    <div id="principal">
+    
+    <form action="fecha1.php" method="post">
     <h1 class="titulo">Fechas-Formulario</h1>
-    <form action="ejer1.php" method="post">
+    <p>
         <label for="f1">Introduzca una fecha (DD/MM/YYYY)</label>
-        <input type="text" id="f1" name="fecha1">   <br>
+        <input type="text" id="f1" name="fecha1"  value="<?php if(isset($_POST["fecha1"])) echo $_POST["fecha1"] ?>">   
+        
+        <?php /*
+            if (isset($_POST["enviar"]) && $errorFormu) {
+
+                if ($erroFecha1) {
+                    echo "* Campo vacío *";
+                }
+                if ($errorTamFech1) {
+                    echo "* Fecha mal escrita *";
+                }
+        }*/
+        ?>
+        <br>
+
 
         <label for="f2">Introduzca una fecha (DD/MM/YYYY)</label>
-        <input type="text" id="f2" name="fecha2">   <br>
+        <input type="text" id="f2" name="fecha2" value="<?php if(isset($_POST["fecha2"])) echo $_POST["fecha2"] ?>"> 
+        <?php /*
+            if (isset($_POST["enviar"]) && $errorFormu) {
 
+                if ($erroFecha2) {
+                    echo "* Campo vacío *";
+                }
+                if ($errorTamFech2) {
+                    echo "* Fecha mal escrita *";
+                }
+        }*/
+        ?>
+        <br>
+    </p>
         <button type="submit" name="enviar">Calcular</button>
-
+    
     </form>
+    </div>
+
+
+    <?php
+    if (isset($_POST["enviar"]) && !$errorFormu) {
+
+
+
+
+        echo "</br>";
+        echo "</br>";
+        echo "<div class='verdoso'>";
+        echo "<h2>Fechas - Respuesta</h2>";
+        echo "La palabra ";
+        echo "</div>";
+    }
+
+    ?>
 </body>
 </html>
