@@ -65,7 +65,7 @@
             Año:
             <select name="anyo1" id="anyo1">
                 <?php
-                for ($i = 1950; $i <= 2023; $i++) {
+                for ($i = 1970; $i <= 2023; $i++) {
                     echo "<option>" . $i . "</option>";
                 }
                 ?>
@@ -94,7 +94,7 @@
             Año:
             <select name="anyo2" id="anyo2">
                 <?php
-                for ($i = 1950; $i <= 2023; $i++) {
+                for ($i = 1970; $i <= 2023; $i++) {
                     echo "<option>" . $i . "</option>";
                 }
                 ?>
@@ -108,11 +108,13 @@
 
     <?php
     if (isset($_POST["enviar"])) {
+
+
         echo "</br>";
         echo "</br>";
         echo "<div class='verdoso'>";
         echo "<h2>Fechas - Respuesta</h2>";
-        echo "La diferencia en días entre las dos fechas introducidas es de " ;
+        echo "La diferencia en días entre las dos fechas introducidas es de ".$_POST["dia1"].$_POST["mes1"].$_POST["anyo1"] ;
         echo "</div>";
     }
 
