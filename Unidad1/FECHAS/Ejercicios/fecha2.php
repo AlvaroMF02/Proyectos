@@ -109,7 +109,7 @@
 
 
         
-        // SACO LOS SEGUNDOS DE CADA DIA
+        // SACO LOS SEGUNDOS DE CADA DIA                                                LAS FECHAS SE BORRAN
         // EN BUCLE PARA CONSEGUIR LOS NUMEROS DE LOS MESES
         // FALTA SUMAR UNO A LAS KEY(FUNCIONA NS PQ)
         foreach ($meses as $key => $value) {

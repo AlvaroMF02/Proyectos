@@ -1,17 +1,14 @@
 <?php
 
-function buenos_separadores($texto)
-{
+function buenos_separadores($texto){
     return substr($texto, 2, 1) == "/" && substr($texto, 5, 1) == "/";
 }
 
-function numeros_buenos($texto)
-{
+function numeros_buenos($texto){
     return is_numeric(substr($texto, 0, 2)) && is_numeric(substr($texto, 3, 2)) && is_numeric(substr($texto, 6, 4));
 }
 
-function fecha_valida($texto)
-{
+function fecha_valida($texto){
     return checkdate(substr($texto, 3, 2), substr($texto, 0, 2), substr($texto, 6, 4));
 }
 if (isset($_POST["enviar"])) {
