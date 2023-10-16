@@ -43,7 +43,7 @@
             echo "<p>" .$linea. "</p>";
         }
 
-        // ESCRIBIR
+        // ESCRIBIR PHP_EOL(salto de linea)
         fputs($fd1,PHP_EOL."Texto Escrito");
         
 
