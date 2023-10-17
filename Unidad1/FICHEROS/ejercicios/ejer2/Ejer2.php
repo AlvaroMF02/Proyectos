@@ -48,18 +48,21 @@ if (isset($_POST["enviar"])) {
     if (isset($_POST["enviar"]) && !$errorForm) {
         $nombreFic = "tabla_".$_POST["numero"].".txt";
 
-        if (!file_exists("Tablas/".$nombreFic)) {
-            $fd=fopen("Tablas/".$nombreFic,"w");
+        if (file_exists("Tablas/".$nombreFic)) {
+
+            $fd=fopen("Tablas/".$nombreFic,"r");
         if(!$fd){
-            die ("<p>No se ha podido crear el fichero Tablas/".$nombreFic."</p>");
+            die ("<p>No se ha podido abrir el fichero Tablas/".$nombreFic."</p>");
         }
-        for ($i=0; $i <=10; $i++) { 
-            fputs($fd,$i." x ".$_POST["numero"]. " = " . $i*$_POST["numero"].PHP_EOL);
+        echo "<h3>Tabla del ". $_POST["numero"] ."</h3>";
+        $linea = fgets($fd);
+        while ($linea = fgets($fd)) {
+            echo $linea. "<br>";
         }
         fclose($fd);
-        echo "<p>Fichero generado con exito </p>";
+
         }else{
-            echo "<p>El fichero ya existe </p>";
+            echo "<p>El fichero no existe </p>";
         }
 
         
