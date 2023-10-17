@@ -71,12 +71,14 @@ if (isset($_POST["enviar"])) {
         }
         echo "<h3>Tabla del ". $_POST["numero"] ."</h3>";
         $linea = fgets($fd);
-        for ($i=0; $i < 10; $i++) { 
-            if ($_POST["numero2"]==$i) {
-                echo $linea. "<br>";
-            }
-        }
+        $cont = 1;
 
+        while ($cont<=$_POST["numero2"]) {
+            $linea=fgets($fd);
+            $cont++;
+            
+        }
+        echo $linea;
         fclose($fd);
 
         }else{
