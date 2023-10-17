@@ -49,6 +49,21 @@
 
         // SIEMPRE CERRAR EL FICHERO
         fclose($fd1);
+
+        echo "<h3>Texto leido directamente</h3>";
+        // MOSTRAR TODO EL FICHERO EL ENTER ES COMO UN ESPACIO
+        $todoFichero = file_get_contents("prueba.txt");
+        echo $todoFichero;
+        echo "<h3>Poner br en enter</h3>";
+        echo nl2br($todoFichero);
+        echo "<h3>Mostrarlo de otra forma</h3>";
+        echo "<pre>".$todoFichero."</pre>";
+
+
+
+        // LEER UNA WEB (TE TRAE EL HTML)
+        file_get_contents("https://www.google.es");
+        
     }
     ?>
 </body>
