@@ -22,8 +22,8 @@ if (isset($_POST["enviar"])) {
 </style>
 
 <body>
-    <form action="Ejer2.php" method="post">
-        <h1>Ejercicio 2</h1>
+    <form action="Ejer1.php" method="post">
+        <h1>Ejercicio 1</h1>
         <p>
             <label for="num">Introduzca un numero del 1 al 10</label><br>
             <input type="text" name="numero" id="num" value="<?php if (isset($_POST["numero"])) echo $_POST["numero"] ?>">
