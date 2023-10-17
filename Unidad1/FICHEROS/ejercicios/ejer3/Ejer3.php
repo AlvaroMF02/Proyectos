@@ -13,7 +13,7 @@ if (isset($_POST["enviar"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 2</title>
+    <title>Ejercicio 3</title>
 </head>
 <style>
     .error {
@@ -22,11 +22,13 @@ if (isset($_POST["enviar"])) {
 </style>
 
 <body>
-    <form action="Ejer2.php" method="post">
-        <h1>Ejercicio 2</h1>
+    <form action="Ejer3.php" method="post">
+        <h1>Ejercicio 3</h1>
         <p>
             <label for="num">Introduzca un numero del 1 al 10</label><br>
-            <input type="text" name="numero" id="num" value="<?php if (isset($_POST["numero"])) echo $_POST["numero"] ?>">
+            <input type="text" name="numero" id="num" value="<?php if (isset($_POST["numero"])) echo $_POST["numero"] ?>"><br>
+            <label for="num2">Introduzca la linea que quiera leer</label><br>
+            <input type="text" name="numero2" id="num2">
             <?php
             if (isset($_POST["enviar"]) && $errorForm) {
                 if ($_POST["numero"] == "") {
@@ -38,7 +40,7 @@ if (isset($_POST["enviar"])) {
             ?>
         </p>
         <p>
-            <button type="submit" name="enviar">Leer tablas</button>
+            <button type="submit" name="enviar">Generar tablas</button>
         </p>
 
 
@@ -46,23 +48,26 @@ if (isset($_POST["enviar"])) {
 
     <?php
     if (isset($_POST["enviar"]) && !$errorForm) {
-        $nombreFic = "tabla_" . $_POST["numero"] . ".txt";
+        $nombreFic = "tabla_".$_POST["numero"].".txt";
 
-        if (file_exists("Tablas/" . $nombreFic)) {
+        if (file_exists("Tablas/".$nombreFic)) {
 
-            $fd = fopen("Tablas/" . $nombreFic, "r");
-            if (!$fd) {
-                die("<p>No se ha podido abrir el fichero Tablas/" . $nombreFic . "</p>");
-            }
-            echo "<h3>Tabla del " . $_POST["numero"] . "</h3>";
-            $linea = fgets($fd);
-            while ($linea = fgets($fd)) {
-                echo $linea . "<br>";
-            }
-            fclose($fd);
-        } else {
+            $fd=fopen("Tablas/".$nombreFic,"r");
+        if(!$fd){
+            die ("<p>No se ha podido abrir el fichero Tablas/".$nombreFic."</p>");
+        }
+        echo "<h3>Tabla del ". $_POST["numero"] ."</h3>";
+        $linea = fgets($fd);
+        while ($linea = fgets($fd)) {
+            echo $linea. "<br>";
+        }
+        fclose($fd);
+
+        }else{
             echo "<p>El fichero no existe </p>";
         }
+
+        
     }
     ?>
 </body>
