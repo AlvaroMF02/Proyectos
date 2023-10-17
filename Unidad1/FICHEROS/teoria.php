@@ -63,6 +63,9 @@
 
         // LEER UNA WEB (TE TRAE EL HTML)
         file_get_contents("https://www.google.es");
+
+        // PARA EJER 4
+        str_word_count("miau");
         
     }
     ?>

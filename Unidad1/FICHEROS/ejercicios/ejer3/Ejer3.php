@@ -1,7 +1,10 @@
 <?php
 if (isset($_POST["enviar"])) {
     // IMPORTA EL ORDEN, NO ESTA VACIO, ES UN NUMERO Y ESTA ENTRE 1 Y 10
-    $errorForm = $_POST["numero"] == "" || !is_numeric($_POST["numero"]) || $_POST["numero"] <= 0 || $_POST["numero"] > 10;
+    $errorN1 = $_POST["numero"] == "" || !is_numeric($_POST["numero"]) || $_POST["numero"] <= 0 || $_POST["numero"] > 10;
+    $errorN2 = $_POST["numero2"] == "" || !is_numeric($_POST["numero2"]) || $_POST["numero2"] <= 0 || $_POST["numero2"] > 10;
+
+    $errorForm = $errorN1 || $errorN2;
 }
 
 ?>
@@ -26,11 +29,9 @@ if (isset($_POST["enviar"])) {
         <h1>Ejercicio 3</h1>
         <p>
             <label for="num">Introduzca un numero del 1 al 10</label><br>
-            <input type="text" name="numero" id="num" value="<?php if (isset($_POST["numero"])) echo $_POST["numero"] ?>"><br>
-            <label for="num2">Introduzca la linea que quiera leer</label><br>
-            <input type="text" name="numero2" id="num2">
+            <input type="text" name="numero" id="num" value="<?php if (isset($_POST["numero"])) echo $_POST["numero"]?>">
             <?php
-            if (isset($_POST["enviar"]) && $errorForm) {
+            if (isset($_POST["enviar"]) && $errorN1) {
                 if ($_POST["numero"] == "") {
                     echo "<span class=error>* Campo vacio *</span>";
                 } else {
@@ -38,9 +39,21 @@ if (isset($_POST["enviar"])) {
                 }
             }
             ?>
+            <br><label for="num2">Introduzca la linea que quiera leer</label><br>
+            <input type="text" name="numero2" id="num2" value="<?php if (isset($_POST["numero2"])) echo $_POST["numero2"]?>">
+            <?php
+            if (isset($_POST["enviar"]) && $errorN2) {
+                if ($_POST["numero2"] == "") {
+                    echo "<span class=error>* Campo vacio *</span>";
+                } else {
+                    echo "<span class=error>* No has introducido un número *</span>";
+                }
+            }
+            ?>
+            
         </p>
         <p>
-            <button type="submit" name="enviar">Generar tablas</button>
+            <button type="submit" name="enviar">Leer linea</button>
         </p>
 
 
@@ -58,9 +71,12 @@ if (isset($_POST["enviar"])) {
         }
         echo "<h3>Tabla del ". $_POST["numero"] ."</h3>";
         $linea = fgets($fd);
-        while ($linea = fgets($fd)) {
-            echo $linea. "<br>";
+        for ($i=0; $i < 10; $i++) { 
+            if ($_POST["numero2"]==$i) {
+                echo $linea. "<br>";
+            }
         }
+
         fclose($fd);
 
         }else{
