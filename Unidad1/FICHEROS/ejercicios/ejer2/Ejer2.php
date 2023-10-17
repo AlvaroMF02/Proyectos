@@ -13,7 +13,7 @@ if (isset($_POST["enviar"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 1</title>
+    <title>Ejercicio 2</title>
 </head>
 <style>
     .error {
@@ -22,8 +22,8 @@ if (isset($_POST["enviar"])) {
 </style>
 
 <body>
-    <form action="Ejer1.php" method="post">
-        <h1>Ejercicio 1</h1>
+    <form action="Ejer2.php" method="post">
+        <h1>Ejercicio 2</h1>
         <p>
             <label for="num">Introduzca un numero del 1 al 10</label><br>
             <input type="text" name="numero" id="num" value="<?php if (isset($_POST["numero"])) echo $_POST["numero"] ?>">
