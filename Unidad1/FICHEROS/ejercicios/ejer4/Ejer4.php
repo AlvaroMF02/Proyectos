@@ -1,19 +1,19 @@
-<?php 
+<?php
 if (isset($_POST["enviar"])) {
 
-    // $error_archivo = $_FILES["archivo"]["name"] != "" && ($_FILES["archivo"]["error"] || !getimagesize($_FILES["archivo"]["tmp_name"]) || $_FILES["archivo"]["size"] > 500 * 1024);
+    // NO SE HA SELECCIONADO ARCHIVO
+    $errorVacio = $_FILES["archivo"]["name"] == "";
 
+    // SI NO ES TXT
+    $errorFormato = $_FILES["archivo"]["type"] != "text/plain";
 
     // SI TIENE UN ERROR DE ARCHIVO
     $errorArchivo = $_FILES["archivo"]["error"];
-    
-    // SI EL FORMATO ES CORRECTO?
-    $errorFormato = !getimagesize($_FILES["archivo"]["tmp_name"]);
 
     // SI SUPERA EL TAMAÑO
     $errorTaman = $_FILES["archivo"]["size"] > 2500 * 1024;
-    
-    $errorSubidaTxt = $errorArchivo ||  $errorFormato|| $errorTaman;
+
+    $errorForm = $errorVacio || $errorArchivo ||  $errorFormato || $errorTaman;
 }
 ?>
 
@@ -32,28 +32,52 @@ if (isset($_POST["enviar"])) {
 </style>
 
 <body>
-    <form action="Ejer4.php" method="post">
-        <h1>Ejercicio 4</h1>
-        
-        <label for="fich">Suba un archivo de texto (Max. 2,5 Mb)</label>
-        <input type="file" accept="txt*/" name="archivo" id="fich">
-        <?php 
-            if (isset($_POST["enviar"]) && $errorSubidaTxt) {
-                if ($errorArchivo) {
-                    echo "<span class=error>No se ha podido subir el archivo</span>";
-                }
-                if ($errorFormato) {
-                    echo "<span class=error>El formato debe ser .txt</span>";
-                }
-                if ($errorTaman) {
-                    echo "<span class=error>El archivo es demasiado grande</span>";
-                }
+    <h1>Ejercicio 4</h1>
+
+    <form action="Ejer4.php" method="post" enctype="multipart/form-data">
+
+        <label for="fich">Suba un archivo de texto (Max. 2'5 MB)</label>
+        <input type="file" accept=".txt" name="archivo" id="fich">
+
+        <?php
+        if (isset($_POST["enviar"]) && $errorForm) {
+            if ($errorVacio) {
+                echo "<span class=error>**</span>";
+
+            }else if ($errorArchivo) {
+                echo "<span class=error>* No se ha podido subir el archivo *</span>";
+            }else if ($errorFormato) {
+                echo "<span class=error>* El formato debe ser .txt *</span>";
+            }else{
+                echo "<span class=error>* El tamaño es superior *</span>";
             }
+        }
         ?>
 
-        <br><button type="submit" name="enviar">Contar letras</button>
+        <br><button type="submit" name="enviar">Contar palabras</button>
 
     </form>
+
+    <?php
+        if (isset($_POST["enviar"]) && !$errorForm) {
+            // CON METODO
+            //$contenidoFich = file_get_contents($_FILES["archivo"]["tmp_name"]);
+
+            // SIN METODO
+            @$fd=fopen($_FILES["archivo"]["tmp_name"],"r");
+            if (!$fd) {
+                die ("No se puede abrir el archivo");
+            }
+            
+            $nPalabras = 0;
+
+            while($linea = fgets($fd)){
+                $nPalabras += str_word_count($linea);
+            }
+
+            echo "<h3>El archivo tiene ".$nPalabras."</h3>";
+        }
+    ?>
 
 </body>
 
