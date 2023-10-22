@@ -1,10 +1,3 @@
-<?php
-if (isset($_POST["enviar"])) {
-    $errorForm = $_POST["pais"] = "" || !is_numeric($_POST["pais"]);
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,102 +5,103 @@ if (isset($_POST["enviar"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicio 6</title>
+    <style>
+        table,
+        td,
+        th {
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 0 auto;
+        }
+    </style>
 </head>
-<style>
-    .error {
-        color: red;
-    }
-
-    table,
-    td,
-    th {
-        border: 1px solid black;
-    }
-
-    table {
-        border-collapse: collapse;
-        width: 90%;
-        margin: 0 auto;
-    }
-</style>
 
 <body>
-    <?php
-    @$fd = fopen("http://dwese.icarosproject.com/PHP/datos_ficheros.txt", "r");
+    <h1>PIB per cápita</h1>
 
+    <?php
+    // ARCHIVO DE DONDE LEEREMOS LOS DATOS
+    $ruta = 'http://dwese.icarosproject.com/PHP/datos_ficheros.txt';
+    $fd = fopen($ruta, "r");
     if (!$fd) {
-        die("No se puede abrir el archivo");
+        die("<p>No se ha podido crear el fichero " . $ruta . "</p>");
     }
 
     // ME SALTO LA PRIMERA LINEA POR QUE NO VALE PARA NADA
-    $primeraLinea = fgets($fd);
+    $primera_linea = fgets($fd);
+
 
     while ($linea = fgets($fd)) {
-        $datosLinea = explode("\t", $linea);
+        $datos_linea = explode("\t", $linea);
         // SEPARO POR COMAS LA PRIMERA COLUMNA PARA SACAR LA ULTIMA PARTE
-        $datosPrimColum = explode(",", $datosLinea[0]);
-        $paises[] = $datosPrimColum[2];
+        $datos_primera_col = explode(",", $datos_linea[0]);
+        $paises[] = end($datos_primera_col);
 
         // EN LA PRIMERA NO HACE NADA
         // EN LA SEGUNDA MIRA SI ES EL PAIS APROVECHANDO QUE EL FICHERO ESTA
-        if (isset($_POST["pais"]) && $_POST["pais"] == $datosPrimColum[2]) {
-            $datosPaisSelecc = $datosLinea;
+        if (isset($_POST["pais"]) && $_POST["pais"] == $datos_primera_col[2]) {
+            $datos_pais_seleccionado = $datos_linea;
         }
     }
 
-
     fclose($fd);
+
     ?>
 
-    <h1>PIR per cápita Europa</h1>
-    <form action="ejer6.php" method="post">
-
+    <form action="ejer6.php" method="post" enctype="multipart/form-data">
         <p>
-            <label for="pais">Indique el país que quiere buscar</label><br>
+            <label for="pais">Seleccione un país</label>
             <select name="pais" id="pais">
                 <?php
-                for ($i = 1; $i < count($paises); $i++) {
-
-                    if (isset($_POST["pais"]) && $_POST["pais"] == $paises[$i]) {
-                        echo "<option selected value=" . $paises[$i] . ">" . $paises[$i] . "</option>";
-                    } else {
-                        echo "<option value=" . $paises[$i] . ">" . $paises[$i] . "</option>";
-                    }
+                for ($i = 0; $i < count($paises); $i++) {
+                    // HACER QUE NO SE BORRE LO SELECCIONADO
+                    if (isset($_POST["pais"]) && $_POST["pais"] == $paises[$i])
+                        echo "<option selected value='" . $paises[$i] . "'>" . $paises[$i] . "</option>";
+                    else
+                        echo "<option value='" . $paises[$i] . "'>" . $paises[$i] . "</option>";
                 }
                 ?>
-
             </select>
-
         </p>
-        <button type="submit" name="enviar">Buscar datos</button>
+
+        
+        <p><button type="submit" name="btnBuscar">Buscar</button></p>
+        
 
     </form>
+
     <?php
-    if (isset($_POST["enviar"])) {
-        echo "<h2>PIB per cápita de " . $_POST["pais"] . "</h2>";
-        $datosPrimeraLinea = explode("\t", $primeraLinea);
+    if (isset($_POST["btnBuscar"])) {
+        echo "<h2>País: " . $_POST["pais"] . "</h2>";
+        $datos_primera_fila = explode("\t", $primera_linea);
+        // COJO LOS AÑOS
+        $n_anios = count($datos_primera_fila) - 1;
 
-        $nAnyos = count($datosPrimeraLinea);
         echo "<table>";
+        // PRIMERA FILA
         echo "<tr>";
-        for ($i = 1; $i <= $nAnyos; $i++) {
-            echo "<th>" . $datosPrimeraLinea[$i] . "</th>";
-        }
-        echo "</tr>";
-        echo "<tr>";
-        for ($i = 1; $i <= $nAnyos; $i++) {
-            if (isset($datosPaisSelecc[$i])) {
-                echo "<td>" . $datosPaisSelecc[$i] . "</td>";
-            } else {
-                echo "<td></td>";
-            }
+        for ($i = 0; $i <= $n_anios; $i++) {
+            echo "<th>" . $datos_primera_fila[$i] . "</th>";
         }
         echo "</tr>";
 
+        // PAIS SELECICONADO
+        echo "<tr>";
+        for ($i = 0; $i <= $n_anios; $i++) {
+            if (isset($datos_pais_seleccionado[$i]))
+                echo "<td>" . $datos_pais_seleccionado[$i] . "</td>";
+            else
+                echo "<td></td>";
+        }
+        echo "</tr>";
         echo "</table>";
     }
     ?>
-
 
 </body>
 
