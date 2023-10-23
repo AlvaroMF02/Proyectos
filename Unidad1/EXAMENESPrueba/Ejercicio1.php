@@ -3,6 +3,13 @@ if (isset($_POST["enviar"])) {
     $errorVacio = $_POST["palabra"] == "";
 }
 
+function mi_strlen($texto){
+    $cont=0;
+    while (isset($texto[$cont])){
+        $cont++;
+    }
+    return $cont;
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,8 +40,10 @@ if (isset($_POST["enviar"])) {
 
     <?php
     if (isset($_POST["enviar"]) && !$errorVacio) {
+
+
         
-        echo count($_POST["palabra"]);
+        echo mi_strlen($_POST["palabra"]);
     }
 
     ?>
