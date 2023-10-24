@@ -125,8 +125,8 @@ function mi_explode($sep,$texto){
 
 
         <?php
-        if (isset($_POST["horario"])) {
-            # code...
+        if (isset($_POST["enviarHorario"])) {
+            echo "<h3>Horario del profesor:".$datos_prof_selec[0]."</h3>";
         }
         
     }else{
