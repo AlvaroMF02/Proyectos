@@ -43,11 +43,10 @@ function mi_explode($sep,$texto){
     }
     return $aux;
 }
-
+// METODOS COMPROBAR DNI
 function LetraNIF($dni){
     return substr("TRWAGMYFPDXBNJZSQVHLCKEO", $dni % 23, 1);
 }
-
 function dniBienEscrito($texto){
     return strlen($texto) == 9 && is_numeric(substr($texto, 0, 8))
         && substr($texto, -1) >= "A" && substr($texto, -1) <= "Z";
