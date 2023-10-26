@@ -43,6 +43,27 @@ function mi_explode($sep,$texto){
     }
     return $aux;
 }
+// COMPROBAR LAS FECHAS
+function buenos_separadores($texto){
+    return substr($texto, 2, 1) == "/" && substr($texto, 5, 1) == "/";
+}
+
+function numeros_buenos($texto){
+    return is_numeric(substr($texto, 0, 2)) && is_numeric(substr($texto, 3, 2)) && is_numeric(substr($texto, 6, 4));
+}
+
+function fecha_valida($texto){
+    return checkdate(substr($texto, 3, 2), substr($texto, 0, 2), substr($texto, 6, 4));
+}
+if (isset($_POST["enviar"])) {
+
+    // COMPROBACION DE TODOS LOS ERRORES
+    $error_fecha1 = $_POST["fecha1"] == "" || strlen($_POST["fecha1"]) != 10 || !buenos_separadores($_POST["fecha1"]) || !numeros_buenos($_POST["fecha1"]) || !fecha_valida($_POST["fecha1"]);
+    $error_fecha2 = $_POST["fecha2"] == "" || strlen($_POST["fecha2"]) != 10 || !buenos_separadores($_POST["fecha2"]) || !numeros_buenos($_POST["fecha2"]) || !fecha_valida($_POST["fecha2"]);
+
+    $errorFormu = $error_fecha1 || $error_fecha2;
+}
+
 // METODOS COMPROBAR DNI
 function LetraNIF($dni){
     return substr("TRWAGMYFPDXBNJZSQVHLCKEO", $dni % 23, 1);
