@@ -36,7 +36,6 @@
         // PARA QUE SI HAY ACENTOS O Ñ NO TRAIGA CARÁCTERES RAROS
         mysqli_set_charset($conexion, "utf8");
     } catch (Exception $e) {
-        mysqli_close($conexion);
         //                                                              LOS DIE ACABAN CON TODO
         die("<p>No se ha podido conectar a la base de datos:" . $e->getMessage() . "</p></body></html>");
     }
