@@ -63,6 +63,7 @@
     echo "<form action='usuario_nuevo.php' method='post'>";
     echo "<button type='submit' name='botonUsuNuev'>Nuevo usuario</button>";
     echo"</form>";
+    mysqli_free_result($resultado);
     mysqli_close($conexion);
     ?>
 </body>
