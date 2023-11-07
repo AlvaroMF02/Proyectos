@@ -15,9 +15,10 @@ function error_page($title, $body)
     return $page;
 }
 
+// Algo está mal pq no me dice los repetidos
 function repetido($conexion, $tabla, $columna, $valor)
 {
-    // comprobar que la conslta está bien
+    // comprobar que la consulta está bien
     try {
         $consulta = "select * from " . $tabla . " where " . $columna . "='" . $valor . "'";
         $resultado = mysqli_query($conexion, $consulta);
