@@ -50,9 +50,9 @@ if (isset($_POST["botonUsuNuev"]) || isset($_POST["continuar"])) {
             }
 
             // devuelve true false o un strings
-            $error_usuario = repetido($conexion, "usuarios", "usuario", $_POST["usuario"]);
-            if (is_string($error_usuario)) {
-                die($error_usuario);
+            $errorUsuar = repetido($conexion, "usuarios", "usuario", $_POST["usuario"]);
+            if (is_string($errorUsuar)) {
+                die($errorUsuar);
             }
         }
 
@@ -75,9 +75,9 @@ if (isset($_POST["botonUsuNuev"]) || isset($_POST["continuar"])) {
             }
 
             // devuelve true false o un strings
-            $error_email = repetido($conexion, "usuarios", "email", $_POST["email"]);
-            if (is_string($error_email)) {
-                die($error_email);
+            $errorEmail = repetido($conexion, "usuarios", "email", $_POST["email"]);
+            if (is_string($errorEmail)) {
+                die($errorEmail);
             }
         }
 
