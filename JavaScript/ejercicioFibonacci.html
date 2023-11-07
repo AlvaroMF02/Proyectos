@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <p>Secuencia de Fibonacci: <output id="result"></output></p>
+
+    <button onclick="startWorker()">Start Worker</button>
+    <button onclick="stopWorker()">Stop Worker</button>
+    
+    <script>
+        var w;
+        function startWorker() {
+            // si el Worker existe
+            if (typeof (Worker) !== "undefined") {
+                // si la variable no está definida
+                if (typeof (w) == "undefined") {
+                    // asigna el Worker a la variable
+                    w = new Worker("trabajador.js");
+                }
+                w.onmessage = function (event) {
+                    document.getElementById("result").innerHTML = event.data;
+                };
+            } else {
+                document.getElementById("result").innerHTML = "Fallo al ejecutar el web worker";
+            }
+        }
+        function stopWorker() {
+            w.terminate();
+            w = undefined;
+        }
+    </script>
+</body>
+
+</html>
