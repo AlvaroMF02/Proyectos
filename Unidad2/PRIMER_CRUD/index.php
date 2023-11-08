@@ -26,6 +26,10 @@ if(isset($_POST["btnContBorrar"])){
     exit();
 
 }
+
+if(isset($_POST["continuarEditar"])){
+    echo "miau";
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +66,9 @@ if(isset($_POST["btnContBorrar"])){
             cursor: pointer;
             color: blue;
             text-decoration: underline;
+        }
+        .error{
+            color:red;
         }
     </style>
 </head>
@@ -148,8 +155,69 @@ if(isset($_POST["btnContBorrar"])){
 
 
     } elseif (isset($_POST["btnEditar"])) {
-        echo "edita";
-        
+        echo "<h3>Editando al usuario: ".$_POST["btnEditar"]."</h3>";
+
+        // Consulta dependiendo del id del usuario
+        try {
+            $consulta = "select * from usuarios where id_usuario='" . $_POST["btnEditar"] . "'";
+            $resultado = mysqli_query($conexion, $consulta);
+        } catch (Exception $e) {
+            mysqli_close($conexion);
+            die("<p>Imposible realizar la consulta:" . $e->getMessage() . "</p></body></html>");
+        }
+
+        // Por si se borra un usuario, no se recarga la página y pulsas al usuario borrado
+        if (mysqli_num_rows($resultado) > 0) {    // Si he obtenido una tupla
+
+            // Datos del usuario
+            $datos_usuario = mysqli_fetch_assoc($resultado);
+
+        } else {
+            $mensaje_error_usuario=  "<p>El usuario seleccionado ya no se encuentra en la base de datos</p>";
+        }
+
+        // Si el usuario no estaba en la bd muestra el mensaje
+        if(isset($mensaje_error_usuario)){
+            echo $mensaje_error_usuario;
+
+        // si no te muestra el formulario
+        }else{
+            echo "<form action='index.php' method='post'>";
+
+            echo "<p>";
+            echo  "<label for='nombre'>Nombre:</label>";
+            echo "<input type='text' name='nombre' id='nombre' maxlength='30' value='".$datos_usuario["nombre"]."'>";
+            if (isset($_POST["continuarEditar"]) && $errorNombre) {
+                if ($datos_usuario["nombre"] == "") {
+                    echo "<span class='error'>* Campo vacío * </span>";
+                } else{
+                    echo "<span class='error'>* El tamaño debe ser menor a 30 caracteres *</span>";
+                }
+            }
+            echo "</p>";
+            echo "<p>";
+            echo  "<label for='usuario'>Usuario:</label>";
+            echo "<input type='text' name='usuario' id='usuario' maxlength='20' value='".$datos_usuario["usuario"]."'>";
+            echo "</p>";
+            echo "<p>";
+            echo  "<label for='ctrs'>Contraseña:</label>";
+            echo "<input type='password' name='ctrs' placeholder='Editar contraseña' id='ctrs' maxlength='15'>";
+            echo "</p>";
+            echo "<p>";
+            echo  "<label for='email'>Email:</label>";
+            echo "<input type='text' name='email' id='email' maxlength='50' value='".$datos_usuario["email"]."'>";
+            echo "</p>";
+
+            // Continuar te lleva a la edición
+            echo "<p><button type='submit' name='continuarEditar'>Continuar</button>";
+            echo "<button type='submit'>Atrás</button></p>";
+    
+            echo "</form>";
+        }
+
+       
+
+
     } else {
         echo "<br>";
         echo "<form action='usuario_nuevo.php' method='post'>";
