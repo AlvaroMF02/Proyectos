@@ -2,6 +2,42 @@
 // funciones
 require "src/constantes_funciones.php";
 
+// Errores al editar
+if(isset($_POST["continuarEditar"])){
+    $errorNombre = $_POST["nombre"] == "" || strlen($_POST["nombre"]) > 30;
+    $errorUsuar = $_POST["usuario"] == "" || strlen($_POST["usuario"]) > 20;
+
+    if (!$errorUsuar) {
+        // abro conexion para ver que no esta repe
+        try {
+            $conexion = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+            mysqli_set_charset($conexion, "utf8");
+        } catch (Exception $e) {
+            // creo una página mostrando el error
+            die(error_page("Practica 1 CRUD", "<h1>Primer CRUD</h1><p>No se ha podido conectar a la base de datos:" . $e->getMessage() . "</p>"));
+        }
+
+        // devuelve true false o un strings
+        $errorUsuar = repetido_editado($conexion, "usuarios", "usuario", $_POST["id_usuario"],$_POST["continuarEditar"]);
+        if (is_string($errorUsuar)) {
+            die($errorUsuar);
+        }
+        
+        if (is_string($errorUsuar)) {
+            die($errorUsuar);
+        }
+    }
+
+    $error_form=$error_nombre||$error_usuario||$error_clave||$error_email;
+    if(!$error_form){
+        // update
+    }
+    
+}
+
+
+
+
 // Borrar un usuario
 // Si le he dado al boton de continuar al borrar
 if(isset($_POST["btnContBorrar"])){
@@ -154,7 +190,15 @@ if(isset($_POST["continuarEditar"])){
 
 
 
-    } elseif (isset($_POST["btnEditar"])) {
+    } elseif (isset($_POST["btnEditar"]) || isset($_POST["continuarEditar"])) {
+
+        if ( isset($_POST["btnEditar"])) {
+            $id_usuario = $_POST["btnEditar"];
+        }else{
+            $id_usuario = $_POST["continuarEditar"];
+        }
+
+
         echo "<h3>Editando al usuario: ".$_POST["btnEditar"]."</h3>";
 
         // Consulta dependiendo del id del usuario
@@ -169,8 +213,22 @@ if(isset($_POST["continuarEditar"])){
         // Por si se borra un usuario, no se recarga la página y pulsas al usuario borrado
         if (mysqli_num_rows($resultado) > 0) {    // Si he obtenido una tupla
 
-            // Datos del usuario
-            $datos_usuario = mysqli_fetch_assoc($resultado);
+            if (isset($_POST["btnEditar"]) ) {
+                // Datos del usuario
+                $datos_usuario = mysqli_fetch_assoc($resultado);
+                $id_usuario = $datos_usuario["id_usuario"];
+                $nombre = $datos_usuario["nombre"];
+                $usuario = $datos_usuario["usuario"];
+                $email = $datos_usuario["email"];
+                
+            }else{
+                $nombre = $_POST["nombre"];
+                $usuario = $_POST["usuario"];
+                $email = $_POST["email"];
+            }
+
+           // mysqli_free_result($resultado);
+            
 
         } else {
             $mensaje_error_usuario=  "<p>El usuario seleccionado ya no se encuentra en la base de datos</p>";
@@ -180,13 +238,13 @@ if(isset($_POST["continuarEditar"])){
         if(isset($mensaje_error_usuario)){
             echo $mensaje_error_usuario;
 
-        // si no te muestra el formulario
+        // si no te muestra el formulario               FORMULARIO EDICIÓN DE USUARIO
         }else{
             echo "<form action='index.php' method='post'>";
 
             echo "<p>";
             echo  "<label for='nombre'>Nombre:</label>";
-            echo "<input type='text' name='nombre' id='nombre' maxlength='30' value='".$datos_usuario["nombre"]."'>";
+            echo "<input type='text' name='nombre' id='nombre' maxlength='30' value='".$nombre."'>";
             if (isset($_POST["continuarEditar"]) && $errorNombre) {
                 if ($datos_usuario["nombre"] == "") {
                     echo "<span class='error'>* Campo vacío * </span>";
@@ -195,23 +253,52 @@ if(isset($_POST["continuarEditar"])){
                 }
             }
             echo "</p>";
+
             echo "<p>";
             echo  "<label for='usuario'>Usuario:</label>";
-            echo "<input type='text' name='usuario' id='usuario' maxlength='20' value='".$datos_usuario["usuario"]."'>";
+            echo "<input type='text' name='usuario' id='usuario' maxlength='20' value='".$usuario."'>";
+            if (isset($_POST["continuarEditar"]) && $errorUsuar) {
+                if ($_POST["usuario"] == "") {
+                    echo "<span class='error'>* Campo vacío *</span>";
+                } elseif (strlen($_POST["email"]) > 20) {
+                    echo "<span class='error'>* El tamaño debe ser menor a 20 caracteres *</span>";
+                } else {
+                    echo "<span class='error'>* El usuario ya está en uso *</span>";
+                }
+            }
             echo "</p>";
+
             echo "<p>";
             echo  "<label for='ctrs'>Contraseña:</label>";
             echo "<input type='password' name='ctrs' placeholder='Editar contraseña' id='ctrs' maxlength='15'>";
+            if (isset($_POST["continuarEditar"]) && $errorContr) {
+                if ($_POST["ctrs"] == "") {
+                    echo "<span class='error'>* Campo vacío *</span>";
+                } else {
+                    echo "<span class='error'>* El tamaño debe ser menor a 20 caracteres *</span>";
+                }
+            }
             echo "</p>";
+
             echo "<p>";
             echo  "<label for='email'>Email:</label>";
-            echo "<input type='text' name='email' id='email' maxlength='50' value='".$datos_usuario["email"]."'>";
+            echo "<input type='text' name='email' id='email' maxlength='50' value='".$email."'>";
+            if (isset($_POST["continuarEditar"]) && $errorEmail) {
+                if ($_POST["email"] == "") {
+                    echo "<span class='error'>* Campo vacío *</span>";
+                } elseif (strlen($_POST["email"]) > 50) {
+                    echo "<span class='error'>* El tamaño debe ser menor a 50 caracteres *</span>";
+                } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+                    echo "<span class='error'>* El email no está bien escrito *</span>";
+                } else {
+                    echo "<span class='error'>* El email ya está en uso *</span>";
+                }
+            }
             echo "</p>";
 
             // Continuar te lleva a la edición
-            echo "<p><button type='submit' name='continuarEditar'>Continuar</button>";
+            echo "<p><button type='submit' name='continuarEditar' value='".$id_usuario."'>Continuar</button>";
             echo "<button type='submit'>Atrás</button></p>";
-    
             echo "</form>";
         }
 
