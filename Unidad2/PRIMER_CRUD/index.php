@@ -6,7 +6,6 @@ require "src/constantes_funciones.php";
 if(isset($_POST["continuarEditar"])){
     $errorNombre = $_POST["nombre"] == "" || strlen($_POST["nombre"]) > 30;
     $errorUsuar = $_POST["usuario"] == "" || strlen($_POST["usuario"]) > 20;
-
     if (!$errorUsuar) {
         // abro conexion para ver que no esta repe
         try {
@@ -18,20 +17,56 @@ if(isset($_POST["continuarEditar"])){
         }
 
         // devuelve true false o un strings
-        $errorUsuar = repetido_editado($conexion, "usuarios", "usuario", $_POST["id_usuario"],$_POST["continuarEditar"]);
-        if (is_string($errorUsuar)) {
-            die($errorUsuar);
-        }
-        
+        $errorUsuar = repetido_editado($conexion, "usuarios", "usuario", $_POST["id_usuario"],"id_usuario",$_POST["continuarEditar"]);
+
         if (is_string($errorUsuar)) {
             die($errorUsuar);
         }
     }
 
-    $error_form=$error_nombre||$error_usuario||$error_clave||$error_email;
-    if(!$error_form){
-        // update
+    $error_clave=strlen($_POST["clave"])>15;
+    $error_email=$_POST["email"]=="" || strlen($_POST["email"])>50 || !filter_var($_POST["email"],FILTER_VALIDATE_EMAIL);
+    if(!$error_email){
+        if(!isset($conexion))
+        {
+            try{
+                $conexion=mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+                mysqli_set_charset($conexion,"utf8");
+            }
+            catch(Exception $e)
+            {
+                die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
+            }
+        }
+        $error_email=repetido_editando($conexion,"usuarios","email",$_POST["email"],"id_usuario",$_POST["continuarEditar"]);
+        
+        if(is_string($error_email))
+            die($error_email);
     }
+
+    $error_form=$errorNombre||$errorUsuar||$error_clave||$error_email;
+
+    if(!$error_form)
+    {
+        try{
+
+            if($_POST["clave"]=="")
+                $consulta="update usuarios set nombre='".$_POST["nombre"]."', usuario='".$_POST["usuario"]."', email='".$_POST["email"]."' where id_usuario='".$_POST["continuarEditar"]."'";
+            else
+                $consulta="update usuarios set nombre='".$_POST["nombre"]."', usuario='".$_POST["usuario"]."', clave='".md5($_POST["clave"])."', email='".$_POST["email"]."' where id_usuario='".$_POST["continuarEditar"]."'";
+            
+            mysqli_query($conexion,$consulta);
+        }
+        catch(Exception $e)
+        {
+            mysqli_close($conexion);
+            die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No se ha podido hacer la consulta: ".$e->getMessage()."</p>"));
+        }
+        
+        mysqli_close($conexion);
+
+        header("Location:index.php");
+        exit;
     
 }
 
@@ -113,34 +148,8 @@ if(isset($_POST["continuarEditar"])){
     <h1>Listado de los usuarios</h1>
 
     <?php
-    try {
-        $conexion = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
-        mysqli_set_charset($conexion, "utf8");
-    } catch (Exception $e) {
-        die("<p>No se ha podido conectar a la base de datos:" . $e->getMessage() . "</p></body></html>");
-    }
 
-    $consulta = "select * from usuarios";
-    try {
-        $resultado = mysqli_query($conexion, $consulta);
-    } catch (Exception $e) {
-        mysqli_close($conexion);
-        die("<p>Imposible realizar la consulta:" . $e->getMessage() . "</p></body></html>");
-    }
-
-    mysqli_data_seek($resultado, 0);
-    echo "<table>";
-    echo "<tr><th>Nombre de Usuario</th><th>Borrar</th><th>Editar</th></tr>";
-
-    // MIENTRAS HAYA TUPLAS     tmb se puede hacer escalar con un for
-    while ($tupla = mysqli_fetch_assoc($resultado)) {
-        echo "<tr>";
-        echo "<td><form action='index.php' method='post'><button class ='enlace' title='Detalles del usuario' value='" . $tupla["id_usuario"] . "' type='submit' name='btnDetalle'>" . $tupla["nombre"] . "</button></form></td>";
-        echo "<td><form action='index.php' method='post'><input type='hidden' name='nombre_usuario' value='" . $tupla["nombre"] . "'><button class ='enlace' title='Borrar a un usuaro' value='" . $tupla["id_usuario"] . "' type='submit' name='btnBorrar'><img src='images/borrar.png' title='Borrar usuario' alt='Borrar'></button></form></td>";
-        echo "<td><form action='index.php' method='post'><button class ='enlace' title='Editar a un usuaro' value='" . $tupla["id_usuario"] . "' type='submit' name='btnEditar'><img src='images/editar.png' title='Editar usuario' alt='Borrar'></button></form></td>";
-        echo "</tr>";
-    }
-    echo "</table>";
+    require "vistas/vista_tabla.php";
 
     if (isset($_POST["btnDetalle"])) {
         echo "<h3>Detalles del usuario con id " . $_POST["btnDetalle"] . "</h3>";

@@ -1,4 +1,12 @@
 <?php
+
+// Constantes de base de datos
+define("SERVIDOR_BD","localhost")
+define("USUARIO_BD","jose")
+define("CLAVE_BD","josefa")
+define("SERVIDOR_BD","localhost")
+
+
 // Muestra una página nueva si hay un error en la conexion
 function error_page($title, $body)
 {
