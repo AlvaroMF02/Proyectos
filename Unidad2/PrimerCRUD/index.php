@@ -123,12 +123,16 @@ if (isset($_POST["btnContBorrar"])) {
 <body>
     <h1>Listado de los usuarios</h1>
     <?php
+    // Tabla con los usuarios
     require "vistas/vista_tabla.php";
-
+    
+    // Cuando se pulsa en el usuario
     if (isset($_POST["btnDetalle"])) {
         require "vistas/vista_detalle.php";
+    // Cuando se pulsa en borrar
     } elseif (isset($_POST["btnBorrar"])) {
         require "vistas/vista_conf_borrar.php";
+    // Cuando se pulsa en el editar
     } elseif (isset($_POST["btnEditar"]) || isset($_POST["btnContEditar"])) {
         require "vistas/vista_editar.php";
     } else {

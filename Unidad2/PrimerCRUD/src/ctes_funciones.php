@@ -1,12 +1,12 @@
 <?php
-//CTES base de datos
 
+// Constantes para la conexión con la bd
 define("SERVIDOR_BD","localhost");
 define("USUARIO_BD","jose");
 define("CLAVE_BD","josefa");
 define("NOMBRE_BD","bd_foro");
 
-
+// Funciones que llamamos en index o en usuario_nuevo
 function error_page($title,$body)
 {
     $page='<!DOCTYPE html>
