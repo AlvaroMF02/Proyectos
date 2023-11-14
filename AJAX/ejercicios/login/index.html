@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio Login</title>
+</head>
+
+<body>
+    <p>Introduzca usuario y contraseña:</p>
+        <input id="usuario" type="text" placeholder="usuario" name="usuario"><br>
+        <input id="password" type="password" placeholder="password" name="password"><br>
+
+        <button type="submit" onclick="valido()">Log in</button>
+
+        <p id="solucion"></p>
+
+    <script>
+        const valido = () => {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                // Muestra cuando acaba la ejecución
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("solucion").innerHTML=this.responseText
+                }
+            };
+            xmlhttp.open("GET", "usuarios.php?usuario="+document.getElementById("usuario").value+"&password=" + document.getElementById("password").value, true);
+            // 
+            xmlhttp.send();
+        }
+    </script>
+</body>
+
+</html>
