@@ -30,19 +30,26 @@
     </ol>
     <script>
 
+        // Conexion
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
+            // Si todo sale bien y no hay errores
             if (this.readyState == 4 && this.status == 200) {
+                // objJSON recoge el json que te devuelve al conectarte
                 let objJSON = this.responseText;
                 objJSON = JSON.parse(objJSON)
+                // En el map llamo a la función para cambiar los nombres
                 objJSON.map(e => changeMan(document.getElementById("lista"), e.NOMBREI, e.NOMBREF))
             }
         };
         xhttp.open("GET", "data.json", true);
         xhttp.send();
 
+        // Cambia nombre pasandole el nodo("lista"), el nombre que hay que cambiar y el sustituto
         const changeMan = (nodo, man1, man2) => {
+            // Si el nodo == al nombre lo sustituye
             if (nodo.innerHTML.toUpperCase() == man1.toUpperCase()) nodo.innerHTML = man2;
+            // Recorre el hijo del nodo, llamando otra vez a la función pero con el nodo hijo
             for (let i = 0; i < nodo.children.length; i++) changeMan(nodo.children[i], man1, man2)
         }
 

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de la cuota de un prestamo</title>
+</head>
+<body>
+    <h1>Cálculo de la cuota de un prestamo</h1>
+    <input type="number" name="capital" id="capital" placeholder="Capital solicitado"><br>
+    <input type="number" name="interes" id="interes" placeholder="Interes anual"><br>
+    <input type="number" name="plazo" id="plazo" placeholder="Plazo (meses)"><br>
+    <button onclick="calcularPrestamo()">Calcular</button>
+
+    <p>Su cuota mensual será de: <span id="cuota"></span> Euros</p>
+
+    <script>
+        const calcularPrestamo = () =>{
+            var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            // Si no hay errores
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("cuota").innerHTML=this.responseText
+            }
+        };
+        // Nodos del formulario
+        let capital = document.getElementById("capital").value
+        let interes = document.getElementById("interes").value
+        let plazo = document.getElementById("plazo").value
+
+        xhttp.open("GET", "calculo.php?capital="+capital+"&interes="+interes+"&plazo="+plazo, true);
+        xhttp.send();
+        }
+        
+    </script>
+</body>
+</html>

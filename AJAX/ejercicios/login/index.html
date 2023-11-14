@@ -20,13 +20,15 @@
         const valido = () => {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
-                // Muestra cuando acaba la ejecución
+                // LO que muestra cuando acaba la ejecución
                 if (this.readyState == 4 && this.status == 200) {
+                    // Enseña el echo que se hace en la parte de php
                     document.getElementById("solucion").innerHTML=this.responseText
                 }
             };
+
+            // Conexión a la parte php con el usuario y la contraseña recogidos del formulario con nodos
             xmlhttp.open("GET", "usuarios.php?usuario="+document.getElementById("usuario").value+"&password=" + document.getElementById("password").value, true);
-            // 
             xmlhttp.send();
         }
     </script>
