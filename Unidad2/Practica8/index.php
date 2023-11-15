@@ -1,3 +1,27 @@
+<?php
+require "src/ctes_funciones.php";
+
+if (isset($_POST["btnContBorrar"])) {
+    try {
+        $conexion = mysqli_connect(SERVIDOR_BD, USUARIO_BD, CLAVE_BD, NOMBRE_BD);
+        mysqli_set_charset($conexion, "utf8");
+    } catch (Exception $e) {
+        die(error_page("Práctica 1º CRUD", "<h1>Listado de los usuarios</h1><p>No ha podido conectarse a la base de batos: " . $e->getMessage() . "</p>"));
+    }
+
+    try {
+        $consulta = "delete from usuarios where id_usuario='" . $_POST["btnContBorrar"] . "'";
+        mysqli_query($conexion, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conexion);
+        die(error_page("Práctica 1º CRUD", "<h1>Listado de los usuarios</h1><p>No ha podido conectarse a la base de batos: " . $e->getMessage() . "</p>"));
+    }
+
+    mysqli_close($conexion);
+    header("Location:index.php");
+    exit();
+} ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -196,7 +220,7 @@
                 ?>
             </p>
 
-            
+
             <p>
                 <button type="submit" name="btnContinUsuaNuevo">Continuar</button>
                 <button type="submit">Volver</button>
@@ -207,6 +231,18 @@
 
 
         // *************************** Añadir a un usuario nuevo *************************************
+    } elseif (isset($_POST["btnBorrar"])) {
+        // *************************** Borrar a un usuario *************************************
+        // Estas seguro de que quieres borrar a x?
+        echo "<p>Se dispone usted a borrar al usuario <strong>" . $_POST["btnBorrar"] . "</strong></p>";
+        // Form para continuar o cancelar
+        echo "<form action='index.php' method='post'>";
+        // Continuar coge el valor del boton para conseguir el id
+        echo "<p><button type='submit' name='btnContBorrar' value='" . $_POST["btnBorrar"] . "'>Continuar</button>";
+        echo "<button type='submit'>Atrás</button></p>";
+        echo "</form>";
+
+        // *************************** Borrar a un usuario *************************************
     }
 
 
@@ -219,7 +255,7 @@
         echo "<td>" . $tupla["id_usuario"] . "</td>";
         echo "<td><img src='Img/" . $tupla['foto'] . "' alt='Imagen de usuario'></td>";
         echo "<td><form action='index.php' method='post'><button class ='enlace' title='Detalles del usuario' value='" . $tupla["id_usuario"] . "' type='submit' name='btnDetalle'>" . $tupla["nombre"] . "</button></form></td>";
-        echo "<td><form action='index.php' method='post'><button class ='enlace' title='Borrar a un usuaro' value='" . $tupla["id_usuario"] . "' type='submit' name='btnBorrar'>Borrar</button> - ";
+        echo "<td><form action='index.php' method='post'><input type='hidden' name='nombre_usuario' value='" . $tupla["foto"] . "'><button class ='enlace' title='Borrar a un usuaro' value='" . $tupla["id_usuario"] . "' type='submit' name='btnBorrar'>Borrar</button> - ";
         echo "<button class ='enlace' title='Editar a un usuaro' value='" . $tupla["id_usuario"] . "' type='submit' name='btnEditar'>Editar</button></form></td>";
         echo "</tr>";
     }
