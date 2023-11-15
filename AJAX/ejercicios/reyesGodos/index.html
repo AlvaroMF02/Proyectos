@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reyes Godos</title>
+</head>
+
+<body>
+    <h1>Reyes Godos</h1>
+    <ul id="reyes">
+    </ul>
+
+
+    <script>
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            // Si no hay errores
+            if (this.readyState == 4 && this.status == 200) {
+                let reyes = this.responseText
+                reyes = JSON.parse(reyes)
+
+                let padre = document.getElementById("reyes")
+                crearLista(reyes.reyesgodos, padre)
+            }
+        };
+        xhttp.open("GET", "reyesGodos.php", true);
+        xhttp.send();
+
+        const crearLista = (arr, padre) => {
+            arr.map(v => {
+                // Si v es un objeto
+                if (typeof v == "object") {
+                    // Creo una li y le meto el nombre 
+                    let li = document.createElement("li")
+                    li.innerHTML = v.nombre;
+                    // Creo la sublista y la meto en el li
+                    let sublista = document.createElement("ul")
+                    li.appendChild(sublista)
+                    // Meto el li en el padre(principal)
+                    padre.appendChild(li)
+                    // Llamo a la función con los hijos y con la sublista
+                    crearLista(v.hijos, sublista)
+                } else {
+                    let li = document.createElement("li")
+                    let texto = document.createTextNode(v)
+                    li.appendChild(texto)
+                    padre.appendChild(li)
+                }
+            })
+
+        }
+
+    </script>
+</body>
+
+</html>
