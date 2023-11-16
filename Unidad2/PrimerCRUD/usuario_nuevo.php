@@ -2,8 +2,6 @@
 require "src/ctes_funciones.php";
 
 
-if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
-{
     if(isset($_POST["btnContInsertar"])) // compruebo errores
     {
         $error_nombre=$_POST["nombre"]==""|| strlen($_POST["nombre"])>30;
@@ -74,7 +72,7 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
         if(isset($conexion))
             mysqli_close($conexion);
         
-    }
+    
 ?>
 <!DOCTYPE html>
 <html lang="es">
