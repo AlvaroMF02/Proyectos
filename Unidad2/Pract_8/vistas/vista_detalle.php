@@ -1,4 +1,13 @@
 <?php
+try{
+    $conexion=mysqli_connect(SERVIDOR_BD,USUARIO_BD,CLAVE_BD,NOMBRE_BD);
+    mysqli_set_charset($conexion,"utf8");
+}
+catch(Exception $e)
+{
+    die("<p>No ha podido conectarse a la base de batos: ".$e->getMessage()."</p></body></html>");
+}
+
 echo "<h3>Detalles del usuario con id: ".$_POST["btnDetalle"]."</h3>";
 try{
     $consulta="select * from usuarios where id_usuario='".$_POST["btnDetalle"]."'";
@@ -18,7 +27,9 @@ if(mysqli_num_rows($resultado)>0)
     echo "<p>";
     echo "<strong>Nombre: </strong>".$datos_usuario["nombre"]."<br>";
     echo "<strong>Usuario: </strong>".$datos_usuario["usuario"]."<br>";
-    echo "<strong>Email: </strong>".$datos_usuario["email"];
+    echo "<strong>DNI: </strong>".$datos_usuario["dni"]."<br>";
+    echo "<strong>Sexo: </strong>".$datos_usuario["sexo"]."<br>";
+    echo "<img class='foto_detalle' src='Img/".$datos_usuario["foto"]."' alt='Foto Perfil' title='Foto Perfil'>";
     echo "</p>";
 }
 else

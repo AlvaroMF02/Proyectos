@@ -1,6 +1,14 @@
 <?php
+
 require "src/ctes_funciones.php";
 
+
+// Errores al insertar
+if (isset($_POST["btnContinUsuaNuevo"])) {
+    $errorUsuar = $_POST["usuario"] == "";
+}
+
+// Borrar a un usuario
 if (isset($_POST["btnContBorrar"])) {
     try {
         $conexion = mysqli_connect(SERVIDOR_BD, USUARIO_BD, CLAVE_BD, NOMBRE_BD);
@@ -20,6 +28,10 @@ if (isset($_POST["btnContBorrar"])) {
     mysqli_close($conexion);
     header("Location:index.php");
     exit();
+
+    // Borrar la imagen del server
+
+
 } ?>
 
 <!DOCTYPE html>
@@ -86,7 +98,6 @@ if (isset($_POST["btnContBorrar"])) {
     }
 
 
-    // *************************** Consulta para ver toda la tabla usuarios *************************************
     try {
         $consulta = "select * from usuarios";
         $resultado = mysqli_query($conexion, $consulta);
@@ -94,155 +105,16 @@ if (isset($_POST["btnContBorrar"])) {
         mysqli_close($conexion);
         die("<p>Imposible realizar la consulta:" . $e->getMessage() . "</p></body></html>");
     }
+
     // Al pulsar en el usuario muestra los detalles de este
     if (isset($_POST["btnDetalle"])) {
-        echo "<h3>Detalles del usuario con id " . $_POST["btnDetalle"] . "</h3>";
+        require("vistas/vistaDetalle.php");
 
-        // Consulta dependiendo del id del usuario
-        try {
-            $consulta = "select * from usuarios where id_usuario='" . $_POST["btnDetalle"] . "'";
-            $resultado = mysqli_query($conexion, $consulta);
-        } catch (Exception $e) {
-            mysqli_close($conexion);
-            die("<p>Imposible realizar la consulta:" . $e->getMessage() . "</p></body></html>");
-        }
+    } elseif (isset($_POST["btnUsuarioNuevo"]) || isset($_POST["btnContinUsuaNuevo"])) {
+        require("vistas/vistaUsuNuevo.php");
 
-        // Por si se borra un usuario, no se recarga la página y pulsas al usuario borrado
-        if (mysqli_num_rows($resultado) > 0) {    // Si he obtenido una tupla
-
-            // Datos del usuario
-            $datos_usuario = mysqli_fetch_assoc($resultado);
-            echo "<p>";
-
-            echo "<strong>Usuario: </strong>" . $datos_usuario["usuario"] . "<br>";
-            echo "<strong>Clave: </strong>" . $datos_usuario["clave"] . "<br>";
-            echo "<strong>Nombre: </strong>" . $datos_usuario["nombre"] . "<br>";
-            echo "<strong>Dni: </strong>" . $datos_usuario["dni"] . "<br>";
-            echo "<strong>Sexo: </strong>" . $datos_usuario["sexo"] . "<br>";
-            echo "<strong>Foto: </strong><img src='Img/" . $datos_usuario["foto"] . "' alt='Imagen de usuario'><br>";
-            echo "</p>";
-
-            // Boton volver
-            echo "<form action='index.php' method='post'>";
-            echo "<button type='submit'>Volver</button></form><br>";
-
-            // Mirar en la función de arriba
-        } else {
-            echo "<p>El usuario seleccionado ya no se encuentra en la base de datos</p>";
-        }
-        // *************************** Consulta para ver toda la tabla usuarios *************************************
-
-        // *************************** Añadir a un usuario nuevo *************************************
-    } elseif (isset($_POST["btnUsuarioNuevo"])) {
-    ?>
-        <h1>Nuevo Usuario</h1>
-        <form action="index.php" method="post">
-            <p>
-                <label for="usuario">Usuario:</label>
-                <input type="text" name="usuario" id="usuario" maxlength="30" value="<?php if (isset($_POST["usuario"])) echo $_POST["usuario"] ?>">
-                <?php
-                // if (isset($_POST["continuar"]) && $errorUsuar) {
-                //     if ($_POST["usuario"] == "") {
-                //         echo "<span class='error'>* Campo vacío *</span>";
-                //     } elseif (strlen($_POST["email"]) > 20) {
-                //         echo "<span class='error'>* El tamaño debe ser menor a 20 caracteres *</span>";
-                //     } else {
-                //         echo "<span class='error'>* El usuario ya está en uso *</span>";
-                //     }
-                // }
-                ?>
-            </p>
-            <p>
-                <label for="clave">Clave:</label>
-                <input type="password" name="clave" id="clave" maxlength="50">
-                <?php
-                // if (isset($_POST["continuar"]) && $errorContr) {
-                //     if ($_POST["ctrs"] == "") {
-                //         echo "<span class='error'>* Campo vacío *</span>";
-                //     } else {
-                //         echo "<span class='error'>* El tamaño debe ser menor a 20 caracteres *</span>";
-                //     }
-                // }
-                ?>
-            </p>
-            <p>
-                <label for="nombre">Nombre:</label>
-                <input type="text" name="nombre" id="nombre" maxlength="50" value="<?php if (isset($_POST["nombre"])) echo $_POST["nombre"] ?>">
-                <?php
-                // if (isset($_POST["continuar"]) && $errorNombre) {
-                //     if ($_POST["nombre"] == "") {
-                //         echo "<span class='error'>* Campo vacío * </span>";
-                //     } else {
-                //         echo "<span class='error'>* El tamaño debe ser menor a 30 caracteres *</span>";
-                //     }
-                // }
-                ?>
-            </p>
-            <p>
-                <label for="dni">Dni:</label>
-                <input type="text" name="dni" id="dni" maxlength="10" value="<?php if (isset($_POST["dni"])) echo $_POST["dni"] ?>">
-                <?php
-                // if (isset($_POST["continuar"]) && $errorNombre) {
-                //     if ($_POST["nombre"] == "") {
-                //         echo "<span class='error'>* Campo vacío * </span>";
-                //     } else {
-                //         echo "<span class='error'>* El tamaño debe ser menor a 30 caracteres *</span>";
-                //     }
-                // }
-                ?>
-            </p>
-            <p>
-                <label for="sexo">Sexo:</label><br>
-                <input type="radio" name="sexo" id="hombre" value="hombre"><label for="hombre">Hombre</label><br>
-                <input type="radio" name="sexo" id="mujer" value="mujer"><label for="mujer">Mujer</label>
-                <?php
-                // if (isset($_POST["continuar"]) && $errorNombre) {
-                //     if ($_POST["nombre"] == "") {
-                //         echo "<span class='error'>* Campo vacío * </span>";
-                //     } else {
-                //         echo "<span class='error'>* El tamaño debe ser menor a 30 caracteres *</span>";
-                //     }
-                // }
-                ?>
-            </p>
-
-            <p>
-                <label for="foto">Incluir mi foto (Max. 500KB)</label>
-                <input type="file" name="foto" id="foto">
-                <?php
-                // if (isset($_POST["continuar"]) && $errorNombre) {
-                //     if ($_POST["nombre"] == "") {
-                //         echo "<span class='error'>* Campo vacío * </span>";
-                //     } else {
-                //         echo "<span class='error'>* El tamaño debe ser menor a 30 caracteres *</span>";
-                //     }
-                // }
-                ?>
-            </p>
-
-
-            <p>
-                <button type="submit" name="btnContinUsuaNuevo">Continuar</button>
-                <button type="submit">Volver</button>
-            </p>
-        </form>
-    <?php
-        // Crear consulta para añadir 
-
-
-        // *************************** Añadir a un usuario nuevo *************************************
     } elseif (isset($_POST["btnBorrar"])) {
-        // *************************** Borrar a un usuario *************************************
-        // Estas seguro de que quieres borrar a x?
-        echo "<p>Se dispone usted a borrar al usuario <strong>" . $_POST["btnBorrar"] . "</strong></p>";
-        // Form para continuar o cancelar
-        echo "<form action='index.php' method='post'>";
-        // Continuar coge el valor del boton para conseguir el id
-        echo "<p><button type='submit' name='btnContBorrar' value='" . $_POST["btnBorrar"] . "'>Continuar</button>";
-        echo "<button type='submit'>Atrás</button></p>";
-        echo "</form>";
-
-        // *************************** Borrar a un usuario *************************************
+        require "vistas/vistaBorrar.php";
     }
 
 
@@ -260,8 +132,6 @@ if (isset($_POST["btnContBorrar"])) {
         echo "</tr>";
     }
     echo "</table>";
-
-
 
     mysqli_free_result($resultado);
     ?>
