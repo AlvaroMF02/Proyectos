@@ -56,4 +56,9 @@ function dni_valido($texto)
     return LetraNIF(substr($texto,0,8))==substr($texto,-1);
 }
 
+function tiene_extension($nombre)
+{
+    return explode(".",$nombre);
+}
+
 ?>
