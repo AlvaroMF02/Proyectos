@@ -17,11 +17,18 @@ session_start();
     <?php
     // Empezar a escribir cual es
     // Se crea una variable global
-    $_SESSION["nombre"] = "Álvaro";
-    $_SESSION["clave"] = md5("1234");
+    if (!isset($_SESSION["nombre"])) {
+        $_SESSION["nombre"] = "Álvaro";
+        $_SESSION["clave"] = md5("1234");
+    }
+
 
     ?>
     <p><a href="recibido.php">Ir a recibido</a></p>
+
+    <form action="recibido.php" method="post">
+        <button type="submit" name="btnBorrarSesion">Borrar datos sesion</button>
+    </form>
 </body>
 
 </html>
