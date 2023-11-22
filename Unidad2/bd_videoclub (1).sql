@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 22-11-2023 a las 13:53:58
+-- Tiempo de generación: 22-11-2023 a las 14:33:48
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.1.17
 
@@ -41,10 +41,10 @@ CREATE TABLE `peliculas` (
 --
 
 INSERT INTO `peliculas` (`idPelicula`, `titulo`, `director`, `sinopsis`, `tematica`, `caratula`) VALUES
-(1, 'Lucy', 'Ronald McDonald', 'peliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapelicula', 'Ficción', 'no_imagen.jpg'),
-(2, 'X-MEN', 'Pedro Sanchez', 'miaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiau', 'Ficcion', 'no_imagen.jpg'),
-(3, 'Los Warren', 'Ayuso', 'arrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarr', 'Terror', 'no_imagen.jpg'),
-(4, 'Avatar', 'Nacho Salcedo', 'rururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururu', 'Aventuras', 'no_imagen.jpg');
+(1, 'Lucy', 'Ronald McDonald', 'peliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapeliculapelicula', 'Ficción', 'imagen_1.jpg'),
+(2, 'X-MEN', 'Pedro Sanchez', 'miaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiau', 'Ficcion', 'imagen_2.jpg'),
+(3, 'Los Warren', 'Ayuso', 'arrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarrarr', 'Terror', 'imagen_3.jpg'),
+(4, 'Avatar', 'Nacho Salcedo', 'rururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururururu', 'Aventuras', 'imagen_4.jpg');
 
 --
 -- Índices para tablas volcadas

@@ -19,10 +19,15 @@
 <body>
     <h1>Video club</h1>
     <h2>Peliculas</h2>
-    <h3>Listado de películas</h3>
 
     <?php
     require "vistas/mostrarTabla.php";
+
+    if (isset($_POST["btnmostrarDetalles"])) {
+        require "vistas/mostrarDetalles.php";
+        // me he quedado creando los detalles
+    }
+
     ?>
 
 </body>

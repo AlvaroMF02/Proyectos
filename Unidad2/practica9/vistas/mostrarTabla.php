@@ -28,7 +28,7 @@ while($tupla=mysqli_fetch_assoc($resultado))
 {
     echo "<tr>";
     echo "<td>".$tupla["idPelicula"]."</td>";
-    echo "<td>".$tupla["titulo"]."</td>";
+    echo "<td><form action='index.php' method='post'><button class='enlace' type='submit' value='".$tupla["idPelicula"]."' name='btnmostrarDetalles'>".$tupla["titulo"]."</button></form></td>";
     echo "<td><img src='Img/".$tupla["caratula"]."' alt='Carátula de la película' title='Carátula'></td>";
     echo "<td><form action='index.php' method='post'><button class='enlace' type='submit' value='".$tupla["idPelicula"]."' name='btnBorrar'>Borrar</button> - <button class='enlace' type='submit' value='".$tupla["idPelicula"]."' name='btnEditar'>Editar</button></form></td>";
     echo "</tr>";
