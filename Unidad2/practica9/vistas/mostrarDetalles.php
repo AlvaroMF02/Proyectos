@@ -24,18 +24,15 @@ if (mysqli_num_rows($resultado) > 0) {
     $datos_usuario = mysqli_fetch_assoc($resultado);
     mysqli_free_result($resultado);
 
-    echo "<p>";
-    echo "<strong>Título: </strong>" . $datos_usuario["titulo"] . "<br>";
-    echo "<strong>Director: </strong>" . $datos_usuario["director"] . "<br>";
-    
-    echo "<strong>Sinopsis: </strong>" . $datos_usuario["sinopsis"] . "<br>";
-    echo "<strong>Temática: </strong>" . $datos_usuario["tematica"] . "<br>";
+    echo "<p><strong>Título: </strong>" . $datos_usuario["titulo"] . "</p>";
+    echo "<p><strong>Director: </strong>" . $datos_usuario["director"] . "</p>";
+    echo "<p><strong>Sinopsis: </strong>" . $datos_usuario["sinopsis"] . "</p>";
+    echo "<p><strong>Temática: </strong>" . $datos_usuario["tematica"] . "</p>";
     echo "<img class='foto_detalle' src='Img/" . $datos_usuario["caratula"] . "' alt='caratula' title='caratula'>";
-    echo "</p>";
 } else
-    echo "<p>La película seleccionado ya no se encuentra registrado en la BD</p>";
-
+    echo "<p>La película seleccionado ya no se encuentra registrada en la BD</p>";
 
 echo "<form action='index.php' method='post'>";
 echo "<p><button type='submit'>Volver</button></p>";
 echo "</form>";
+?>

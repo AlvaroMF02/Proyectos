@@ -26,6 +26,8 @@
     if (isset($_POST["btnmostrarDetalles"])) {
         require "vistas/mostrarDetalles.php";
         // me he quedado creando los detalles
+    }elseif ($_POST["btnBorrar"]) {
+        require "vistas/borrarPelicula.php";
     }
 
     ?>
