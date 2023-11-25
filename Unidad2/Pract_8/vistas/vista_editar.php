@@ -1,6 +1,8 @@
 <?php
 if(isset($_POST["btnEditar"]))
     $id_usuario=$_POST["btnEditar"];
+elseif(isset($_SESSION["borrado_foto"]))
+    $id_usuario=$_SESSION["borrado_foto"];
 else
     $id_usuario=$_POST["id_usuario"];
 
@@ -13,6 +15,7 @@ if(!isset($conexion))
     }
     catch(Exception $e)
     {
+        session_destroy();
         die("<p>No ha podido conectarse a la base de batos: ".$e->getMessage()."</p></body></html>");
     }  
 }
@@ -24,15 +27,18 @@ try{
 catch(Exception $e)
 {
     mysqli_close($conexion);
+    session_destroy();
     die("<p>No se ha podido realizar la consulta: ".$e->getMessage()."</p></body></html>");
 }
 
 if(mysqli_num_rows($resultado)>0)
 {
     //recojo datos
-    if(isset($_POST["btnEditar"]))
+    if(isset($_POST["btnEditar"]) || isset($_SESSION["borrado_foto"]))
     {
+        session_destroy();
         //recojo de la BD
+
         $datos_usuario=mysqli_fetch_assoc($resultado);
         mysqli_free_result($resultado);
         $nombre=$datos_usuario["nombre"];

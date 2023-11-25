@@ -1,4 +1,7 @@
 <?php
+session_name("Pract8_23_24");
+session_start();
+
 require "src/ctes_funciones.php";
 
 if(isset($_POST["btnContBorrarFoto"]))
@@ -9,6 +12,7 @@ if(isset($_POST["btnContBorrarFoto"]))
     }
     catch(Exception $e)
     {
+        session_destroy();
         die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
     }
     try{
@@ -18,11 +22,14 @@ if(isset($_POST["btnContBorrarFoto"]))
     catch(Exception $e)
     {
         mysqli_close($conexion);
+        session_destroy();
         die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
     }
-    if(file_exists("Img/".$_POST["foto_bd"]))
-        unlink("Img/".$_POST["foto_bd"]);
-    $_POST["foto_bd"]="no_imagen.jpg";
+    
+    unlink("Img/".$_POST["foto_bd"]);
+    $_SESSION["borrado_foto"]=$_POST["id_usuario"];
+    header("Location:index.php");
+    exit;
 
     //No voy a saltar hasta que veamos sesiones....
 }
@@ -40,6 +47,7 @@ if(isset($_POST["btnContEditar"]))
         }
         catch(Exception $e)
         {
+            session_destroy();
             die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
         }
 
@@ -48,6 +56,7 @@ if(isset($_POST["btnContEditar"]))
         if(is_string($error_usuario))
         {
             mysqli_close($conexion);
+            session_destroy();
             die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No se ha podido realizar la consulta: ".$error_usuario."</p>"));
         }
     }
@@ -66,6 +75,7 @@ if(isset($_POST["btnContEditar"]))
             }
             catch(Exception $e)
             {
+                session_destroy();
                 die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
             }
         }
@@ -74,6 +84,7 @@ if(isset($_POST["btnContEditar"]))
         if(is_string($error_dni))
         {
             mysqli_close($conexion);
+            session_destroy();
             die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No ha podido realizarse la consulta: ".$error_dni."</p>"));
         }
     }
@@ -96,8 +107,11 @@ if(isset($_POST["btnContEditar"]))
         catch(Exception $e)
         {
             mysqli_close($conexion);
+            session_destroy();
             die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No se ha podido realizar la consulta:".$e->getMessage()."</p>"));
         }
+
+        $mensaje="Usuario editado con éxito";
 
         if($_FILES["foto"]["name"]!="")
         {
@@ -110,26 +124,36 @@ if(isset($_POST["btnContEditar"]))
             {
                 if($_POST["foto_bd"]!=$nombre_foto)
                 {
+                 
                     //Actualizo en BD
                     try{
                         $consulta="update usuarios set foto='".$nombre_foto."' where id_usuario='".$_POST["id_usuario"]."'";
                         mysqli_query($conexion,$consulta);
+                        if($_POST["foto_bd"]!="no_imagen.jpg")
+                            unlink("Img/".$_POST["foto_bd"]);
                     }
                     catch(Exception $e)
                     {
                         //Al no poder actualizar borro la nueva que acabo de mover
                         unlink("Img/".$nombre_foto);
-                        mysqli_close($conexion);
-                        die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
+                        //mysqli_close($conexion);
+                        //session_destroy();
+                        //die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
+                        $mensaje.=" , pero no se ha podido cambiar a la imagen seleccionada";
+                     
                     }
-                    //Borro la antigua que había con otra extensión
-                    unlink("Img/".$_POST["foto_bd"]);
+                   
                 }
+            }
+            else
+            {
+                $mensaje.=" , pero no se ha podido cambiar a la imagen seleccionada";
             }    
 
         }
 
         mysqli_close($conexion);
+        $_SESSION["mensaje"]=$mensaje;
         header("Location:index.php");
         exit;
     }
@@ -148,6 +172,7 @@ if(isset($_POST["btnContNuevo"]))
         }
         catch(Exception $e)
         {
+            session_destroy();
             die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
         }
 
@@ -156,6 +181,7 @@ if(isset($_POST["btnContNuevo"]))
         if(is_string($error_usuario))
         {
             mysqli_close($conexion);
+            session_destroy();
             die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No se ha podido realizar la consulta: ".$error_usuario."</p>"));
         }
     }
@@ -172,6 +198,7 @@ if(isset($_POST["btnContNuevo"]))
             }
             catch(Exception $e)
             {
+                session_destroy();
                 die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
             }
         }
@@ -180,6 +207,7 @@ if(isset($_POST["btnContNuevo"]))
         if(is_string($error_dni))
         {
             mysqli_close($conexion);
+            session_destroy();
             die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No ha podido realizarse la consulta: ".$error_dni."</p>"));
         }
     }
@@ -199,8 +227,11 @@ if(isset($_POST["btnContNuevo"]))
         catch(Exception $e)
         {
             mysqli_close($conexion);
+            session_destroy();
             die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
         }
+
+        $mensaje="Usuario insertado con éxito";
 
         if($_FILES["foto"]["name"]!="")
         {
@@ -218,14 +249,22 @@ if(isset($_POST["btnContNuevo"]))
                 catch(Exception $e)
                 {
                     unlink("Img/".$nombre_foto);//Al no poder actualizar borro la nueva que acabo de mover
-                    mysqli_close($conexion);
-                    die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
+                    //mysqli_close($conexion);
+                    //session_destroy();
+                    //die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
+                    $mensaje.=", pero con la imagen por defecto";
                 }
-            }    
+            }
+            else
+            {
+                $mensaje.=", pero con la imagen por defecto";
+            }
+              
 
         }
 
         mysqli_close($conexion);
+        $_SESSION["mensaje"]=$mensaje;
         header("Location:index.php");
         exit;
     }
@@ -239,6 +278,7 @@ if(isset($_POST["btnContBorrar"]))
     }
     catch(Exception $e)
     {
+        session_destroy();
         die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No ha podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
     }
 
@@ -250,6 +290,7 @@ if(isset($_POST["btnContBorrar"]))
     catch(Exception $e)
     {
         mysqli_close($conexion);
+        session_destroy();
         die(error_page("Práctica 8","<h1>Práctica 8</h1><p>No ha podido realizarse la consulta: ".$e->getMessage()."</p>"));
     }
 
@@ -257,6 +298,7 @@ if(isset($_POST["btnContBorrar"]))
         unlink("Img/".$_POST["nombre_foto"]);
 
     mysqli_close($conexion);
+    $_SESSION["mensaje"]="Usuario borrado con éxito";
     header("Location:index.php");
     exit();
 }
@@ -277,12 +319,16 @@ if(isset($_POST["btnContBorrar"]))
         .foto_detalle{height:250px}
         .paralelo{display:flex}
         .centrado{text-align:center}
+        .mensaje{color:blue;font-size:1.5em}
     </style>
 </head>
 <body>
     <h1>Práctica 8</h1>
     <?php
-    if(isset($_POST["btnEditar"]) || isset($_POST["btnContEditar"]) || isset($_POST["btnBorrarFoto"]) || isset($_POST["btnNoBorrarFoto"]) || isset($_POST["btnContBorrarFoto"])  )
+
+
+
+    if(isset($_POST["btnEditar"]) || isset($_POST["btnContEditar"]) || isset($_POST["btnBorrarFoto"]) || isset($_POST["btnNoBorrarFoto"]) || isset($_SESSION["borrado_foto"])  )
     {
         require "vistas/vista_editar.php";
     }
@@ -300,6 +346,12 @@ if(isset($_POST["btnContBorrar"]))
     if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContNuevo"]))
     {
         require "vistas/vista_nuevo_usuario.php";
+    }
+
+    if(isset($_SESSION["mensaje"]))
+    {
+        echo "<p class='mensaje'>".$_SESSION["mensaje"]."</p>";
+        session_destroy();
     }
 
     require "vistas/vista_tabla_principal.php";
