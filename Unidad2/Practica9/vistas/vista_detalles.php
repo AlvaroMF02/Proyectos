@@ -1,6 +1,10 @@
 <?php
+
+//Mostrar los detalles de la película
+
 echo "<h3>Detalles de la película con id: " . $_POST["btnDetalle"] . "</h3>";
 
+// Hacemos una conexión al servidor
 try {
     $conexion = mysqli_connect(SERVIDOR_BD, USUARIO_BD, CLAVE_BD, NOMBRE_BD);
     mysqli_set_charset($conexion, "utf8");
@@ -8,6 +12,7 @@ try {
     die("<p>No ha podido conectarse a la base de batos: " . $e->getMessage() . "</p></body></html>");
 }
 
+// Consulta select para recoger los datos de la película
 try {
     $consulta = "select * from peliculas where idPelicula='" . $_POST["btnDetalle"] . "'";
     $resultado = mysqli_query($conexion, $consulta);
@@ -16,6 +21,7 @@ try {
     die("<p>No se ha podido realizar la consulta: " . $e->getMessage() . "</p></body></html>");
 }
 
+// Mostrar los datos
 if (mysqli_num_rows($resultado) > 0) {
     $datos_peli = mysqli_fetch_assoc($resultado);
     mysqli_free_result($resultado);

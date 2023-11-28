@@ -78,8 +78,8 @@ if (isset($_POST["btnContEditar"])) {
             }
         } else {
             try {
-                $consulta = "update peliculas set titulo='" . $_POST["titulo"] . "', director='" . $_POST["director"] . "', tematica='" . $_POST["tematica"] . "', sinopsis='" . $_POST["sinopsis"] . "', caratula='".$_POST["caratula_bd"]."' where idPelicula = '" . $_POST["id_peli"] . "'";
-                mysqli_query($conexion, $consulta); 
+                $consulta = "update peliculas set titulo='" . $_POST["titulo"] . "', director='" . $_POST["director"] . "', tematica='" . $_POST["tematica"] . "', sinopsis='" . $_POST["sinopsis"] . "', caratula='" . $_POST["caratula_bd"] . "' where idPelicula = '" . $_POST["id_peli"] . "'";
+                mysqli_query($conexion, $consulta);
             } catch (Exception $e) {
                 mysqli_close($conexion);
                 die(error_page("ERROR", "<p>Ha habido un error: " . $e->getMessage() . "</p>"));
@@ -177,7 +177,7 @@ if (isset($_POST["btnContEditar"])) {
             for ($i = 0; $i < mysqli_num_rows($resultado); $i++) {
                 $datos_pelicula = mysqli_fetch_assoc($resultado);
                 echo "<tr><td>" . $datos_pelicula["idPelicula"] . "</td>
-                <td><form action='index.php' method='post'><button class='enlace' type='submit' value='".$datos_pelicula["idPelicula"]."' name='btnDetalle' title='Detalles de la pelicula'>" . $datos_pelicula["titulo"] . "</button></form></td>
+                <td><form action='index.php' method='post'><button class='enlace' type='submit' value='" . $datos_pelicula["idPelicula"] . "' name='btnDetalle' title='Detalles de la pelicula'>" . $datos_pelicula["titulo"] . "</button></form></td>
                 <td><img src='Img/" . $datos_pelicula["caratula"] . "' alt='Caratula de pelicula'></td>
                 <td><form action='index.php' method='post'><input type='hidden' name='foto' value='" . $datos_pelicula["caratula"] . "' /><button class='enlace' type='submit' name='btnBorrar' value='" . $datos_pelicula["idPelicula"] . "'>Borrar</button> - <button class='enlace' type='submit' name='btnEditar' value='" . $datos_pelicula["idPelicula"] . "'>Editar</button></form></td>
                 </tr>";
@@ -195,8 +195,10 @@ if (isset($_POST["btnContEditar"])) {
     if (isset($_POST["btnBorrar"])) {
         require "vistas/vista_conf_borrar.php";
     }
-    if (isset($_POST["btnEditar"]) || isset($_POST["btnContEditar"]) || isset($_POST["btnBorrarFoto"])
-    || isset($_POST["btnContBorrarFoto"]) || isset($_POST["btnNoBorrarFoto"])) {
+    if (
+        isset($_POST["btnEditar"]) || isset($_POST["btnContEditar"]) || isset($_POST["btnBorrarFoto"])
+        || isset($_POST["btnContBorrarFoto"]) || isset($_POST["btnNoBorrarFoto"])
+    ) {
         require "vistas/vista_editar.php";
     }
     if (isset($_POST["btnDetalle"])) {

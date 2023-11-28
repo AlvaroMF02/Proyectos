@@ -1,13 +1,21 @@
 <?php
+// Si se pulsa el boton para continuar la insercion se miran los errores
 if (isset($_POST["btnContInsertar"])) {
+    // errores si estan vacios o son mas largos de lo que deben
     $error_titulo = $_POST["titulo"] == "" || strlen($_POST["titulo"]) > 15;
     $error_director = $_POST["director"] == "" || strlen($_POST["director"]) > 20;
     $error_tematica = $_POST["tematica"] == "" || strlen($_POST["tematica"]) > 15;
     $error_sinopsis = $_POST["sinopsis"] == "";
-    $error_caratula = $_FILES["caratula"]["name"] != "" && ($_FILES["caratula"]["error"] || !getimagesize($_FILES["caratula"]["tmp_name"]) || !explode(".",$_FILES["caratula"]["name"]));
+    // errores de imagen
+    $error_caratula = $_FILES["caratula"]["name"] != "" && ($_FILES["caratula"]["error"] || !getimagesize($_FILES["caratula"]["tmp_name"]) || !explode(".", $_FILES["caratula"]["name"]));
+    
     $error_form = $error_titulo || $error_director || $error_tematica || $error_sinopsis || $error_caratula;
 
+    // si no hay ningun error
     if (!$error_form) {
+        // hago la inserción de la peli
+
+        // abrir conexion
         try {
             $conexion = mysqli_connect(SERVIDOR_BD, USUARIO_BD, CLAVE_BD, NOMBRE_BD);
             mysqli_set_charset($conexion, "utf8");
@@ -15,6 +23,7 @@ if (isset($_POST["btnContInsertar"])) {
             die(error_page("ERROR", "<p>Ha habido un error: " . $e->getMessage() . "</p>"));
         }
 
+        // hacer la consulta de insercion
         try {
             $consulta = "insert into peliculas (titulo, director, tematica, sinopsis) 
     values ('" . $_POST["titulo"] . "', '" . $_POST["director"] . "', '" . $_POST["tematica"] . "', '" . $_POST["sinopsis"] . "')";
@@ -24,17 +33,23 @@ if (isset($_POST["btnContInsertar"])) {
             die(error_page("ERROR", "<p>Ha habido un error: " . $e->getMessage() . "</p>"));
         }
 
+        // si la imagen es una imagen
         if ($_FILES["caratula"]["name"] != "") {
             $last_id = mysqli_insert_id($conexion);
+            // sacar que tipo de imagen es
             $nombre_array = explode(".", $_FILES["caratula"]["name"]);
-            $nombre_foto = "peli_".$last_id.".".end($nombre_array);
-            @$var = move_uploaded_file($_FILES["caratula"]["tmp_name"],"Img/".$nombre_foto);
+            // nombre de la imagen que se ha subido
+            $nombre_foto = "peli_" . $last_id . "." . end($nombre_array);
+            // mover la imagen a una carpeta
+            @$var = move_uploaded_file($_FILES["caratula"]["tmp_name"], "Img/" . $nombre_foto);
+            // si no ha dado error
             if ($var) {
                 try {
-                    $consulta = "update peliculas set caratula='".$nombre_foto."' where idPelicula = '".$last_id."'";
+                    // modificar la carátula con el nombre nuevo
+                    $consulta = "update peliculas set caratula='" . $nombre_foto . "' where idPelicula = '" . $last_id . "'";
                     $resultado = mysqli_query($conexion, $consulta);
                 } catch (Exception $e) {
-                    unlink("Img/".$nombre_foto);
+                    unlink("Img/" . $nombre_foto);
                     mysqli_close($conexion);
                     die(error_page("ERROR", "<p>Ha habido un error: " . $e->getMessage() . "</p>"));
                 }
@@ -57,7 +72,9 @@ if (isset($_POST["btnContInsertar"])) {
 </head>
 
 <body>
+    <!-- Inserción de una película -->
     <h2>Insertar una película</h2>
+    <!-- formulario con todos los datos controlando errores -->
     <form action="index.php" method="post" enctype="multipart/form-data">
         <p>
             <label for="titulo">Título de la película</label><br>

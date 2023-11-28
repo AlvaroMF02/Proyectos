@@ -45,7 +45,7 @@ else {
         echo "<form action='index.php' method='post'>";
         echo "<p>Se dispone usted a borrar la caratula de la película con ID = " . $_POST["id_peli"] . "</p>";
         echo '<p>Cambiará esta carátula:  <img src="Img/' . $_POST["caratula_bd"] . '" alt="Imagen de caratula">por esta otra: <img src="Img/no_imagen.jpg" alt="Imagen de caratula"> </p>';
-        echo '<p> <input type="hidden" name="caratula_bd" value="'.$_POST["caratula_bd"].'"><input type="hidden" name="id_peli" value="' . $_POST["id_peli"] . '"><button type="submit" name="btnContBorrarFoto">Continuar</button>
+        echo '<p> <input type="hidden" name="caratula_bd" value="' . $_POST["caratula_bd"] . '"><input type="hidden" name="id_peli" value="' . $_POST["id_peli"] . '"><button type="submit" name="btnContBorrarFoto">Continuar</button>
                 <button type="submit" name="btnNoBorrarFoto">Atras</button></p>';
         echo "</form>";
     } else {
