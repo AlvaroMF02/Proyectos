@@ -13,7 +13,9 @@ $consulta = "select * from peliculas where idPelicula='" . $_POST["btnDetalle"] 
 // insertar
 $consulta = "insert into peliculas (titulo, director, tematica, sinopsis) values ('" . $_POST["titulo"] . "', '" . $_POST["director"] . "', '" . $_POST["tematica"] . "', '" . $_POST["sinopsis"] . "')";
 //editar
+
 //borrar
+$consulta = "delete from peliculas where idPelicula='" . $_POST["btnContBorrar"] . "'";
 
 // Pasar la consulta a la conexión
 $resultado = mysqli_query($conexion, $consulta);
@@ -36,3 +38,4 @@ mysqli_close($conexion);
 
 // guardar el id de la conexion
 $last_id = mysqli_insert_id($conexion);
+

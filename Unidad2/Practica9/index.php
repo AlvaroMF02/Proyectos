@@ -1,13 +1,17 @@
 <?php
 require "src/ctes_funciones.php";
-
+// Si se quiere continuar con el borrado de la foto
 if (isset($_POST["btnContBorrarFoto"])) {
+
+    // conexion
     try {
         $conexion = mysqli_connect(SERVIDOR_BD, USUARIO_BD, CLAVE_BD, NOMBRE_BD);
         mysqli_set_charset($conexion, "utf8");
     } catch (Exception $e) {
         die(error_page("Error", "<p>No he podido conectarse a la base de batos: " . $e->getMessage() . "</p>"));
     }
+
+    // consulta para quitar la carátula
     try {
         $consulta = "update peliculas set caratula='no_imagen.jpg' WHERE idPelicula='" . $_POST["id_peli"] . "'";
         mysqli_query($conexion, $consulta);
@@ -15,11 +19,15 @@ if (isset($_POST["btnContBorrarFoto"])) {
         mysqli_close($conexion);
         die("<p>No se ha podido realizar la consulta: " . $e->getMessage() . "</p></body></html>");
     }
+
+    // si la imagen existe
     if (file_exists("Img/" . $_POST["caratula_bd"])) unlink("Img/" . $_POST["caratula_bd"]);
     $_POST["caratula_bd"] = "no_imagen.jpg";
 }
 
+// si vas a borrar una pelicula
 if (isset($_POST["btnContBorrar"])) {
+    // conexion
     try {
         $conexion = mysqli_connect(SERVIDOR_BD, USUARIO_BD, CLAVE_BD, NOMBRE_BD);
         mysqli_set_charset($conexion, "utf8");
@@ -27,6 +35,7 @@ if (isset($_POST["btnContBorrar"])) {
         die(error_page("Error", "<p>Ha habido un error: " . $e->getMessage() . "</p>"));
     }
 
+    // consuilta para borrar la pelicula
     try {
         $consulta = "delete from peliculas where idPelicula='" . $_POST["btnContBorrar"] . "'";
         mysqli_query($conexion, $consulta);
@@ -43,15 +52,20 @@ if (isset($_POST["btnContBorrar"])) {
     exit();
 }
 
+// si quiere seguir editando
 if (isset($_POST["btnContEditar"])) {
+    // errores
     $error_titulo = $_POST["titulo"] == "" || strlen($_POST["titulo"]) > 15;
     $error_director = $_POST["director"] == "" || strlen($_POST["director"]) > 20;
     $error_tematica = $_POST["tematica"] == "" || strlen($_POST["tematica"]) > 15;
     $error_sinopsis = $_POST["sinopsis"] == "";
     $error_caratula = $_FILES["caratula"]["name"] != "" && ($_FILES["caratula"]["error"] || !getimagesize($_FILES["caratula"]["tmp_name"]) || !explode(".", $_FILES["caratula"]["name"]));
+    
     $error_form = $error_titulo || $error_director || $error_tematica || $error_sinopsis || $error_caratula;
 
+    // si no hay errores
     if (!$error_form) {
+        // conexion
         try {
             $conexion = mysqli_connect(SERVIDOR_BD, USUARIO_BD, CLAVE_BD, NOMBRE_BD);
             mysqli_set_charset($conexion, "utf8");
@@ -59,6 +73,7 @@ if (isset($_POST["btnContEditar"])) {
             die(error_page("ERROR", "<p>Ha habido un error: " . $e->getMessage() . "</p>"));
         }
 
+        // si hay una carátula
         if ($_FILES["caratula"]["name"] != "") {
             $nombre_array = explode(".", $_FILES["caratula"]["name"]);
             $nombre_foto = "peli_" . $_POST["id_peli"] . "." . end($nombre_array);

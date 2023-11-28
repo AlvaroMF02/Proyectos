@@ -4,6 +4,7 @@ if (isset($_POST["btnEditar"]))
 else
     $id_peli = $_POST["id_peli"];
 
+// conexion
 try {
     $conexion = mysqli_connect(SERVIDOR_BD, USUARIO_BD, CLAVE_BD, NOMBRE_BD);
     mysqli_set_charset($conexion, "utf8");
@@ -11,6 +12,7 @@ try {
     die("<p>No ha podido conectarse a la base de batos: " . $e->getMessage() . "</p></body></html>");
 }
 
+// consulta para coger los datos de la película
 try {
     $consulta = "select * from peliculas where idPelicula='" . $id_peli . "'";
     $resultado = mysqli_query($conexion, $consulta);
@@ -18,8 +20,11 @@ try {
     mysqli_close($conexion);
     die("<p>No se ha podido realizar la consulta: " . $e->getMessage() . "</p></body></html>");
 }
+
+// si se han recogido datos
 if (mysqli_num_rows($resultado) > 0) {
-    if (isset($_POST["btnEditar"]) || isset($_POST["btnNoBorrarFoto"]) || isset($_POST["btnBorrarFoto"]) || isset($_POST["btnContBorrarFoto"])) {    //Recojo datos obtenidos de la BD
+    // guardo los datos en variables
+    if (isset($_POST["btnEditar"]) || isset($_POST["btnNoBorrarFoto"]) || isset($_POST["btnBorrarFoto"]) || isset($_POST["btnContBorrarFoto"])) {
         $datos_pelicula = mysqli_fetch_assoc($resultado);
         $titulo = $datos_pelicula["titulo"];
         $director = $datos_pelicula["director"];
@@ -75,6 +80,7 @@ else {
         </head>
 
         <body>
+            <!-- Formulario para la edicion con errores -->
             <h2>Editar una Película</h2>
             <form action="index.php" method="post" enctype="multipart/form-data" id="editar">
                 <div>
