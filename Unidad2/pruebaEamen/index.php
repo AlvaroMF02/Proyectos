@@ -39,6 +39,7 @@ if(isset($_POST["btnCambiarNota"]))
     $error_form=$_POST["nota"]==""||!is_numeric($_POST["nota"]) || $_POST["nota"]<0 ||$_POST["nota"]>10;
     if(!$error_form)
     {
+        // conex
         try{
             $conexion=mysqli_connect(SERVIDOR_BD,USUARIO_BD,CLAVE_BD,NOMBRE_BD);
             mysqli_set_charset($conexion,"utf8");
