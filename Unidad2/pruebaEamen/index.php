@@ -6,8 +6,9 @@ require "src/func_ctes.php";
 
 if(isset($_POST["btnCalificar"]))
 {
+    // *******************************************************************************************************************************
     try{
-        $conexion=mysqli_connect(SERVIDOR_BD,USUARIO_BD,CLAVE_BD,NOMBRE_BD);
+        $conexion=mysqli_connect("localhost","jose","josefa","bd_exam_colegio");
         mysqli_set_charset($conexion,"utf8");
     }
     catch(Exception $e)
@@ -15,7 +16,9 @@ if(isset($_POST["btnCalificar"]))
         session_destroy();
         die(error_page("Examen2 DWESE 22-23","<h1>Notas de los Alumnos</h1><p>No se ha podido conectar a la BD: ".$e->getMessage()."</p>"));
     }
+    // *******************************************************************************************************************************
 
+    // *******************************************************************************************************************************
     try{
         $consulta="insert into notas (cod_asig, cod_alu, nota) values ('".$_POST["asignatura"]."','".$_POST["alumno"]."',0.0)";
         $resultado=mysqli_query($conexion,$consulta);
@@ -26,6 +29,7 @@ if(isset($_POST["btnCalificar"]))
         session_destroy();
         die(error_page("Examen2 DWESE 22-23","<h1>Notas de los Alumnos</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
     }
+    // *******************************************************************************************************************************
 
     $_SESSION["mensaje"]="Asignatura calificada con un 0. Cambiala si quieres";
     $_SESSION["alumno"]=$_POST["alumno"];
@@ -50,6 +54,7 @@ if(isset($_POST["btnCambiarNota"]))
             die(error_page("Examen2 DWESE 22-23","<h1>Notas de los Alumnos</h1><p>No se ha podido conectar a la BD: ".$e->getMessage()."</p>"));
         }
 
+        // *******************************************************************************************************************************
         try{
             $consulta="update notas set nota='".$_POST["nota"]."' where cod_asig='".$_POST["btnCambiarNota"]."' and cod_alu='".$_POST["alumno"]."'";
             $resultado=mysqli_query($conexion,$consulta);
@@ -60,6 +65,7 @@ if(isset($_POST["btnCambiarNota"]))
             session_destroy();
             die(error_page("Examen2 DWESE 22-23","<h1>Notas de los Alumnos</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
         }
+        // *******************************************************************************************************************************
 
         $_SESSION["mensaje"]="Nota cambiada con éxito";
         $_SESSION["alumno"]=$_POST["alumno"];

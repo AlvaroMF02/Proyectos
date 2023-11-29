@@ -20,6 +20,7 @@ $consulta = "delete from peliculas where idPelicula='" . $_POST["btnContBorrar"]
 // Pasar la consulta a la conexión
 $resultado = mysqli_query($conexion, $consulta);
 
+$datos = mysqli_fetch_assoc($resultado);
 
 
 // Numero de tuplas que se han podido recoger con la consulta
@@ -39,3 +40,31 @@ mysqli_close($conexion);
 // guardar el id de la conexion
 $last_id = mysqli_insert_id($conexion);
 
+
+
+
+try{
+    $conexion=mysqli_connect("localhost","jose","josefa","bd_exam_colegio");
+    mysqli_set_charset($conexion,"utf8");
+}
+catch(Exception $e)
+{
+    session_destroy();
+    die(error_page("Examen2 DWESE 22-23","<h1>Notas de los Alumnos</h1><p>No se ha podido conectar a la BD: ".$e->getMessage()."</p>"));
+}
+
+function error_page($title,$body)
+{
+    $page='<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>'.$title.'</title>
+    </head>
+    <body>'.$body.'</body>
+    </html>';
+    return $page;
+}
+
+while($tupla=mysqli_fetch_assoc($resultado)){}
