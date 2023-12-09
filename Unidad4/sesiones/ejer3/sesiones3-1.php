@@ -1,8 +1,8 @@
 <?php
 session_name("ejer_3_23_24");
 session_start();
+// si no existe la sesion numero, sesion numero = 0
 if (!isset($_SESSION["numero"])) {
-
     $_SESSION["numero"] = 0;
 }
 ?>
@@ -28,6 +28,7 @@ if (!isset($_SESSION["numero"])) {
 
         <p>
             <button type="submit" name="boton" value="menos">-</button>
+            <!-- El numero que se ve es la sesion -->
             <?php echo $_SESSION["numero"]; ?>
             <button type="submit" name="boton" value="mas">+</button>
         </p>
