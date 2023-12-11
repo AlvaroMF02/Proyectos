@@ -33,6 +33,8 @@ if (isset($_POST["btnLogin"])) {
         if (mysqli_num_rows($resultado) > 0) {
             // el user esta registrado
             $_SESSION["usuario"] = $_POST["usuario"];
+            $_SESSION["clave"] = $_POST["clave"];
+            $_SESSION["ultima_accion"] = time();
             mysqli_free_result($resultado);
             mysqli_close($conexion);
 

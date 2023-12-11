@@ -1,6 +1,6 @@
 <?php
 //CTES base de datos
-
+define("MINUTOS",1);//en segundos
 define("SERVIDOR_BD","localhost");
 define("USUARIO_BD","jose");
 define("CLAVE_BD","josefa");
