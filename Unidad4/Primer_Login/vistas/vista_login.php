@@ -1,13 +1,17 @@
 <?php
 
+// cuando le das al boton login
 if(isset($_POST["btnLogin"]))
 {
+    // control de errores
     $error_usuario=$_POST["usuario"]=="";
     $error_clave=$_POST["clave"]=="";
     $error_form=$error_usuario||$error_clave;
+
+    // si no hay errores hago el inicio de sesion
     if(!$error_form)
     {
-        //Continuo el Login
+        // hago la conexion
         try{
             $conexion=mysqli_connect(SERVIDOR_BD,USUARIO_BD,CLAVE_BD,NOMBRE_BD);
             mysqli_set_charset($conexion,"utf8");
@@ -18,6 +22,7 @@ if(isset($_POST["btnLogin"]))
             die(error_page("Primer Login","<h1>Primer Login</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
         }
 
+        // consulta para comprobar al usuario y coger sus datos si existe
         try{
            $consulta="select usuario from usuarios where usuario='".$_POST["usuario"]."' and clave='".md5($_POST["clave"])."'";
            $resultado=mysqli_query($conexion, $consulta);
@@ -29,10 +34,13 @@ if(isset($_POST["btnLogin"]))
             die(error_page("Primer Login","<h1>Primer Login</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
         }
 
+        // si ha traido tuplas
         if(mysqli_num_rows($resultado)>0)
         {
+            // creo las sesiones con los datos del login
             $_SESSION["usuario"]=$_POST["usuario"];
             $_SESSION["clave"]=md5($_POST["clave"]);
+            // para mirar la cantidad de tiempo que lleva y despues controlarlo
             $_SESSION["ultima_accion"]=time();
             mysqli_free_result($resultado);
             mysqli_close($conexion);
@@ -40,6 +48,7 @@ if(isset($_POST["btnLogin"]))
             exit;
 
         }
+        // si no existe pq no se ha traido ninguna tupla
         else
             $error_usuario=true;
 
@@ -62,6 +71,7 @@ if(isset($_POST["btnLogin"]))
     </style>
 </head>
 <body>
+    <!-- formulario basico con usuario y contraseña -->
     <h1>Primer Login</h1>
     <form action="index.php" method="post">
         <p>
@@ -90,7 +100,10 @@ if(isset($_POST["btnLogin"]))
             <button type="submit" name="btnLogin">Login</button>
         </p>
     </form>
+
     <?php
+    // si se ha borrado al usuario pq lo han baneado
+    // se crea la sesion seguridad con la que se muestra un mensaje
     if(isset($_SESSION["seguridad"]))
     {
         echo "<p class='mensaje'>".$_SESSION["seguridad"]."</p>";

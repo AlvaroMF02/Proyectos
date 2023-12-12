@@ -1,5 +1,5 @@
 <?php
-define("MINUTOS",5);
+define("MINUTOS",5); // son 5 segundos desde que se conecta
 
 define("SERVIDOR_BD","localhost");
 define("USUARIO_BD","jose");
