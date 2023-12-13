@@ -7,22 +7,29 @@ if(!isset($conexion))
     }
     catch(Exception $e)
     {
-        die("<p>No ha podido conectarse a la base de batos: ".$e->getMessage()."</p></body></html>");
+        die("<p>Ha habido un error: ".$e->getMessage()."</p></body></html>");
     }
 }
 
 try{
-    $consulta="select * from usuarios";
+    $consulta="select * from usuarios where tipo != 'admin'";
     $resultado=mysqli_query($conexion, $consulta);
 }
 catch(Exception $e)
 {
     mysqli_close($conexion);
-    die("<p>No se ha podido realizar la consulta: ".$e->getMessage()."</p></body></html>");
+    die("<p>Ha habido un error: ".$e->getMessage()."</p></body></html>");
 }
 
 echo "<table>";
-echo "<tr><th>Nombre de Usuario</th><th>Borrar</th><th>Editar</th></tr>";
+echo "
+<tr>
+    <th>Nombre de Usuario</th>
+    <th>Borrar</th>
+    <th>Editar</th>
+    <th><form action='index.php' method='post'><button class='enlace' name='btnInsertar' title='Insertar Usuario'>+</button></form></th>
+</tr>";
+
 while($tupla=mysqli_fetch_assoc($resultado))
 {
     echo "<tr>";
@@ -33,5 +40,11 @@ while($tupla=mysqli_fetch_assoc($resultado))
 }
 echo "</table>";
 mysqli_free_result($resultado);
+
+if (isset($_SESSION["mensaje"])) {
+    echo "<p>".$_SESSION["mensaje"]."</p>";
+    unset($_SESSION["mensaje"]);
+    // session_destroy();
+} 
 
 ?>

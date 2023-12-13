@@ -7,7 +7,7 @@ try{
 catch(Exception $e)
 {
     mysqli_close($conexion);
-    die("<p>No se ha podido realizar la consulta: ".$e->getMessage()."</p></body></html>");
+    die("<p>Ha habido un error: ".$e->getMessage()."</p></body></html>");
 }
 
 if(mysqli_num_rows($resultado)>0)
@@ -18,7 +18,8 @@ if(mysqli_num_rows($resultado)>0)
     echo "<p>";
     echo "<strong>Nombre: </strong>".$datos_usuario["nombre"]."<br>";
     echo "<strong>Usuario: </strong>".$datos_usuario["usuario"]."<br>";
-    echo "<strong>Email: </strong>".$datos_usuario["email"];
+    echo "<strong>Email: </strong>".$datos_usuario["email"]."<br>";
+    echo "<strong>Tipo: </strong>".$datos_usuario["tipo"];
     echo "</p>";
 }
 else

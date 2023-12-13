@@ -1,33 +1,29 @@
 <?php
-session_name("Primer_login_23_24");
+// Copio las constantes y las funciones
+require "src/ctes_funciones.php";
+
+// Inicio sesión
+session_name("primerLogin");
 session_start();
-require "src/ctes_func.php";
 
-if(isset($_POST["btnSalir"]))
-{
+// Botón salir que tiene que estar en cada vista logueada
+if (isset($_POST["btnSalir"])) {
     session_destroy();
-    header("Location:index.php");
-    exit;
+    header("Location: index.php");
+    exit();
 }
 
-// Si la sesion esta iniciada
-if(isset($_SESSION["usuario"]))
-{
-    //Por aquí estoy logueado
-    require "src/seguridad.php";
+if (isset($_SESSION["usuario"])) {
+    // Si estoy logueado
+    require "vistas/seguridad.php";
 
-    //He pasado los dos controles
-    // Si es admin te muestra una pagina diferente
-    if($datos_usuario_logueado["tipo"]=="admin")
-        require "vistas/vista_admin.php";
+    if ($datos_usuario_logueado["tipo"] == "admin")
+        require "vistas/vista_logueado_admin.php";
     else
-        require "vistas/vista_normal.php";
+        require "vistas/vista_logueado_normal.php";
 
-    mysqli_close($conexion);
-
-}
-else
-{
-    // si no esta logeado te muestra el formulario de login
+    
+} else {
+    // Si no estoy logueado
     require "vistas/vista_login.php";
 }
