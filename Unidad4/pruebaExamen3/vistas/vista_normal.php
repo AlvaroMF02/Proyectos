@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Vista del usuario normal -->
     <html lang="es">
     <head>
         <meta charset="UTF-8">
@@ -7,10 +8,7 @@
         <style>
             .enlinea{display:inline}
             .enlace{border:none;background:none;text-decoration:underline;color:blue;cursor:pointer}
-            table,td,th{border:1px solid black;}
-            table{border-collapse:collapse;text-align:center;width:90%;margin:0 auto}
-            th{background-color:#CCC}
-            table img{height:100px;}
+        
         </style>
     </head>
     <body>
@@ -20,6 +18,5 @@
                 <button class='enlace' type="submit" name="btnSalir">Salir</button>
             </form>
         </div>
-        
     </body>
     </html>

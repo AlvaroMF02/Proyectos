@@ -1,9 +1,13 @@
 <?php
+// Login
 if(isset($_POST["btnLogin"]))
 {
+    // control de los de inicio de sesion
     $error_usuario=$_POST["usuario"]=="";
     $error_clave=$_POST["clave"]=="";
     $error_form=$error_usuario||$error_clave;
+
+    // si no se ha dejado nada vacio
     if(!$error_form)
     {
         //Continuo el Login
@@ -17,8 +21,9 @@ if(isset($_POST["btnLogin"]))
             die(error_page("Examen3 Curso 17-18","<h1>Video Club</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
         }
 
+        // cojo todos los datos del usuario con la contraseña
         try{
-           $consulta="select usuario from usuarios where usuario='".$_POST["usuario"]."' and clave='".md5($_POST["clave"])."'";
+           $consulta="select tipo from usuarios where usuario='".$_POST["usuario"]."' and clave='".md5($_POST["clave"])."'";
            $resultado=mysqli_query($conexion, $consulta);
         }
         catch(Exception $e)
@@ -28,17 +33,29 @@ if(isset($_POST["btnLogin"]))
             die(error_page("Examen3 Curso 17-18","<h1>Video Club</h1><p>No se ha podido realizar la consulta: ".$e->getMessage()."</p>"));
         }
 
+        // si se ha recogido tuplas
         if(mysqli_num_rows($resultado)>0)
         {
+            // guardo datos en sesion 
             $_SESSION["usuario"]=$_POST["usuario"];
             $_SESSION["clave"]=md5($_POST["clave"]);
+            // empiezo a contar para la inactividad
             $_SESSION["ultima_accion"]=time();
+
+            // guardo los datos, libero resultados y cierro la conexion
+            $dato=mysqli_fetch_assoc($resultado);
             mysqli_free_result($resultado);
             mysqli_close($conexion);
-            header("Location:index.php");
+            
+            // si el usuario es de tipo normal manda al index
+            if($dato["tipo"]=="normal")
+                header("Location:index.php");
+            else    // si no muestra el index de admin
+                header("Location:admin/index.php");
             exit;
 
         }
+        // si no hay resultados da error
         else
             $error_usuario=true;
 
@@ -62,11 +79,13 @@ if(isset($_POST["btnLogin"]))
 </head>
 <body>
     <h1>Video Club</h1>
+    <!-- Html del login -->
     <form action="index.php" method="post">
         <p>
             <label for="usuario">Nombre de Usuario: </label>
             <input type="text" name="usuario" id="usuario" value="<?php if(isset($_POST["usuario"])) echo $_POST["usuario"];?>">
             <?php
+            // errores
             if(isset($_POST["btnLogin"]) && $error_usuario)
             {
                 if($_POST["usuario"]=="")
