@@ -1,4 +1,5 @@
 <?php
+
 define("MINUTOS_INACT",5);
 
 define("SERVIDOR_BD","localhost");
@@ -6,9 +7,9 @@ define("USUARIO_BD","jose");
 define("CLAVE_BD","josefa");
 define("NOMBRE_BD","bd_libreria_exam");
 
+// error page para mostrar el error cuando ocurre fuera de un html
+function error_page($title,$body){
 
-function error_page($title,$body)
-{
     $page='<!DOCTYPE html>
     <html lang="es">
     <head>
@@ -35,8 +36,8 @@ function repetido($conexion,$tabla,$columna,$valor,$columna_clave=null,$valor_cl
         $respuesta=mysqli_num_rows($resultado)>0;
         mysqli_free_result($resultado);
     }
-    catch(Exception $e)
-    {
+    catch(Exception $e){
+        // si hay un error le pongo el mensaje del error y lo devuelvo
         $respuesta=$e->getMessage();
     }
     return $respuesta;
