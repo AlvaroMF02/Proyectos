@@ -10,7 +10,6 @@
             td,th {border: 1px solid black}
             table{border-collapse: collapse;text-align: center;width: 80%;margin: 0 auto;}
             th{background-color: #CCC}
-
         </style>
     </head>
     <body>
@@ -25,11 +24,10 @@
         <?php
         // dependiendo del boton al que le haya dado te muestra un msj u otro
         if (isset($_POST['btnBorrar'])) {
-        echo "El libro con Referencia " . $_POST['referencia'] . " ha sido eliminado con exito";
+        echo "<p>El libro con Referencia " . $_POST['referencia'] . " ha sido eliminado con exito</p>";
         } elseif (isset($_POST['btnEditar'])) {
-            echo "El libro con Referencia " . $_POST['referencia'] . " ha sido editado con exito";
+            echo "<p>El libro con Referencia " . $_POST['referencia'] . " ha sido editado con exito</p>";
         }
-
 
         // hago una consulta con todos los libros
         try {

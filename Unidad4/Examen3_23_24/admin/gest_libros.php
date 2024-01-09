@@ -15,21 +15,21 @@ if(isset($_POST["btnSalir"]))
     exit;
 }
 
-// hace una conexion nueva ya que no esta en el index           (se abre aqui y se usa en la vista)
-try{
-    $conexion=mysqli_connect(SERVIDOR_BD,USUARIO_BD,CLAVE_BD,NOMBRE_BD);
-    mysqli_set_charset($conexion,"utf8");
-}
-catch(Exception $e)
-{
-    session_destroy();
-    die(error_page("Examen3 Curso 23-24","<h1>Librería</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
-}
-
 // si se ha iniciado sesion
 if(isset($_SESSION["usuario"])){
 
     $salto="../index.php";  // no entiendo salto
+
+    // hace una conexion nueva ya que no esta en el index           (se abre aqui y se usa en la vista)
+    try{
+        $conexion=mysqli_connect(SERVIDOR_BD,USUARIO_BD,CLAVE_BD,NOMBRE_BD);
+        mysqli_set_charset($conexion,"utf8");
+    }
+    catch(Exception $e)
+    {
+        session_destroy();
+        die(error_page("Examen3 Curso 23-24","<h1>Librería</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
+    }
 
     // comprueba que el usuario no ha sido borrado y el tiempo de sesion
     require "../src/seguridad.php";
