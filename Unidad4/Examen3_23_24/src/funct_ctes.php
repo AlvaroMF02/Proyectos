@@ -24,6 +24,7 @@ function error_page($title,$body){
 
 // Con cuatro argumentos comprueba si hay repetidos cuándo insertamos
 // Con seis argumentos comprueba si hay repetidos cuándo editamos
+// devuelve un string, true o false (si es string es pq ha devuelto un error en la consulta)
 function repetido($conexion,$tabla,$columna,$valor,$columna_clave=null,$valor_clave=null)
 {
     try{
