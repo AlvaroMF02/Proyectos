@@ -74,7 +74,7 @@
         }
     }
 
-    // HACER UN INSERT CON MYSQLI
+    // HACER UN INSERT 
     $nombre='Pepe Castro';
     $usuario='pepe';
     $clave=md5('1234');
