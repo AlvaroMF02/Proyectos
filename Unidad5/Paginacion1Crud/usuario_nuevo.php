@@ -1,6 +1,6 @@
 <?php
-require "src/ctes_funciones.php";
 
+require "src/ctes_funciones.php";
 
 if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
 {
@@ -10,17 +10,24 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
         $error_usuario=$_POST["usuario"]==""|| strlen($_POST["usuario"])>20;
         if(!$error_usuario)
         {
-            try {
+            try
+            {
                 $conexion=new PDO("mysql:host=".SERVIDOR_BD.";dbname=".NOMBRE_BD,USUARIO_BD,CLAVE_BD,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-            } catch (PDOException $e) {
+            }
+            catch(PDOException $e)
+            {
                 die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
             }
+           
 
             $error_usuario=repetido($conexion,"usuarios","usuario",$_POST["usuario"]);
             
             if(is_string($error_usuario))
-                die($error_usuario);
-
+            {
+                $conexion=null;
+                die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No se ha podido realizar la consulta: ".$error_usuario."</p>"));
+            }
+                
         }
 
         $error_clave=$_POST["clave"]=="" || strlen($_POST["clave"])>15;
@@ -29,11 +36,11 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
         {
             if(!isset($conexion))
             {
-                try{
-                    $conexion=mysqli_connect("localhost","jose","josefa","bd_foro");
-                    mysqli_set_charset($conexion,"utf8");
+                try
+                {
+                    $conexion=new PDO("mysql:host=".SERVIDOR_BD.";dbname=".NOMBRE_BD,USUARIO_BD,CLAVE_BD,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
                 }
-                catch(Exception $e)
+                catch(PDOException $e)
                 {
                     die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
                 }
@@ -41,7 +48,11 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
             $error_email=repetido($conexion,"usuarios","email",$_POST["email"]);
             
             if(is_string($error_email))
-                die($error_email);
+            {
+                $conexion=null;
+                die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No ha podido realizarse la consulta: ".$error_email."</p>"));
+            }
+                
 
             
         }
@@ -49,18 +60,27 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
 
         if(!$error_form)
         {
+            
             try{
-                $consulta="insert into usuarios (nombre,usuario,clave,email) values ('".$_POST["nombre"]."','".$_POST["usuario"]."','".md5($_POST["clave"])."','".$_POST["email"]."')";
-                mysqli_query($conexion,$consulta);
+                $consulta="insert into usuarios (nombre,usuario,clave,email) values (?,?,?,?)";
+                $clave_encriptada=md5($_POST["clave"]);
+                $sentencia=$conexion->prepare($consulta);
+                $sentencia->execute([$_POST["nombre"], $_POST["usuario"],$clave_encriptada,$_POST["email"]]);
             }
-            catch(Exception $e)
+            catch(PDOException $e)
             {
-                mysqli_close($conexion);
+                $sentencia=null;
+                $conexion=null;
                 die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No se ha podido hacer la consulta: ".$e->getMessage()."</p>"));
             }
-            
-            mysqli_close($conexion);
 
+            $sentencia=null;
+            $conexion=null;
+
+            
+            session_name("primer_CRUD");
+            session_start();
+            $_SESSION["mensaje"]="El usuario ha sido creado con éxito";
             header("Location:index.php");
             exit;
             
@@ -69,7 +89,7 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
         //Por aquí continuo sólo si hay errores en el formulario
 
         if(isset($conexion))
-            mysqli_close($conexion);
+           $conexion=null;
         
     }
 ?>
@@ -84,7 +104,8 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
     </style>
 </head>
 <body>
-    <h1>Usuario Nuevo</h1>
+    <h1>Práctica 1º CRUD</h1>
+    <h2>Usuario Nuevo</h2>
     <form action="usuario_nuevo.php" method="post">
         <p>
             <label for="nombre">Nombre: </label>

@@ -1,19 +1,27 @@
 <?php
 echo "<h3>Detalles del usuario con id: ".$_POST["btnDetalle"]."</h3>";
+
 try{
-    $consulta="select * from usuarios where id_usuario='".$_POST["btnDetalle"]."'";
-    $resultado=mysqli_query($conexion, $consulta);
+        
+    $consulta="select * from usuarios where id_usuario=?";
+    $sentencia=$conexion->prepare($consulta);
+    $sentencia->execute([$_POST["btnDetalle"]]);
 }
-catch(Exception $e)
+catch(PDOException $e)
 {
-    mysqli_close($conexion);
+    $sentencia=null;
+    $conexion=null;
+    session_destroy();
     die("<p>No se ha podido realizar la consulta: ".$e->getMessage()."</p></body></html>");
 }
 
-if(mysqli_num_rows($resultado)>0)
+
+
+
+if($sentencia->rowCount()>0)
 {
-    $datos_usuario=mysqli_fetch_assoc($resultado);
-    mysqli_free_result($resultado);
+    $datos_usuario=$sentencia->fetch(PDO::FETCH_ASSOC);
+    $sentencia=null;
 
     echo "<p>";
     echo "<strong>Nombre: </strong>".$datos_usuario["nombre"]."<br>";

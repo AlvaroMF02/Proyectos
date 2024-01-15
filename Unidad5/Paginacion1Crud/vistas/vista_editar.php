@@ -1,24 +1,29 @@
 <?php
- if(isset($_POST["btnEditar"]))
+if(isset($_POST["btnEditar"]))
  $id_usuario=$_POST["btnEditar"];
 else
  $id_usuario=$_POST["btnContEditar"];
 
 
 try{
- $consulta="select * from usuarios where id_usuario='".$id_usuario."'";
- $resultado=mysqli_query($conexion, $consulta);
+        
+    $consulta="select * from usuarios where id_usuario=?";
+    $sentencia=$conexion->prepare($consulta);
+    $sentencia->execute([$id_usuario]);
 }
-catch(Exception $e)
+catch(PDOException $e)
 {
- mysqli_close($conexion);
- die("<p>No se ha podido realizar la consulta: ".$e->getMessage()."</p></body></html>");
+    $sentencia=null;
+    $conexion=null;
+    session_destroy();
+    die("<p>No se ha podido realizar la consulta: ".$e->getMessage()."</p></body></html>");
 }
-if(mysqli_num_rows($resultado)>0)
+
+if($sentencia->rowCount()>0)
 {
  if(isset($_POST["btnEditar"]))
  {    //Recojo datos obtenidos de la BD
-     $datos_usuario=mysqli_fetch_assoc($resultado);
+     $datos_usuario=$sentencia->fetch(PDO::FETCH_ASSOC);
      $nombre=$datos_usuario["nombre"];
      $usuario=$datos_usuario["usuario"];
      //$clave=$datos_usuario["clave"];
@@ -32,7 +37,7 @@ if(mysqli_num_rows($resultado)>0)
      //$clave=$datos_usuario["clave"];
      $email=$_POST["email"];
  }
- mysqli_free_result($resultado);
+ $sentencia=null;
 }
 else
 {
