@@ -68,12 +68,12 @@ class Pelicula{
 
     // Metodo para ver el año y el director
     public function AnioYDirector(){
-        echo "La fecha de salida fue: ".$this->titulo." y el director fue ".$this->director;
+        echo "La fecha de salida fue: ".$this->anio." y el director fue ".$this->director;
     }
 
     // Metodo para el precio
     public function precio(){
-        echo "El precio es de: ".$this->precio;
+        echo "El precio es de: ".$this->precio . "€";
     }
 
     // Metodo ver si esta alquilada
@@ -92,7 +92,11 @@ class Pelicula{
 
     // Metodo para calcular el recargo por retraso en la devolucion 1,2 por dia
     public function multa(){
-        
+        if(time()>$this->fechaDevol){
+            echo "Lleva multa";
+        }else{
+            echo "No lleva multa";
+        }
     }
 
 
