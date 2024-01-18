@@ -22,6 +22,42 @@ $app->get('/saludo', function () {
     echo json_encode($respuesta);
 });
 
+// pidiendole parametros a la funcion   (request para recoger el param)
+$app->get('/saludo/{nombre}', function ($request) {
+
+    $valorRecibido = $request->getAttribute("nombre");
+    $respuesta["mensaje"] = "holaaa " . $valorRecibido;
+
+    echo json_encode($respuesta);
+});
+
+// hacer una funcion POST
+$app->post('/saludo', function ($request) {
+
+    // el nombre con el que se tendra que identificar el indice asociativo
+    $valorRecibido = $request->getParam('nombre');
+    $respuesta["mensaje"] = "holaaa" . $valorRecibido;
+    echo json_encode($respuesta);
+});
+
+
+$app->delete('/borrarSaludo/{id}', function ($request) {
+
+    $valorRecibido = $request->getAttribute('id');
+    $respuesta["mensaje"] = "Se ha borrado el saludo con id:" . $valorRecibido;
+    echo json_encode($respuesta);
+});
+
+
+$app->put('/actualizarSaludo/{id}', function ($request) {
+
+    $idRecibido = $request->getAttribute('id');
+    $nombreRecibido = $request->getParam('nombre');
+
+    $respuesta["mensaje"] = "Se ha actualizado el saludo con id:" . $idRecibido . " al nombre " . $nombreRecibido;
+
+    echo json_encode($respuesta);
+});
 
 // La envia ns
 $app->run();
