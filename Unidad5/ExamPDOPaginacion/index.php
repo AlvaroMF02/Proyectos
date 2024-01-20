@@ -1,11 +1,9 @@
 <?php
-
 session_name("examen3_23_24");
 session_start();
 
 // variables y funciones error_page y repetido
 require "src/funct_ctes.php";
-
 
 if (isset($_POST["btnSalir"])) {
     session_destroy();
@@ -19,7 +17,7 @@ try {
     $conexion = new PDO("mysql:host=" . SERVIDOR_BD . ";dbname=" . NOMBRE_BD, USUARIO_BD, CLAVE_BD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
 } catch (PDOException $e) {
     session_destroy();
-    die(error_page("Práctica 1º CRUD", "<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: " . $e->getMessage() . "</p>"));
+    die(error_page("Examen3 Curso 23-24", "<h1>Librería</h1><p>No he podido conectarse a la base de batos: " . $e->getMessage() . "</p>"));
 }
 
 
@@ -28,7 +26,7 @@ try {
 // Ya creadas las sesiones entramos aqui y comprobamos todo
 if (isset($_SESSION["usuario"])) {
 
-    // lo del salto ni idea
+    // nos ayuda para reutilizar la misma seguridad en admin e index (pq varian las rutas)
     $salto = "index.php";
 
     // comprueba que el usuario no ha sido borrado y el tiempo de sesion

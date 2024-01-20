@@ -1,7 +1,4 @@
 <?php
-// En esta parte no estoy logueado
-
-
 // si le das al boton de entrar para iniciar sesión
 if (isset($_POST["btnEntrar"])) {
 
@@ -15,15 +12,12 @@ if (isset($_POST["btnEntrar"])) {
         // hace una consulta filtrando por el nombre y la contraseña
         try {
             $consulta = "select * from usuarios where lector=? and clave=?";
-            // preparo la sentencia
             $sentencia = $conexion->prepare($consulta);
-            $clave = md5($_POST["clave"]);
-            // hago el resultado ejecutando la sentencia
-            $sentencia->execute([$_POST["usuario"], $clave]);
-        } catch (Exception $e) {
+            $datos = array($_POST["usuario"], md5($_POST["clave"]));
+            $sentencia->execute($datos);
+        } catch (PDOException $e) {
             session_destroy();
-            $conexion = null;
-            $sentencia = null;
+            unset($conexion);
             die(error_page("Examen3 Curso 23-24", "<h1>Librería</h1><p>No se ha podido realizar la consulta: " . $e->getMessage() . "</p>"));
         }
 
@@ -37,16 +31,21 @@ if (isset($_POST["btnEntrar"])) {
             // y la de la ultima acción
             $_SESSION["ultima_accion"] = time();
             // guarda los datos del usuario
-            $datos_usu_log = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-            $conexion = null;
-            $sentencia = null;
+            $datos_usu_log = $sentencia->fetch(PDO::FETCH_ASSOC);
+            unset($resultado);
+            // cierra pq va ha cambiar de pagina con el header
+            unset($conexion);
 
             // dependiendo del tipo te manda a un sitio diferente
+            // mas qki
+            // $ruta = $datos_usu_log["tipo"] == "normal" ?  "index.php" : "admin/gest_libros.php";
+            //  header("Location:$ruta");
             if ($datos_usu_log["tipo"] == "normal") {
                 header("Location:index.php");
             } else {
                 header("Location:admin/gest_libros.php");
             }
+            // sale pq puede leer la parte de abajo
             exit();
         } else {
             // si no hay resultados pone a true el error de usuario creado mas arriba en los errores
@@ -54,10 +53,26 @@ if (isset($_POST["btnEntrar"])) {
             $error_usuario = true;
         }
 
-        $sentencia = null;
+        unset($resultado);
     }
 }
 
+// Hago la paginación y las imágenes que ver
+if (!isset($_SESSION["longitud"])) {
+    $_SESSION["longitud"] = 3;
+}
+if (isset($_POST["btnNum"])) {
+    $_SESSION["longitud"] = intval($_POST["num"]);
+    $_SESSION["pagina"] = 1;
+}
+
+if (!isset($_SESSION["pagina"])) {
+    $_SESSION["pagina"] = 1;
+}
+
+if (isset($_POST["pagina"])) {
+    $_SESSION["pagina"] = $_POST["pagina"];
+}
 
 ?>
 <!DOCTYPE html>
@@ -80,12 +95,31 @@ if (isset($_POST["btnEntrar"])) {
             float: left
         }
 
+        div {
+            overflow: hidden;
+        }
+
+        form.paginas {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        form#pre-fotos {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+
         .error {
             color: red;
         }
 
         .mensaje {
             color: blue;
+        }
+
+        p#sin-libros {
+            text-align: center;
         }
     </style>
 </head>
