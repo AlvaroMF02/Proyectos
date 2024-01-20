@@ -33,7 +33,6 @@
 </head>
 
 <body>
-    <!-- Se ve muy raro -->
     <h1>Librería (normal)</h1>
     <div>Bienvenido <strong><?php echo $datos_usuario_logueado["lector"]; ?></strong> -
         <form class='enlinea' action="index.php" method="post">
