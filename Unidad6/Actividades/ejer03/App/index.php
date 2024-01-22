@@ -33,6 +33,8 @@
     $datos["PVP"]=35.5;
     $datos["familia"]="MP3";
 
+    // ERROR
+
     $url = DIR_SERV . "/producto/insertar";
     $respuesta = consumir_servicios_REST($url, "POST", $datos);
     $obj = json_decode($respuesta);
