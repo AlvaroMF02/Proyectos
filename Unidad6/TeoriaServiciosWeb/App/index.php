@@ -13,32 +13,8 @@
     // paso la direccion en la que esta la API sin /saludo
     define("DIR_SERV", "http://localhost/Proyectos/Unidad6/TeoriaServiciosWeb/primeraAPI");
 
-    // ************************************* GET *************************************
-
-    // ---------------------------- FORMA SIN FUNCION RARA ----------------------------
-
-    // // le concateno /saludo a la url
-    // $url = DIR_SERV . "/saludo";
-    // // Esto hace la llamada remota solo con get
-    // $respuesta = file_get_contents($url);
-
-    // // como nos devuelve un JSON (por le JSON_ENCODE) ahora hay que quitar el formato
-    // $obj = json_decode($respuesta);
-
-    // // Comprobacion de que se ha mandado un json
-    // if (!$obj) {
-    //     die("<p>Error consumiendo el servicio: " . $url . "</p>" . $respuesta);
-    // }
-
-    // // Si no entra al if es que todo esta bien
-    // echo "<p>El saludo recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
-
-
-
-    // ---------------------------- FORMA CON FUNCION RARA (BETTER) ----------------------------
-
-    function consumir_servicios_REST($url, $metodo, $datos = null)
-    {
+    // Funcion para hacer la conexion
+    function consumir_servicios_REST($url, $metodo, $datos = null){
         $llamada = curl_init();
         curl_setopt($llamada, CURLOPT_URL, $url);
         curl_setopt($llamada, CURLOPT_RETURNTRANSFER, true);
@@ -50,6 +26,9 @@
         return $respuesta;
     }
 
+
+
+    // ************************************* GET *************************************
     $url = DIR_SERV . "/saludo";
     $respuesta = consumir_servicios_REST($url, "GET");
     $obj = json_decode($respuesta);
@@ -61,6 +40,7 @@
 
     // Si no entra al if es que todo esta bien
     echo "<p>El saludo recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
+
 
 
     // ------------- USAR LA API PASANDOLE UN PARAMETRO -------------
@@ -81,10 +61,12 @@
 
 
 
+
+
     // ************************************* POST *************************************
 
     $url = DIR_SERV . "/saludo";
-    $datos["nombre"] = "Pedro Jose";
+    $datos["nombre"] = "Pedro Jose";    // se tiene que llamar "nombre" como se indica en la API
     $respuesta = consumir_servicios_REST($url, "POST", $datos);
     $obj = json_decode($respuesta);
 
@@ -93,6 +75,8 @@
     }
 
     echo "<p>El saludo recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
+
+
 
 
 
@@ -107,6 +91,8 @@
     }
 
     echo "<p>El mennsaje recibido ha sido: <strong>" . $obj->mensaje . "</strong></p>";
+
+
 
 
 

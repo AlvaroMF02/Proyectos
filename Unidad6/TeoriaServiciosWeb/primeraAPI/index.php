@@ -8,10 +8,8 @@ $app = new \Slim\App;
 // Aqui dentro va el codigo de la api
 
 // diferentes metodos (pide una cadena y una funcion)
-// $app->post();
-// $app->delete();
-// $app->put();
 
+// ----------- GET -----------
 // se pone el nombre de la funcion como el final de la URL
 $app->get('/saludo', function () {
 
@@ -31,7 +29,7 @@ $app->get('/saludo/{nombre}', function ($request) {
     echo json_encode($respuesta);
 });
 
-// hacer una funcion POST
+// ----------- POST -----------
 $app->post('/saludo', function ($request) {
 
     // el nombre con el que se tendra que identificar el indice asociativo
@@ -40,7 +38,7 @@ $app->post('/saludo', function ($request) {
     echo json_encode($respuesta);
 });
 
-
+// ----------- DELETE -----------
 $app->delete('/borrarSaludo/{id}', function ($request) {
 
     $valorRecibido = $request->getAttribute('id');
@@ -48,7 +46,7 @@ $app->delete('/borrarSaludo/{id}', function ($request) {
     echo json_encode($respuesta);
 });
 
-
+// ----------- PUT -----------
 $app->put('/actualizarSaludo/{id}', function ($request) {
 
     $idRecibido = $request->getAttribute('id');
@@ -59,5 +57,7 @@ $app->put('/actualizarSaludo/{id}', function ($request) {
     echo json_encode($respuesta);
 });
 
-// La envia ns
+
+
+// es obligatorio si no no envia nada
 $app->run();
