@@ -17,7 +17,6 @@ $app->post('/producto/insertar', function ($request) {
      $datos[] = $request->getParam('PVP');
      $datos[] = $request->getParam('familia');
 
-     
     echo json_encode(insertar_productos($datos));
 });
 

@@ -15,7 +15,7 @@ function insertar_productos($datos){
         return $respuesta;
     }
     try {
-        $consulta = "insert into producto where cod = ?,nombre = ?,nombre_corto = ?,descripcion = ?,PVP = ?,familia = ?";
+        $consulta = "insert into producto values( cod = ?,nombre = ?,nombre_corto = ?,descripcion = ?,PVP = ?,familia = ?)";
         $sentencia = $conexion->prepare($consulta);
         $sentencia->execute([$datos]);
     } catch (PDOException $e) {
