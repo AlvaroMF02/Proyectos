@@ -1,8 +1,8 @@
 <?php
 
 define("MINUTOS_INACT", 5);
-// Host casa: 'localhost:3310' , Host clase: 'localhost'
-define("SERVIDOR_BD", 'localhost');
+// cambiar localhost:3307 para casa
+define("SERVIDOR_BD", 'localhost:3307');
 define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_libreria_exam");
