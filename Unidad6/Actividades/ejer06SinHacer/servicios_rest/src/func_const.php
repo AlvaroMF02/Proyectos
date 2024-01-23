@@ -5,7 +5,7 @@ define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_tienda");
 
-function borrar_productos($cod)
+function ver_familia()
 {
     // conexion y consulta
     try {
@@ -17,7 +17,7 @@ function borrar_productos($cod)
     try {
         $consulta = "select * from familia";
         $sentencia = $conexion->prepare($consulta);
-        $sentencia->execute([$cod]);
+        $sentencia->execute();
     } catch (PDOException $e) {
         $sentencia = null;
         $conexion = null;
@@ -25,10 +25,8 @@ function borrar_productos($cod)
         return $respuesta;
     }
 
-    $respuesta["mensaje"] = "Borrado correctamente";
-
-
+    $respuesta["productos"] = $sentencia->fetchAll(PDO::FETCH_ASSOC);
     $sentencia = null;
     $conexion = null;
-    return $respuesta;
+    return $respuesta;                                                              
 }
