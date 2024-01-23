@@ -5,8 +5,7 @@ define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_tienda");
 
-// funciones que usamos en los metodos
-function insertar_productos($datos)
+function borrar_productos($cod)
 {
     // conexion y consulta
     try {
@@ -16,9 +15,9 @@ function insertar_productos($datos)
         return $respuesta;
     }
     try {
-        $consulta = "insert into producto ( cod ,nombre,nombre_corto,descripcion,PVP,familia) values (?,?,?,?,?,?)";
+        $consulta = "delete from producto where cod = ?";
         $sentencia = $conexion->prepare($consulta);
-        $sentencia->execute($datos);
+        $sentencia->execute([$cod]);
     } catch (PDOException $e) {
         $sentencia = null;
         $conexion = null;
@@ -26,8 +25,7 @@ function insertar_productos($datos)
         return $respuesta;
     }
 
-
-    $respuesta["mensaje"] = "Producto insertado correctamente";
+    $respuesta["mensaje"] = "Borrado correctamente";
 
 
     $sentencia = null;

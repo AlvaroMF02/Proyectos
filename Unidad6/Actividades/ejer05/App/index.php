@@ -8,10 +8,10 @@
 </head>
 
 <body>
-    <h1>Teoria servicios web</h1>
+    <h1>Ejer 05</h1>
     <?php
     // paso la direccion en la que esta la API sin /saludo
-    define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/ejer03/servicios_rest");
+    define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/ejer05/servicios_rest");
 
     // Funcion para hacer la conexion
     function consumir_servicios_REST($url, $metodo, $datos = null){
@@ -26,22 +26,15 @@
         return $respuesta;
     }
 
-    $datos["cod"]="AJFNSBDS98";
-    $datos["nombre"]="prueba insert";
-    $datos["nombre_corto"]="prueba";
-    $datos["descripcion"]="Descripcion de la prueba";
-    $datos["PVP"]=35.5;
-    $datos["familia"]="MP3";
-
-    $url = DIR_SERV . "/producto/insertar";
-    $respuesta = consumir_servicios_REST($url, "POST", $datos);
+    $url = DIR_SERV . "/producto/borrar/".urlencode("AJFNSBDS98");
+    $respuesta = consumir_servicios_REST($url, "DELETE");
     $obj = json_decode($respuesta);
 
     if (!$obj) {
         die("<p>Error consumiendo el servicio: " . $url . "</p>" . $respuesta);
     }
 
-    // puedes recibir o mensaje_error o mensaje
+    // puedes recibir mensaje_error o mensaje
     if(isset($obj->mensaje_error)){
         die("<p>Error en el servicio: " . $obj->mensaje_error . "</p>");
     }

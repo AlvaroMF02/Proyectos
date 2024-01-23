@@ -5,8 +5,7 @@ define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_tienda");
 
-// funciones que usamos en los metodos
-function insertar_productos($datos)
+function actualizar_productos($datos)
 {
     // conexion y consulta
     try {
@@ -16,7 +15,7 @@ function insertar_productos($datos)
         return $respuesta;
     }
     try {
-        $consulta = "insert into producto ( cod ,nombre,nombre_corto,descripcion,PVP,familia) values (?,?,?,?,?,?)";
+        $consulta = "update producto set nombre = ?,nombre_corto = ?,descripcion = ?,PVP = ?,familia = ? where cod = ?";
         $sentencia = $conexion->prepare($consulta);
         $sentencia->execute($datos);
     } catch (PDOException $e) {
@@ -26,9 +25,11 @@ function insertar_productos($datos)
         return $respuesta;
     }
 
-
-    $respuesta["mensaje"] = "Producto insertado correctamente";
-
+    if ($sentencia->rowCount() > 0) {
+        $respuesta["mensaje"] = "Se ha actualizado correctamente";
+    } else {
+        $respuesta["mensaje"] = "No se ha podido actualizar";
+    }
 
     $sentencia = null;
     $conexion = null;
