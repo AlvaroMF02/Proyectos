@@ -1,6 +1,40 @@
 <?php
+
+// Conexion con la API
+define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/Activ2/servicios_rest/");
+
+function consumir_servicios_REST($url, $metodo, $datos = null){
+    $llamada = curl_init();
+    curl_setopt($llamada, CURLOPT_URL, $url);
+    curl_setopt($llamada, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($llamada, CURLOPT_CUSTOMREQUEST, $metodo);
+    if (isset($datos))
+        curl_setopt($llamada, CURLOPT_POSTFIELDS, http_build_query($datos));
+    $respuesta = curl_exec($llamada);
+    curl_close($llamada);
+    return $respuesta;
+}
+
+
 if (isset($_POST["btnMostrar"])) {
-    echo $_POST["btnMostrar"];
+    // Mostrar los datos que se han pasado por le value del boton
+    $urlDetall = DIR_SERV . "/producto/{".$_POST["btnMostrar"]."}";
+    $respuDetall = consumir_servicios_REST($urlDetall,"GET");
+    $objDetall = json_decode($respuDetall);
+
+    // ver si hay errores
+    if(!$objDetall){
+        echo "Error consumiendo el servicio: ".$respuDetall;
+    }
+    if(isset($objDetall->mensaje_error)){
+        echo "Error en la consulta: " .$objDetall->mensaje_error ;
+    }
+
+    echo "<h3>Detalles del producto: <strong>".$_POST['btnMostrar']."</strong></h3>";
+    // echo $objDetall->producto[0];
+    // for ($i = 0; $i < count($objDetall->producto); $i++) {
+    //     echo $obj->producto[$i];
+    // }
 }
 ?>
 
@@ -48,27 +82,12 @@ if (isset($_POST["btnMostrar"])) {
 <body>
     <?php
 
-    define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/Activ2/servicios_rest/");
-
-    function consumir_servicios_REST($url, $metodo, $datos = null)
-    {
-        $llamada = curl_init();
-        curl_setopt($llamada, CURLOPT_URL, $url);
-        curl_setopt($llamada, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($llamada, CURLOPT_CUSTOMREQUEST, $metodo);
-        if (isset($datos))
-            curl_setopt($llamada, CURLOPT_POSTFIELDS, http_build_query($datos));
-        $respuesta = curl_exec($llamada);
-        curl_close($llamada);
-        return $respuesta;
-    }
-
-    // Recoger los datos de la bd con la API
+    // Recoger todos los productos de la bd con la API
     $url = DIR_SERV . "/productos";
     $respuesta = consumir_servicios_REST($url, "GET");
+    $obj = json_decode($respuesta);
 
     // Si hay errores ...
-    $obj = json_decode($respuesta);
     if (!$obj) {
         die("<p>Error consumiendo el servicio: " . $url . "</p>" . $respuesta);
     }
@@ -76,7 +95,7 @@ if (isset($_POST["btnMostrar"])) {
         die("<p>" . $obj->mensaje_error . "</p></body></html>");
     }
 
-    // Mostrar los dayos que hemos recogido
+    // Mostrar los datos que hemos recogido
     echo "<h1>Listado de los productos </h1>";
 
     echo "<table>";
