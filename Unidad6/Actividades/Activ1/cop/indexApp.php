@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <?php
+    <?phpl
     define("DIR_SERV", "http://localhost/Proyectos/DWES/Curso23_24/TEMA_6_SERVICIOS_WEB/Ejercicios_Servicios_Web/Ejercicio1/servicios_rest");
 
     function consumir_servicios_REST($url, $metodo, $datos = null)

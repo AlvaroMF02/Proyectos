@@ -7,15 +7,9 @@ $app = new \Slim\App;
 
 require "src/func_const.php";
 
-// actualiza un producto por el cod
-$app->post('/repetido/{tabla}/{columna}/{valor}', function ($request) {
-
-    echo json_encode(repetido(
-        $request->getAttribute('tabla'),
-        $request->getAttribute('columna'),
-        $request->getAttribute('valor')
-    ));
-
+// Devuelve vd si ya exsiste el valor en una columna de una tabla al insertar
+$app->get("/repetido/{tabla}/{columna}/{valor}", function($request){
+    echo json_encode(repetido($request->getAttribute("tabla"), $request->getAttribute("columna"), $request->getAttribute("valor")));
 });
 
 
