@@ -2,7 +2,6 @@
 session_name("ApiCrud");
 session_start();
 
-
 // Conexion con la API
 define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/Activ2/servicios_rest/");
 
@@ -18,6 +17,56 @@ function consumir_servicios_REST($url, $metodo, $datos = null)
     curl_close($llamada);
     return $respuesta;
 }
+
+
+// Errores en el formulario para insertar
+if (isset($_POST["btnContiNuevo"])) {
+    $errorCod = $_POST["codigo"] == "";
+    // comprobar que no esta repe
+    if (!$errorCod) {
+        // comprobar que el codigo no esta repe
+        $urlInsertCop = DIR_SERV . "/repetido/producto/cod/" . $_POST["codigo"];
+        $respueInsertCop = consumir_servicios_REST($urlInsertCop, "GET");
+        $objInsertcop = json_decode($respueInsertCop);
+
+        if (!$objInsertcop) echo "Error API: " . $respueInsertCop;
+        if (isset($objInsertcop->mensaje_error)) echo "Error consulta: " . $objInsertcop->mensaje_error;
+
+        if ($objInsertcop->repetido) {
+            $errorCod = true;
+        }
+    }
+
+    $errorNombre = $_POST["nombre"] == "";
+    $errorDescrip = $_POST["descripcion"] == "";
+    $errorPvp = $_POST["pvp"] == "" || !is_numeric($_POST["pvp"]);
+
+    $errorForm = $errorCod || $errorNombre || $errorDescrip || $errorPvp;
+
+    // Si no hay errores hago la insercion de los datos
+    if (!$errorForm) {
+        // ------------------------ AÑADIR PRODUCTO ------------------------
+        // crear el producto con los datos del formulario
+        $datos["cod"] = $_POST["codigo"];
+        $datos["nombre"] = $_POST["nombre"];
+        $datos["nombre_corto"] = $_POST["nombre_corto"];
+        $datos["descripcion"] = $_POST["descripcion"];
+        $datos["PVP"] = $_POST["pvp"];
+        $datos["familia"] = $_POST["familia"];
+
+        $urlInsert = DIR_SERV . "/producto/insertar";
+        $respueInsert = consumir_servicios_REST($urlInsert, "POST", $datos);
+        $objInsert = json_decode($respueInsert);
+
+        if (!$objInsert) echo "Error API: " . $respueInsert;
+        if (isset($objInsert->mensaje_error)) echo "Error consulta: " . $objInsert->mensaje_error;
+
+        $_SESSION["mensaje"] = $objInsert->mensaje;
+        header("Location:index.php");
+        exit;
+    }
+}
+
 
 
 // ------------------------ BORRAR PRODUCTO ------------------------
@@ -86,7 +135,7 @@ if (isset($_POST["btnBorrar"])) {
 
     // Si hay errores ...
     if (!$obj) {
-        die("<p>Error consumiendo el servicio: " . $url . "</p>" . $respuesta);
+        die("<p>Error consumiendo el servicio: " . $url . "</p>" . $respuesta . "</body></html>");
     }
     if (isset($obj->mensaje_error)) {
         die("<p>" . $obj->mensaje_error . "</p></body></html>");
@@ -116,39 +165,82 @@ if (isset($_POST["btnBorrar"])) {
         echo "<strong>Familia:</strong>" . $objDetall->producto->familia . "<br>";
     }
     // ------------------------ AÑADIR UN PRODUCTO ------------------------
-    if (isset($_POST["btnNuevo"])) {
+    if (isset($_POST["btnNuevo"]) || isset($_POST["btnContiNuevo"])) {
     ?>
-    <h2>Añadir un producto</h2>
+        <h2>Añadir un producto</h2>
         <form action="index.php" method="post">
             <p>
                 <label for="codigo">Código</label>
-                <input type="text" name="codigo" id="codigo">
+                <input type="text" name="codigo" id="codigo" maxlength="12">
+                <?php
+                if (isset($_POST["btnContiNuevo"]) && $errorCod) {
+                    if($_POST["codigo"] == ""){
+                        echo "<span class='error'>Campo vacio</span>";
+                    }else{
+                        echo "<span class='error'>Código repetido</span>";
+                    }
+                    
+                }
+                ?>
             </p>
             <p>
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" id="nombre">
+                <input type="text" name="nombre" id="nombre" maxlength="200">
+                <?php
+                if (isset($_POST["btnContiNuevo"])  && $errorNombre) {
+                    echo "<span class='error'>Campo vacio</span>";
+                }
+                ?>
             </p>
             <p>
                 <label for="nombre_corto">Nombre corto</label>
-                <input type="text" name="nombre_corto" id="nombre_corto">
+                <input type="text" name="nombre_corto" id="nombre_corto" maxlength="50">
             </p>
             <p>
                 <label for="descripcion">Descripción</label>
                 <textarea name="descripcion" id="descripcion" cols="30" rows="5"></textarea>
+                <?php
+                if (isset($_POST["btnContiNuevo"])  && $errorDescrip) {
+                    echo "<span class='error'>Campo vacio</span>";
+                }
+                ?>
             </p>
             <p>
                 <label for="pvp">PVP</label>
                 <input type="text" name="pvp" id="pvp">
+                <?php
+                if (isset($_POST["btnContiNuevo"]) && $errorPvp) {
+                    if ($_POST["pvp"] == "") {
+                        echo "<span class='error'>Campo vacio</span>";
+                    } else {
+                        echo "<span class='error'>Introduza números</span>";
+                    }
+                }
+                ?>
             </p>
             <p>
                 <label for="familia">Familia</label>
                 <select name="familia" id="familia">
-                <?php                   // no muestra los option
-                    for ($i=0; $i < count($obj->productos) ; $i++) { 
-                        echo "<option value='".$obj->productos[$i]."'>".$obj->productos[$i]->familia."</option>";
+                    <?php
+                    $urlFamil = DIR_SERV . "/familias";
+                    $respuesFamil = consumir_servicios_REST($urlFamil, "GET");
+                    $objFamilia = json_decode($respuesFamil);
+
+                    if (!$objFamilia) die("Error API: " . $respuesFamil);
+                    if (isset($objFamilia->mensaje_error)) echo "Error consulta: " . $objFamilia->mensaje_error;
+
+                    echo var_dump($objFamilia->productos);
+
+                    for ($i = 0; $i < count($objFamilia->productos); $i++) {
+                        echo "<option value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
                     }
-                ?>
+                    ?>
                 </select>
+            </p>
+
+            <p>
+                <button type="submit" name="btnContiNuevo">Añadir</button>
+                <button type="submit">Cancelar</button>
             </p>
 
         </form>
