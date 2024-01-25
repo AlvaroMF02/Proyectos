@@ -115,6 +115,45 @@ if (isset($_POST["btnBorrar"])) {
         echo "<strong>PVP:</strong>" . $objDetall->producto->PVP . "<br>";
         echo "<strong>Familia:</strong>" . $objDetall->producto->familia . "<br>";
     }
+    // ------------------------ AÑADIR UN PRODUCTO ------------------------
+    if (isset($_POST["btnNuevo"])) {
+    ?>
+    <h2>Añadir un producto</h2>
+        <form action="index.php" method="post">
+            <p>
+                <label for="codigo">Código</label>
+                <input type="text" name="codigo" id="codigo">
+            </p>
+            <p>
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" id="nombre">
+            </p>
+            <p>
+                <label for="nombre_corto">Nombre corto</label>
+                <input type="text" name="nombre_corto" id="nombre_corto">
+            </p>
+            <p>
+                <label for="descripcion">Descripción</label>
+                <textarea name="descripcion" id="descripcion" cols="30" rows="5"></textarea>
+            </p>
+            <p>
+                <label for="pvp">PVP</label>
+                <input type="text" name="pvp" id="pvp">
+            </p>
+            <p>
+                <label for="familia">Familia</label>
+                <select name="familia" id="familia">
+                <?php                   // no muestra los option
+                    for ($i=0; $i < count($obj->productos) ; $i++) { 
+                        echo "<option value='".$obj->productos[$i]."'>".$obj->productos[$i]->familia."</option>";
+                    }
+                ?>
+                </select>
+            </p>
+
+        </form>
+    <?php
+    }
 
 
     // Mensaje 
@@ -129,7 +168,7 @@ if (isset($_POST["btnBorrar"])) {
     echo "<h1>Listado de los productos </h1>";
 
     echo "<table>";
-    echo "<tr><th>COD</th><th>Nombre</th><th>PVP</th><th><form action='index.php'><button class='enlace'>Producto+</button></form></th></tr>";
+    echo "<tr><th>COD</th><th>Nombre</th><th>PVP</th><th><form action='index.php' method='post'><button name='btnNuevo' class='enlace'>Producto+</button></form></th></tr>";
     for ($i = 0; $i < count($obj->productos); $i++) {
         echo "<tr>";
         echo "<td><form action='index.php' method='post'><button class='enlace' name='btnMostrar' value='" . $obj->productos[$i]->cod . "'>" . $obj->productos[$i]->cod . "</button></form></td>";
