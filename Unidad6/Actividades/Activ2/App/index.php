@@ -38,10 +38,9 @@ if (isset($_POST["btnContiNuevo"])) {
     }
 
     $errorNombre = $_POST["nombre"] == "";
-    $errorDescrip = $_POST["descripcion"] == "";
     $errorPvp = $_POST["pvp"] == "" || !is_numeric($_POST["pvp"]);
 
-    $errorForm = $errorCod || $errorNombre || $errorDescrip || $errorPvp;
+    $errorForm = $errorCod || $errorNombre || $errorPvp;
 
     // Si no hay errores hago la insercion de los datos
     if (!$errorForm) {
@@ -171,21 +170,20 @@ if (isset($_POST["btnBorrar"])) {
         <form action="index.php" method="post">
             <p>
                 <label for="codigo">Código</label>
-                <input type="text" name="codigo" id="codigo" maxlength="12">
+                <input type="text" name="codigo" id="codigo" maxlength="12" value="<?php if (isset($_POST["codigo"])) echo $_POST["codigo"] ?>">
                 <?php
                 if (isset($_POST["btnContiNuevo"]) && $errorCod) {
-                    if($_POST["codigo"] == ""){
+                    if ($_POST["codigo"] == "") {
                         echo "<span class='error'>Campo vacio</span>";
-                    }else{
+                    } else {
                         echo "<span class='error'>Código repetido</span>";
                     }
-                    
                 }
                 ?>
             </p>
             <p>
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" id="nombre" maxlength="200">
+                <input type="text" name="nombre" id="nombre" maxlength="200" value="<?php if (isset($_POST["nombre"])) echo $_POST["nombre"] ?>">
                 <?php
                 if (isset($_POST["btnContiNuevo"])  && $errorNombre) {
                     echo "<span class='error'>Campo vacio</span>";
@@ -194,20 +192,15 @@ if (isset($_POST["btnBorrar"])) {
             </p>
             <p>
                 <label for="nombre_corto">Nombre corto</label>
-                <input type="text" name="nombre_corto" id="nombre_corto" maxlength="50">
+                <input type="text" name="nombre_corto" id="nombre_corto" maxlength="50" value="<?php if (isset($_POST["nombre_corto"])) echo $_POST["nombre_corto"] ?>">
             </p>
             <p>
                 <label for="descripcion">Descripción</label>
-                <textarea name="descripcion" id="descripcion" cols="30" rows="5"></textarea>
-                <?php
-                if (isset($_POST["btnContiNuevo"])  && $errorDescrip) {
-                    echo "<span class='error'>Campo vacio</span>";
-                }
-                ?>
+                <textarea name="descripcion" id="descripcion" cols="30" rows="5"><?php if (isset($_POST["descripcion"])) echo $_POST["descripcion"] ?></textarea>
             </p>
             <p>
                 <label for="pvp">PVP</label>
-                <input type="text" name="pvp" id="pvp">
+                <input type="text" name="pvp" id="pvp" value="<?php if (isset($_POST["pvp"])) echo $_POST["pvp"] ?>">
                 <?php
                 if (isset($_POST["btnContiNuevo"]) && $errorPvp) {
                     if ($_POST["pvp"] == "") {
@@ -232,7 +225,11 @@ if (isset($_POST["btnBorrar"])) {
                     echo var_dump($objFamilia->productos);
 
                     for ($i = 0; $i < count($objFamilia->productos); $i++) {
-                        echo "<option value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
+                        if ($_POST["familia"] == $objFamilia->productos[$i]->cod) {
+                            echo "<option selected value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
+                        } else {
+                            echo "<option value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
+                        }
                     }
                     ?>
                 </select>
