@@ -1,5 +1,6 @@
 <?php
-define("SERVIDOR_BD", "localhost:3307");
+// define("SERVIDOR_BD", "localhost:3307");
+define("SERVIDOR_BD", "localhost");
 define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_tienda");
@@ -54,7 +55,7 @@ function obtener_producto($codigo)
     }
 
     if ($sentencia->rowCount() > 0) {
-        $respuesta["producto"] = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        $respuesta["producto"] = $sentencia->fetch(PDO::FETCH_ASSOC);
     } else {
         $respuesta["mensaje"] = "El producto con código $codigo no se encuentra en la BD";
     }
@@ -212,7 +213,6 @@ function repetido_editar($tabla, $columna, $valor, $columna_id, $valor_id)
     } catch (PDOException $e) {
         $respuesta["mensaje_error"] = "No se ha podido conectar a la base de datos: " . $e->getMessage();
         return $respuesta;
-        // Esas dos se pueden hacer en una línea: return array("mensaje_error"=>"No se ha podido conectar a la base de datos: ".e->getMessage());
     }
 
     try {
@@ -226,7 +226,7 @@ function repetido_editar($tabla, $columna, $valor, $columna_id, $valor_id)
         return $respuesta;
     }
 
-    $respuesta["repetido"] = ($sentencia->rowCount()) > 0; // Nos devuelve true si está repetido y false si no
+    $respuesta["repetido"] = ($sentencia->rowCount()) > 0;
     $sentencia = null;
     $conexion = null;
     return $respuesta;

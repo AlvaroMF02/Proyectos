@@ -1,9 +1,13 @@
 <?php
+session_name("ApiCrud");
+session_start();
+
 
 // Conexion con la API
 define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/Activ2/servicios_rest/");
 
-function consumir_servicios_REST($url, $metodo, $datos = null){
+function consumir_servicios_REST($url, $metodo, $datos = null)
+{
     $llamada = curl_init();
     curl_setopt($llamada, CURLOPT_URL, $url);
     curl_setopt($llamada, CURLOPT_RETURNTRANSFER, true);
@@ -16,26 +20,19 @@ function consumir_servicios_REST($url, $metodo, $datos = null){
 }
 
 
-if (isset($_POST["btnMostrar"])) {
-    // Mostrar los datos que se han pasado por le value del boton
-    $urlDetall = DIR_SERV . "/producto/{".$_POST["btnMostrar"]."}";
-    $respuDetall = consumir_servicios_REST($urlDetall,"GET");
-    $objDetall = json_decode($respuDetall);
+// ------------------------ BORRAR PRODUCTO ------------------------
+if (isset($_POST["btnBorrar"])) {
+    // hacer la url para borrar
+    $urlBorrar = DIR_SERV . "/producto/borrar/" . urlencode($_POST["btnBorrar"]);
+    $respuestBorrar = consumir_servicios_REST($urlBorrar, "DELETE");
+    $objBorrar = json_decode($respuestBorrar);
 
-    // ver si hay errores
-    if(!$objDetall){
-        echo "Error consumiendo el servicio: ".$respuDetall;
-    }
-    if(isset($objDetall->mensaje_error)){
-        echo "Error en la consulta: " .$objDetall->mensaje_error ;
-    }
+    if (!$objBorrar) echo "Error API: " + $respuestBorrar;
+    if (isset($objBorrar->mensaje_error)) echo "Error consulta: " + $$objBorrar->mensaje_error;
 
-    echo "<h3>Detalles del producto: <strong>".$_POST['btnMostrar']."</strong></h3>";
-    // echo $objDetall->producto[0];
-    // for ($i = 0; $i < count($objDetall->producto); $i++) {
-    //     echo $obj->producto[$i];
-    // }
+    $_SESSION["mensaje"] = $objBorrar->mensaje;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -94,6 +91,39 @@ if (isset($_POST["btnMostrar"])) {
     if (isset($obj->mensaje_error)) {
         die("<p>" . $obj->mensaje_error . "</p></body></html>");
     }
+
+    // ------------------------ MOSTRAR DETALLES DEL PRODUCTO ------------------------
+    if (isset($_POST["btnMostrar"])) {
+        // Mostrar los datos que se han pasado por le value del boton
+        $urlDetall = DIR_SERV . "/producto/" . urlencode($_POST["btnMostrar"]);
+        $respuDetall = consumir_servicios_REST($urlDetall, "GET");
+        $objDetall = json_decode($respuDetall);
+
+        // ver si hay errores
+        if (!$objDetall) {
+            echo "Error consumiendo el servicio: " . $respuDetall;
+        }
+        if (isset($objDetall->mensaje_error)) {
+            echo "Error en la consulta: " . $objDetall->mensaje_error;
+        }
+
+        echo "<h3>Detalles del producto: <strong>" . $_POST['btnMostrar'] . "</strong></h3>";
+        echo "<strong>Código:</strong>" . $objDetall->producto->cod . "<br>";
+        echo "<strong>Nombre:</strong>" . $objDetall->producto->nombre . "<br>";
+        echo "<strong>Nombre corto:</strong>" . $objDetall->producto->nombre_corto . "<br>";
+        echo "<strong>Descripción:</strong>" . $objDetall->producto->descripcion . "<br>";
+        echo "<strong>PVP:</strong>" . $objDetall->producto->PVP . "<br>";
+        echo "<strong>Familia:</strong>" . $objDetall->producto->familia . "<br>";
+    }
+
+
+    // Mensaje 
+    if (isset($_SESSION["mensaje"])) {
+        echo $_SESSION["mensaje"];
+        unset($_SESSION["mensaje"]);
+    }
+
+
 
     // Mostrar los datos que hemos recogido
     echo "<h1>Listado de los productos </h1>";
