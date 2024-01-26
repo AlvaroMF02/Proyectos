@@ -19,66 +19,13 @@ function consumir_servicios_REST($url, $metodo, $datos = null)
 }
 
 
-// Errores en el formulario para insertar
-if (isset($_POST["btnContiNuevo"])) {
-    $errorCod = $_POST["codigo"] == "";
-    // comprobar que no esta repe
-    if (!$errorCod) {
-        // comprobar que el codigo no esta repe
-        $urlInsertCop = DIR_SERV . "/repetido/producto/cod/" . $_POST["codigo"];
-        $respueInsertCop = consumir_servicios_REST($urlInsertCop, "GET");
-        $objInsertcop = json_decode($respueInsertCop);
-
-        if (!$objInsertcop) echo "Error API: " . $respueInsertCop;
-        if (isset($objInsertcop->mensaje_error)) echo "Error consulta: " . $objInsertcop->mensaje_error;
-
-        if ($objInsertcop->repetido) {
-            $errorCod = true;
-        }
-    }
-
-    $errorNombre = $_POST["nombre"] == "";
-    $errorPvp = $_POST["pvp"] == "" || !is_numeric($_POST["pvp"]);
-
-    $errorForm = $errorCod || $errorNombre || $errorPvp;
-
-    // Si no hay errores hago la insercion de los datos
-    if (!$errorForm) {
-        // ------------------------ AÑADIR PRODUCTO ------------------------
-        // crear el producto con los datos del formulario
-        $datos["cod"] = $_POST["codigo"];
-        $datos["nombre"] = $_POST["nombre"];
-        $datos["nombre_corto"] = $_POST["nombre_corto"];
-        $datos["descripcion"] = $_POST["descripcion"];
-        $datos["PVP"] = $_POST["pvp"];
-        $datos["familia"] = $_POST["familia"];
-
-        $urlInsert = DIR_SERV . "/producto/insertar";
-        $respueInsert = consumir_servicios_REST($urlInsert, "POST", $datos);
-        $objInsert = json_decode($respueInsert);
-
-        if (!$objInsert) echo "Error API: " . $respueInsert;
-        if (isset($objInsert->mensaje_error)) echo "Error consulta: " . $objInsert->mensaje_error;
-
-        $_SESSION["mensaje"] = $objInsert->mensaje;
-        header("Location:index.php");
-        exit;
-    }
+// ------------------------ BORRAR PRODUCTO ------------------------
+if (isset($_POST["btnContiEdit"])) {
+    echo "miau";
 }
-
-
-
 // ------------------------ BORRAR PRODUCTO ------------------------
 if (isset($_POST["btnBorrar"])) {
-    // hacer la url para borrar
-    $urlBorrar = DIR_SERV . "/producto/borrar/" . urlencode($_POST["btnBorrar"]);
-    $respuestBorrar = consumir_servicios_REST($urlBorrar, "DELETE");
-    $objBorrar = json_decode($respuestBorrar);
-
-    if (!$objBorrar) echo "Error API: " + $respuestBorrar;
-    if (isset($objBorrar->mensaje_error)) echo "Error consulta: " + $$objBorrar->mensaje_error;
-
-    $_SESSION["mensaje"] = $objBorrar->mensaje;
+    require "vistas/vistaBorrar.php";
 }
 
 ?>
@@ -125,8 +72,8 @@ if (isset($_POST["btnBorrar"])) {
 </head>
 
 <body>
-    <?php
 
+    <?php
     // Recoger todos los productos de la bd con la API
     $url = DIR_SERV . "/productos";
     $respuesta = consumir_servicios_REST($url, "GET");
@@ -142,8 +89,18 @@ if (isset($_POST["btnBorrar"])) {
 
     // ------------------------ MOSTRAR DETALLES DEL PRODUCTO ------------------------
     if (isset($_POST["btnMostrar"])) {
+        require "vistas/vistaDetalles.php";
+    }
+    // ------------------------ AÑADIR UN PRODUCTO ------------------------
+    if (isset($_POST["btnNuevo"]) || isset($_POST["btnContiNuevo"])) {
+        require "vistas/vistaInsertar.php";
+    }
+
+    // ------------------------ EDITAR UN PRODUCTO ------------------------
+    if (isset($_POST["btnEditar"]) || isset($_POST["btnContiEdit"])) {
+        // recojer los datos del producto y ponerlo como value
         // Mostrar los datos que se han pasado por le value del boton
-        $urlDetall = DIR_SERV . "/producto/" . urlencode($_POST["btnMostrar"]);
+        $urlDetall = DIR_SERV . "/producto/" . urlencode($_POST["btnEditar"]);
         $respuDetall = consumir_servicios_REST($urlDetall, "GET");
         $objDetall = json_decode($respuDetall);
 
@@ -155,24 +112,15 @@ if (isset($_POST["btnBorrar"])) {
             echo "Error en la consulta: " . $objDetall->mensaje_error;
         }
 
-        echo "<h3>Detalles del producto: <strong>" . $_POST['btnMostrar'] . "</strong></h3>";
-        echo "<strong>Código:</strong>" . $objDetall->producto->cod . "<br>";
-        echo "<strong>Nombre:</strong>" . $objDetall->producto->nombre . "<br>";
-        echo "<strong>Nombre corto:</strong>" . $objDetall->producto->nombre_corto . "<br>";
-        echo "<strong>Descripción:</strong>" . $objDetall->producto->descripcion . "<br>";
-        echo "<strong>PVP:</strong>" . $objDetall->producto->PVP . "<br>";
-        echo "<strong>Familia:</strong>" . $objDetall->producto->familia . "<br>";
-    }
-    // ------------------------ AÑADIR UN PRODUCTO ------------------------
-    if (isset($_POST["btnNuevo"]) || isset($_POST["btnContiNuevo"])) {
+
+        echo "<h2>Editar producto: <strong>" . $_POST['btnEditar'] . "</strong></h2>";
     ?>
-        <h2>Añadir un producto</h2>
         <form action="index.php" method="post">
             <p>
                 <label for="codigo">Código</label>
-                <input type="text" name="codigo" id="codigo" maxlength="12" value="<?php if (isset($_POST["codigo"])) echo $_POST["codigo"] ?>">
+                <input type="text" name="codigo" id="codigo" maxlength="12" value="<?php echo $objDetall->producto->cod ?>">
                 <?php
-                if (isset($_POST["btnContiNuevo"]) && $errorCod) {
+                if (isset($_POST["btnContiEdit"]) && $errorCod) {
                     if ($_POST["codigo"] == "") {
                         echo "<span class='error'>Campo vacio</span>";
                     } else {
@@ -183,26 +131,26 @@ if (isset($_POST["btnBorrar"])) {
             </p>
             <p>
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" id="nombre" maxlength="200" value="<?php if (isset($_POST["nombre"])) echo $_POST["nombre"] ?>">
+                <input type="text" name="nombre" id="nombre" maxlength="200" value="<?php echo $objDetall->producto->nombre ?>">
                 <?php
-                if (isset($_POST["btnContiNuevo"])  && $errorNombre) {
+                if (isset($_POST["btnContiEdit"])  && $errorNombre) {
                     echo "<span class='error'>Campo vacio</span>";
                 }
                 ?>
             </p>
             <p>
                 <label for="nombre_corto">Nombre corto</label>
-                <input type="text" name="nombre_corto" id="nombre_corto" maxlength="50" value="<?php if (isset($_POST["nombre_corto"])) echo $_POST["nombre_corto"] ?>">
+                <input type="text" name="nombre_corto" id="nombre_corto" maxlength="50" value="<?php echo $objDetall->producto->nombre_corto ?>">
             </p>
             <p>
                 <label for="descripcion">Descripción</label>
-                <textarea name="descripcion" id="descripcion" cols="30" rows="5"><?php if (isset($_POST["descripcion"])) echo $_POST["descripcion"] ?></textarea>
+                <textarea name="descripcion" id="descripcion" cols="30" rows="5"><?php echo $objDetall->producto->descripcion ?></textarea>
             </p>
             <p>
                 <label for="pvp">PVP</label>
-                <input type="text" name="pvp" id="pvp" value="<?php if (isset($_POST["pvp"])) echo $_POST["pvp"] ?>">
+                <input type="text" name="pvp" id="pvp" value="<?php echo $objDetall->producto->PVP ?>">
                 <?php
-                if (isset($_POST["btnContiNuevo"]) && $errorPvp) {
+                if (isset($_POST["btnContiEdit"]) && $errorPvp) {
                     if ($_POST["pvp"] == "") {
                         echo "<span class='error'>Campo vacio</span>";
                     } else {
@@ -222,10 +170,11 @@ if (isset($_POST["btnBorrar"])) {
                     if (!$objFamilia) die("Error API: " . $respuesFamil);
                     if (isset($objFamilia->mensaje_error)) echo "Error consulta: " . $objFamilia->mensaje_error;
 
-                    echo var_dump($objFamilia->productos);
-
+                    // FALTA PONER LA FAMILIA NO LO COGE
                     for ($i = 0; $i < count($objFamilia->productos); $i++) {
                         if ($_POST["familia"] == $objFamilia->productos[$i]->cod) {
+                            echo "<option selected value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
+                        } elseif ($_POST["familia"] == $objDetall->producto->familia) {
                             echo "<option selected value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
                         } else {
                             echo "<option value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
@@ -236,7 +185,7 @@ if (isset($_POST["btnBorrar"])) {
             </p>
 
             <p>
-                <button type="submit" name="btnContiNuevo">Añadir</button>
+                <button type="submit" name="btnContiEdit">Editar</button>
                 <button type="submit">Cancelar</button>
             </p>
 
