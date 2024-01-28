@@ -22,6 +22,7 @@ function consumir_servicios_REST($url, $metodo, $datos = null)
 // ------------------------ BORRAR PRODUCTO ------------------------
 if (isset($_POST["btnContiEdit"])) {
     echo "miau";
+    
 }
 // ------------------------ BORRAR PRODUCTO ------------------------
 if (isset($_POST["btnBorrar"])) {
@@ -170,7 +171,7 @@ if (isset($_POST["btnBorrar"])) {
                     if (!$objFamilia) die("Error API: " . $respuesFamil);
                     if (isset($objFamilia->mensaje_error)) echo "Error consulta: " . $objFamilia->mensaje_error;
 
-                    // FALTA PONER LA FAMILIA NO LO COGE
+                    // ************************************************************** FALTA PONER LA FAMILIA NO LO COGE **************************************************************
                     for ($i = 0; $i < count($objFamilia->productos); $i++) {
                         if ($_POST["familia"] == $objFamilia->productos[$i]->cod) {
                             echo "<option selected value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
