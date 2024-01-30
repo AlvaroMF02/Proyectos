@@ -5,7 +5,7 @@ define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_tienda");
 
-function login($clave, $usuario)
+function login($usuario, $clave)
 {
     // conecto
     try {
@@ -16,7 +16,7 @@ function login($clave, $usuario)
     }
     // consulta
     try {
-        $consulta = "select * from usuarios where usuario = ? AND clave == ?";
+        $consulta = "select * from usuarios where usuario = ? AND clave = ?";
         $sentencia = $conexion->prepare($consulta);
         $sentencia->execute([$usuario, $clave]);
     } catch (PDOException $e) {

@@ -45,7 +45,7 @@ function error_page($title, $body)
 
 if (isset($_SESSION["usuario"])) {
     // logeado
-
+    echo "entra";
     // seguridad
     $datos['usuario'] = $_SESSION['usuario'];
     $datos['clave'] = $_SESSION['clave'];
@@ -75,10 +75,10 @@ if (isset($_SESSION["usuario"])) {
 
     $datos_usuario_log = $obj->usuario;
 
-    // 2º parte tiempo
+    // 2º parte tiempo  ( si se ha pasado de tiempo te manda al index de nuevo )
     if (time() - $_SESSION["ultimaAccion"] > MINUTOS * 60) {
         session_unset();
-        $_SESSION["seguridad"] = "Ya no está en la bd";
+        $_SESSION["seguridad"] = "Se ha acabado su tiempo";
         header("Location:index.php");
         exit;
     }
@@ -99,13 +99,15 @@ if (isset($_SESSION["usuario"])) {
     if (isset($_POST["btnLogin"])) {
         $errorUsu = $_POST["usuario"] == "";
         $errorClav = $_POST["clave"] == "";
-
+              
+        
         $errorForm = $errorClav || $errorUsu;
 
         // recojo datos
         if (!$errorForm) {
             $datos['usuario'] = $_POST['usuario'];
-            $datos['clave'] = $_POST['clave'];
+            $datos['clave'] = md5($_POST['clave']);
+            
 
             $url = DIR_SERV . '/login';
             $respuesta = consumir_servicios_REST($url, "POST", $datos);
@@ -122,13 +124,16 @@ if (isset($_SESSION["usuario"])) {
                 die(error_page('Api LOgin', '<h1>Api Login</h1> <p>' . $obj->mensaje_error . '</p>'));
             }
 
+            
 
             if (isset($obj->mensaje)) {
                 $errorUsu = true;
+                 echo $obj->mensaje; 
             } else {
-                $_SESSION["usuario"] = $obj->usuario;
-                $_SESSION["clave"] = $obj->clave;
+                $_SESSION["usuario"] = $obj->usuario->usuario;
+                $_SESSION["clave"] = $obj->usuario->clave;
                 $_SESSION["ultimaAccion"] = time();
+                
 
                 header('Location:index.php');
                 exit;

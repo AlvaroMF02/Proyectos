@@ -10,7 +10,6 @@ $app->post("/login",function($request){
 
     $usuario = $request->getParam('usuario');
     $clave = $request->getParam('clave');
-
     echo json_encode(login($usuario,$clave));
 });
 
