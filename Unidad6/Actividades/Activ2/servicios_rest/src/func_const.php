@@ -1,11 +1,11 @@
 <?php
-define("SERVIDOR_BD", "localhost:3307");
-// define("SERVIDOR_BD", "localhost");
+// define("SERVIDOR_BD", "localhost:3307");
+define("SERVIDOR_BD", "localhost");
 define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_tienda");
 
-// a)
+// devuelve array con productos
 function obtener_productos()
 {
     try {
@@ -33,7 +33,7 @@ function obtener_productos()
     return $respuesta;
 }
 
-// b)
+// devuelve un producto con el mismo codigo
 function obtener_producto($codigo)
 {
     try {
@@ -65,7 +65,7 @@ function obtener_producto($codigo)
     return $respuesta;
 }
 
-// c)
+// inserta un producto
 function insertar_producto($datos)
 {
     try {
@@ -93,7 +93,7 @@ function insertar_producto($datos)
     return $respuesta;
 }
 
-// d
+// actualiza un producto
 function actualizar_producto($datos)
 {
     try {
@@ -121,7 +121,7 @@ function actualizar_producto($datos)
     return $respuesta;
 }
 
-// e)
+// Borra un producto por le codigo
 function borrar_producto($codigo)
 {
     try {
@@ -149,7 +149,7 @@ function borrar_producto($codigo)
     return $respuesta;
 }
 
-// f)
+// Obtiene las familias
 function obtener_familias()
 {
     try {
@@ -177,7 +177,7 @@ function obtener_familias()
     return $respuesta;
 }
 
-// g)
+// Comprueba repes al insertar
 function repetido($tabla, $columna, $valor)
 {
     try {
@@ -205,7 +205,7 @@ function repetido($tabla, $columna, $valor)
     return $respuesta;
 }
 
-// h)
+// Comprueba repes al editar
 function repetido_editar($tabla, $columna, $valor, $columna_id, $valor_id)
 {
     try {
