@@ -1,53 +1,9 @@
 <?php
 
-// ------------------------ EDITAR PRODUCTO ------------------------
-if (isset($_POST["btnContiEdit"])) {
-    echo "miau";
-
-    $errorCod = $_POST["codigo"] == "";
-    // comprobar que no esta repe
-    if (!$errorCod) {
-        // ************* HACERLO CON EL REPETIR DE EDITAR *************
-        $urlInsertCop = DIR_SERV . "/repetido/producto/cod/" . $_POST["codigo"];
-        $respueInsertCop = consumir_servicios_REST($urlInsertCop, "GET");
-        $objInsertcop = json_decode($respueInsertCop);
-
-        if (!$objInsertcop) echo "Error API: " . $respueInsertCop;
-        if (isset($objInsertcop->mensaje_error)) echo "Error consulta: " . $objInsertcop->mensaje_error;
-
-        if ($objInsertcop->repetido) {
-            $errorCod = true;
-        }
-    }
-
-    $errorNombre = $_POST["nombre"] == "";
-    $errorPvp = $_POST["pvp"] == "" || !is_numeric($_POST["pvp"]);
-
-    $errorForm = $errorCod || $errorNombre || $errorPvp;
-
-    // Si no hay errores hago la insercion de los datos
-    if (!$errorForm) {
-        // ------------------------ AÑADIR PRODUCTO ------------------------
-        // crear el producto con los datos del formulario
-        $datos["cod"] = $_POST["codigo"];
-        $datos["nombre"] = $_POST["nombre"];
-        $datos["nombre_corto"] = $_POST["nombre_corto"];
-        $datos["descripcion"] = $_POST["descripcion"];
-        $datos["PVP"] = $_POST["pvp"];
-        $datos["familia"] = $_POST["familia"];
-
-        $urlInsert = DIR_SERV . "/producto/insertar";
-        $respueInsert = consumir_servicios_REST($urlInsert, "POST", $datos);
-        $objInsert = json_decode($respueInsert);
-
-        if (!$objInsert) echo "Error API: " . $respueInsert;
-        if (isset($objInsert->mensaje_error)) echo "Error consulta: " . $objInsert->mensaje_error;
-
-        $_SESSION["mensaje"] = $objInsert->mensaje;
-        header("Location:index.php");
-        exit;
-    }
-    
+if (isset($_POST["btnEditar"])) {
+    $cod = $_POST["btnEditar"];
+} elseif (isset($_POST["btnContEditar"])) {
+    $cod = $_POST["btnContEditar"];
 }
 
 // coger los productos con el id para ponerlos en el value
@@ -121,12 +77,11 @@ echo "<h2>Editar producto</h2>";
             if (!$objFamilia) die("Error API: " . $respuesFamil);
             if (isset($objFamilia->mensaje_error)) echo "Error consulta: " . $objFamilia->mensaje_error;
 
-            // ************************************************************** FALTA PONER LA FAMILIA NO LO COGE **************************************************************
             for ($i = 0; $i < count($objFamilia->productos); $i++) {
                 if ($_POST["familia"] == $objFamilia->productos[$i]->cod) {
                     echo "<option selected value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
 
-                } elseif ($_POST["familia"] == $objDetall->producto->familia) {
+                } elseif ( $objFamilia->productos[$i]->cod == $objDetall->producto->familia) {
 
                     echo "<option selected value='" . $objFamilia->productos[$i]->cod . "'>" . $objFamilia->productos[$i]->cod . "</option>";
                 } else {
@@ -139,7 +94,7 @@ echo "<h2>Editar producto</h2>";
     </p>
 
     <p>
-        <button type="submit" name="btnContiEdit">Editar</button>
+        <button type="submit" name="btnContiEdit" value="<?php echo $cod ?>">Editar</button>
         <button type="submit">Cancelar</button>
     </p>
 

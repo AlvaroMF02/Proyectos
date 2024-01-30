@@ -23,6 +23,57 @@ if (isset($_POST["btnBorrar"])) {
     require "vistas/vistaBorrar.php";
 }
 
+// ------------------------ EDITAR PRODUCTO ------------------------
+if (isset($_POST["btnContiEdit"])) {
+    echo "miau";
+
+    $errorCod = $_POST["codigo"] == "";
+    // comprobar que no esta repe
+    if (!$errorCod) {
+        // ************* HACERLO CON EL REPETIR DE EDITAR *************
+        // /repetido/{tabla}/{columna}/{valor}/{columna_id}/{valor_id}
+        $urlInsertCop = DIR_SERV . "/repetido/nombre_corto/" . $_POST["nombre_corto"] . "/cod/".$_POST["btnContiEdit"];
+        $respueInsertCop = consumir_servicios_REST($urlInsertCop, "GET");
+        $objInsertcop = json_decode($respueInsertCop);
+
+        if (!$objInsertcop) echo "Error API: " . $respueInsertCop;
+        if (isset($objInsertcop->mensaje_error)) echo "Error consulta: " . $objInsertcop->mensaje_error;
+
+        if ($objInsertcop->repetido) {
+            $errorCod = true;
+        }
+    }
+
+    $errorNombre = $_POST["nombre"] == "";
+    $errorPvp = $_POST["pvp"] == "" || !is_numeric($_POST["pvp"]);
+
+    $errorForm = $errorCod || $errorNombre || $errorPvp;
+
+    // Si no hay errores hago la insercion de los datos
+    if (!$errorForm) {
+        // ------------------------ AÑADIR PRODUCTO ------------------------
+        // crear el producto con los datos del formulario
+        $datos["cod"] = $_POST["codigo"];
+        $datos["nombre"] = $_POST["nombre"];
+        $datos["nombre_corto"] = $_POST["nombre_corto"];
+        $datos["descripcion"] = $_POST["descripcion"];
+        $datos["PVP"] = $_POST["pvp"];
+        $datos["familia"] = $_POST["familia"];
+
+        $urlInsert = DIR_SERV . "/producto/insertar";
+        $respueInsert = consumir_servicios_REST($urlInsert, "POST", $datos);
+        $objInsert = json_decode($respueInsert);
+
+        if (!$objInsert) echo "Error API: " . $respueInsert;
+        if (isset($objInsert->mensaje_error)) echo "Error consulta: " . $objInsert->mensaje_error;
+
+        $_SESSION["mensaje"] = $objInsert->mensaje;
+        header("Location:index.php");
+        exit;
+    }
+    
+}
+
 ?>
 
 <!DOCTYPE html>
