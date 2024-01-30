@@ -1,6 +1,6 @@
 <?php
 define("MINUTOS",5);
-define("DIR_SERV","http://localhost/Proyectos/Curso23_24/Servicios_Webs/Ejercicio3/servicios_rest");
+define("DIR_SERV","http://localhost/Proyectos/Unidad6/Login_SW_1/Ejercicio3/servicios_rest/");
 
 function consumir_servicios_REST($url,$metodo,$datos=null)
 {
