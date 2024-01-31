@@ -26,11 +26,12 @@ if (isset($_POST["btnBorrar"])) {
 // ------------------------ EDITAR PRODUCTO ------------------------
 if (isset($_POST["btnContiEdit"])) {
 
-    
-    // mira que nombre_corto no sea repe
+
     $error_nombre_corto = $_POST["nombre_corto"] == "";
+
+    // mira que nombre_corto no sea repe
     if (!$error_nombre_corto) {
-       
+
         $urlEdit = DIR_SERV . "/repetido/producto/nombre_corto/" . urlencode($_POST["nombre_corto"]) . "/cod/" . $_POST["btnContiEdit"];
         $respEdit = consumir_servicios_REST($urlEdit, "GET");
         $objEdit = json_decode($respEdit);
@@ -38,33 +39,34 @@ if (isset($_POST["btnContiEdit"])) {
         if (!$objEdit) echo "Error API: " . $respEdit;
         if (isset($objEdit->mensaje_error)) echo "Error consulta: " . $objEdit->mensaje_error;
 
-        if (isset($objEdit->repetido)) {
-            
+        // true si esta repe
+        if ($objEdit->repetido) {
+
             $error_nombre_corto = true;
         }
     }
-    $errorPvp = $_POST["pvp"] == "" || !is_numeric($_POST["pvp"]) || $_POST["pvp"]<=0;
+    $errorPvp = $_POST["pvp"] == "" || !is_numeric($_POST["pvp"]) || $_POST["pvp"] <= 0;
 
     $errorForm = $error_nombre_corto || $errorPvp;
 
-    if(!$errorForm){
-       
-    $datos["nombre"] = $_POST["nombre"];
-    $datos["nombre_corto"] = $_POST["nombre_corto"];
-    $datos["descripcion"] = $_POST["descripcion"];
-    $datos["PVP"] = $_POST["pvp"];
-    $datos["familia"] = $_POST["familia"];
+    if (!$errorForm) {
 
-    $urlEditar = DIR_SERV . "/producto/actualizar/".urlencode($_POST["btnContiEdit"]);
-    $respueEditar = consumir_servicios_REST($urlEditar, "PUT", $datos);
-    $$objEditar = json_decode($respueEditar);
+        $datos["nombre"] = $_POST["nombre"];
+        $datos["nombre_corto"] = $_POST["nombre_corto"];
+        $datos["descripcion"] = $_POST["descripcion"];
+        $datos["PVP"] = $_POST["pvp"];
+        $datos["familia"] = $_POST["familia"];
 
-    if (!$$objEditar) echo "Error API: " . $respueEditar;
-    if (isset($objEditar->mensaje_error)) echo "Error consulta: " . $objEditar->mensaje_error;
+        $urlEditar = DIR_SERV . "/producto/actualizar/" . urlencode($_POST["btnContiEdit"]);
+        $respueEditar = consumir_servicios_REST($urlEditar, "PUT", $datos);
+        $$objEditar = json_decode($respueEditar);
 
-    $_SESSION["mensaje"] = $objEditar->mensaje;
-    header("Location:index.php");
-    exit;
+        if (!$$objEditar) echo "Error API: " . $respueEditar;
+        if (isset($objEditar->mensaje_error)) echo "Error consulta: " . $objEditar->mensaje_error;
+
+        $_SESSION["mensaje"] = $objEditar->mensaje;
+        header("Location:index.php");
+        exit;
     }
 }
 

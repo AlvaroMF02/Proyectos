@@ -1,6 +1,6 @@
 <?php
-// define("SERVIDOR_BD", "localhost:3307");
-define("SERVIDOR_BD", "localhost");
+define("SERVIDOR_BD", "localhost:3307");
+// define("SERVIDOR_BD", "localhost");
 define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_tienda");
@@ -226,7 +226,7 @@ function repetido_editar($tabla, $columna, $valor, $columna_id, $valor_id)
         return $respuesta;
     }
 
-    $respuesta["repetido"] = ($sentencia->rowCount()) > 0;
+    $respuesta["repetido"] = ($sentencia->rowCount()) > 0; // true si esta repe
     $sentencia = null;
     $conexion = null;
     return $respuesta;
