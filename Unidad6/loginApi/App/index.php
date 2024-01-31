@@ -3,7 +3,7 @@
 session_name("loginApi");
 session_start();
 
-define("MINUTOS",5);
+define("MINUTOS", 5);
 
 // Conexion con la API
 define("DIR_SERV", "http://localhost/Proyectos/Unidad6/loginApi/servicios_rest");
@@ -21,8 +21,10 @@ function consumir_servicios_REST($url, $metodo, $datos = null)
     return $respuesta;
 }
 
-if(isset($_POST["btnSalir"])){
+if (isset($_POST["btnSalir"])) {
     session_destroy();
+    header("Location:index.php");
+    exit;
 }
 
 function error_page($title, $body)
@@ -45,7 +47,7 @@ function error_page($title, $body)
 
 if (isset($_SESSION["usuario"])) {
     // logeado
-    echo "entra";
+
     // seguridad
     $datos['usuario'] = $_SESSION['usuario'];
     $datos['clave'] = $_SESSION['clave'];
@@ -85,13 +87,11 @@ if (isset($_SESSION["usuario"])) {
 
     $_SESSION["ultimaAccion"] = time();
 
-    if($datos_usuario_log->tipo == "normal"){
+    if ($datos_usuario_log->tipo == "normal") {
         require "vistas/vistaNormal.php";
-    }else{
+    } else {
         require "vistas/vistaAdmin.php";
     }
-
-
 } else {
     // no logeado
 
@@ -99,15 +99,15 @@ if (isset($_SESSION["usuario"])) {
     if (isset($_POST["btnLogin"])) {
         $errorUsu = $_POST["usuario"] == "";
         $errorClav = $_POST["clave"] == "";
-              
-        
+
+
         $errorForm = $errorClav || $errorUsu;
 
         // recojo datos
         if (!$errorForm) {
             $datos['usuario'] = $_POST['usuario'];
             $datos['clave'] = md5($_POST['clave']);
-            
+
 
             $url = DIR_SERV . '/login';
             $respuesta = consumir_servicios_REST($url, "POST", $datos);
@@ -124,27 +124,25 @@ if (isset($_SESSION["usuario"])) {
                 die(error_page('Api LOgin', '<h1>Api Login</h1> <p>' . $obj->mensaje_error . '</p>'));
             }
 
-            
+
 
             if (isset($obj->mensaje)) {
                 $errorUsu = true;
-                 echo $obj->mensaje; 
+                $_SESSION["seguridad"] = $obj->mensaje;
             } else {
                 $_SESSION["usuario"] = $obj->usuario->usuario;
                 $_SESSION["clave"] = $obj->usuario->clave;
                 $_SESSION["ultimaAccion"] = time();
-                
+
 
                 header('Location:index.php');
                 exit;
             }
         }
     }
-
-
-
-
 ?>
+
+
     <!DOCTYPE html>
     <html lang="en">
 
@@ -152,6 +150,15 @@ if (isset($_SESSION["usuario"])) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login con API</title>
+        <style>
+            .seguridad {
+                color: blue;
+            }
+
+            .error {
+                color: red;
+            }
+        </style>
     </head>
 
     <body>
@@ -183,10 +190,10 @@ if (isset($_SESSION["usuario"])) {
 
         </form>
         <?php
-            if (isset($_SESSION["seguridad"])) {
-                echo $_SESSION["seguridad"];
-                session_destroy();
-            }
+        if (isset($_SESSION["seguridad"])) {
+            echo "<span class='seguridad'>" . $_SESSION["seguridad"] . "</span>";
+            session_destroy();
+        }
         ?>
     </body>
 

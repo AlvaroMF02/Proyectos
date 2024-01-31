@@ -25,14 +25,13 @@ if (isset($_POST["btnBorrar"])) {
 
 // ------------------------ EDITAR PRODUCTO ------------------------
 if (isset($_POST["btnContiEdit"])) {
-    echo "miau";
 
     $errorCod = $_POST["codigo"] == "";
     // comprobar que no esta repe
     if (!$errorCod) {
-        // ************* HACERLO CON EL REPETIR DE EDITAR *************
+        // select * from $tabla where $columna = $valor AND $columna_id <> $valor_id
         // /repetido/{tabla}/{columna}/{valor}/{columna_id}/{valor_id}
-        $urlInsertCop = DIR_SERV . "/repetido/nombre_corto/" . $_POST["nombre_corto"] . "/cod/".$_POST["btnContiEdit"];
+        $urlInsertCop = DIR_SERV . "/repetido/producto/nombre_corto/" . $_POST["nombre_corto"] . "/cod/".$_POST["btnContiEdit"];
         $respueInsertCop = consumir_servicios_REST($urlInsertCop, "GET");
         $objInsertcop = json_decode($respueInsertCop);
 
