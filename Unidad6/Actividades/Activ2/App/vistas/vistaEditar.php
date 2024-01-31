@@ -2,12 +2,12 @@
 
 if (isset($_POST["btnEditar"])) {
     $cod = $_POST["btnEditar"];
-} elseif (isset($_POST["btnContEditar"])) {
-    $cod = $_POST["btnContEditar"];
+} elseif (isset($_POST["btnContiEdit"])) {
+    $cod = $_POST["btnContiEdit"];
 }
 
 // coger los productos con el id para ponerlos en el value
-$urlDetall = DIR_SERV . "/producto/" . urlencode($_POST["btnEditar"]);
+$urlDetall = DIR_SERV . "/producto/" . urlencode($cod);
 $respuDetall = consumir_servicios_REST($urlDetall, "GET");
 $objDetall = json_decode($respuDetall);
 
@@ -20,30 +20,13 @@ if (isset($objDetall->mensaje_error)) {
 }
 
 
-echo "<h2>Editar producto</h2>";
+echo "<h2>Editar producto ".$cod."</h2>";
 ?>
 <form action="index.php" method="post">
-    <p>
-        <label for="codigo">Código</label>
-        <input type="text" name="codigo" id="codigo" maxlength="12" value="<?php echo $objDetall->producto->cod ?>">
-        <?php
-        if (isset($_POST["btnContiEdit"]) && $errorCod) {
-            if ($_POST["codigo"] == "") {
-                echo "<span class='error'>Campo vacio</span>";
-            } else {
-                echo "<span class='error'>Código repetido</span>";
-            }
-        }
-        ?>
-    </p>
+    
     <p>
         <label for="nombre">Nombre</label>
         <input type="text" name="nombre" id="nombre" maxlength="200" value="<?php echo $objDetall->producto->nombre ?>">
-        <?php
-        if (isset($_POST["btnContiEdit"])  && $errorNombre) {
-            echo "<span class='error'>Campo vacio</span>";
-        }
-        ?>
     </p>
     <p>
         <label for="nombre_corto">Nombre corto</label>

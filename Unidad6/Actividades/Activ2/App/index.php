@@ -26,51 +26,46 @@ if (isset($_POST["btnBorrar"])) {
 // ------------------------ EDITAR PRODUCTO ------------------------
 if (isset($_POST["btnContiEdit"])) {
 
-    $errorCod = $_POST["codigo"] == "";
-    // comprobar que no esta repe
-    if (!$errorCod) {
-        // select * from $tabla where $columna = $valor AND $columna_id <> $valor_id
-        // /repetido/{tabla}/{columna}/{valor}/{columna_id}/{valor_id}
-        $urlInsertCop = DIR_SERV . "/repetido/producto/nombre_corto/" . $_POST["nombre_corto"] . "/cod/".$_POST["btnContiEdit"];
-        $respueInsertCop = consumir_servicios_REST($urlInsertCop, "GET");
-        $objInsertcop = json_decode($respueInsertCop);
+    
+    // mira que nombre_corto no sea repe
+    $error_nombre_corto = $_POST["nombre_corto"] == "";
+    if (!$error_nombre_corto) {
+       
+        $urlEdit = DIR_SERV . "/repetido/producto/nombre_corto/" . urlencode($_POST["nombre_corto"]) . "/cod/" . $_POST["btnContiEdit"];
+        $respEdit = consumir_servicios_REST($urlEdit, "GET");
+        $objEdit = json_decode($respEdit);
 
-        if (!$objInsertcop) echo "Error API: " . $respueInsertCop;
-        if (isset($objInsertcop->mensaje_error)) echo "Error consulta: " . $objInsertcop->mensaje_error;
+        if (!$objEdit) echo "Error API: " . $respEdit;
+        if (isset($objEdit->mensaje_error)) echo "Error consulta: " . $objEdit->mensaje_error;
 
-        if ($objInsertcop->repetido) {
-            $errorCod = true;
+        if (isset($objEdit->repetido)) {
+            
+            $error_nombre_corto = true;
         }
     }
+    $errorPvp = $_POST["pvp"] == "" || !is_numeric($_POST["pvp"]) || $_POST["pvp"]<=0;
 
-    $errorNombre = $_POST["nombre"] == "";
-    $errorPvp = $_POST["pvp"] == "" || !is_numeric($_POST["pvp"]);
+    $errorForm = $error_nombre_corto || $errorPvp;
 
-    $errorForm = $errorCod || $errorNombre || $errorPvp;
+    if(!$errorForm){
+       
+    $datos["nombre"] = $_POST["nombre"];
+    $datos["nombre_corto"] = $_POST["nombre_corto"];
+    $datos["descripcion"] = $_POST["descripcion"];
+    $datos["PVP"] = $_POST["pvp"];
+    $datos["familia"] = $_POST["familia"];
 
-    // Si no hay errores hago la insercion de los datos
-    if (!$errorForm) {
-        // ------------------------ AÑADIR PRODUCTO ------------------------
-        // crear el producto con los datos del formulario
-        $datos["cod"] = $_POST["codigo"];
-        $datos["nombre"] = $_POST["nombre"];
-        $datos["nombre_corto"] = $_POST["nombre_corto"];
-        $datos["descripcion"] = $_POST["descripcion"];
-        $datos["PVP"] = $_POST["pvp"];
-        $datos["familia"] = $_POST["familia"];
+    $urlEditar = DIR_SERV . "/producto/actualizar/".urlencode($_POST["btnContiEdit"]);
+    $respueEditar = consumir_servicios_REST($urlEditar, "PUT", $datos);
+    $$objEditar = json_decode($respueEditar);
 
-        $urlInsert = DIR_SERV . "/producto/insertar";
-        $respueInsert = consumir_servicios_REST($urlInsert, "POST", $datos);
-        $objInsert = json_decode($respueInsert);
+    if (!$$objEditar) echo "Error API: " . $respueEditar;
+    if (isset($objEditar->mensaje_error)) echo "Error consulta: " . $objEditar->mensaje_error;
 
-        if (!$objInsert) echo "Error API: " . $respueInsert;
-        if (isset($objInsert->mensaje_error)) echo "Error consulta: " . $objInsert->mensaje_error;
-
-        $_SESSION["mensaje"] = $objInsert->mensaje;
-        header("Location:index.php");
-        exit;
+    $_SESSION["mensaje"] = $objEditar->mensaje;
+    header("Location:index.php");
+    exit;
     }
-    
 }
 
 ?>
@@ -131,7 +126,7 @@ if (isset($_POST["btnContiEdit"])) {
     if (isset($obj->mensaje_error)) {
         die("<p>" . $obj->mensaje_error . "</p></body></html>");
     }
-    
+
 
     // ------------------------ MOSTRAR DETALLES DEL PRODUCTO ------------------------
     if (isset($_POST["btnMostrar"])) {

@@ -60,5 +60,4 @@ $app->get("/repetido/{tabla}/{columna}/{valor}", function ($request) {
 $app->get("/repetido/{tabla}/{columna}/{valor}/{columna_id}/{valor_id}", function ($request) {
     echo json_encode(repetido_editar($request->getAttribute("tabla"), $request->getAttribute("columna"), $request->getAttribute("valor"), $request->getAttribute("columna_id"), $request->getAttribute("valor_id")));
 });
-
 $app->run();
