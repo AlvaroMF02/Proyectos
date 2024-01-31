@@ -2,7 +2,7 @@
 header('Access-Control-Allow-Origin: *'); 
 
 $_POST = json_decode(file_get_contents("php://input"),true);
- if ($_POST["telefono"]=="alvaro" && $_POST["password"]=="81dc9bdb52d04dc20036dbd8313ed055"){
+ if ($_POST["user"]=="alvaro" && $_POST["password"]=="81dc9bdb52d04dc20036dbd8313ed055"){
     $respuesta["usuario"]="fulanico";
     $respuesta["mensaje"]="Acceso correcto";
  }else{
