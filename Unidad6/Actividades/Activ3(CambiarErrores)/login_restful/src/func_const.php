@@ -32,6 +32,33 @@ function usuarios()
     return $respuesta;
 }
 
+// muestra un usuario con el mismo id
+function buscarUsuario($id)
+{
+    try {
+        $conexion = new PDO("mysql:host=" . SERVIDOR_BD . ";dbname=" . NOMBRE_BD, USUARIO_BD, CLAVE_BD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+    } catch (PDOException $e) {
+        $respuesta["error"] = "Error en la conexión: " . $e->getMessage();
+        return $respuesta;
+    }
+
+    try {
+        $consulta = "select * from usuarios  where id_usuario = ? ";
+        $sentencia = $conexion->prepare($consulta);
+        $sentencia->execute([$id]);
+    } catch (PDOException $e) {
+        $sentencia = null;
+        $conexion = null;
+        $respuesta["error"] = "Error en la consulta: " . $e->getMessage();
+        return $respuesta;
+    }
+
+    $respuesta["usuario"] = ($sentencia->fetch(PDO::FETCH_ASSOC));
+    $sentencia = null;
+    $conexion = null;
+    return $respuesta;
+}
+
 // Crea un usuario y te muestra el id del usuario
 function crearUsuario($datos)
 {
@@ -124,7 +151,7 @@ function borrarUsu($id){
         $sentencia = $conexion->prepare($consulta);
         $sentencia->execute([$id]);
     } catch (PDOException $e) {
-        $respuesta["error"] = "Error en la consulat: " . $e;
+        $respuesta["error"] = "Error en la consulta: " . $e;
         $conexion = null;
         $sentencia = null;
         return $respuesta;

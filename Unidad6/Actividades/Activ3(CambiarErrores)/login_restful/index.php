@@ -11,6 +11,12 @@ $app->get("/usuarios",function(){
 
     echo json_encode(usuarios());
 });
+// a2) Nos muestra el usuario con el id
+$app->get("/usuarios/{id}",function($request){
+
+    $id = $request->getAttribute("id");
+    echo json_encode(buscarUsuario($id));
+});
 
 // b) Crea un usuario nuevo
 $app->post("/crearUsuario",function($request){
@@ -35,7 +41,6 @@ $app->post("/login",function($request){
 // d) Actualizar a un usuario
 $app->put("/actualizarUsuario/{idUsuario}",function($request){
 
-    
     $datos["nombre"] = $request->getParam("nombre");
     $datos["usuario"] = $request->getParam("usuario");
     $datos["clave"] = $request->getParam("clave");
