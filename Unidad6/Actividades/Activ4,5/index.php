@@ -2,7 +2,7 @@
 require "src/ctes_funciones.php";
 
 // Funcion para la conexion a la API
-define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/Activ3(CambiarErrores)/login_restful/");
+define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/Activ3(CambiarErrores)/login_restful");
 
 function consumir_servicios_REST($url, $metodo, $datos = null)
 {
@@ -127,7 +127,11 @@ if(isset($_POST["btnContBorrar"]))          // ME SALE METHOD NOT ALLOWED WTF
     }
     elseif(isset($_POST["btnBorrar"]))
     {
-       require "vistas/vista_conf_borrar.php";
+        echo "<p>Se dispone usted a borrar a usuario <strong>".$_POST["nombre_usuario"]."</strong></p>";
+        echo "<form action='index.php' method='post'>";
+        echo "<p><button type='submit' name='btnContBorrar' value='".$_POST["btnBorrar"]."'>Continuar</button> ";
+        echo "<button type='submit'>Atrás</button></p>";
+        echo "</form>";
     }
     elseif(isset($_POST["btnEditar"]) || isset($_POST["btnContEditar"]) )
     {
@@ -135,7 +139,9 @@ if(isset($_POST["btnContBorrar"]))          // ME SALE METHOD NOT ALLOWED WTF
     }
     else
     {
-        require "vistas/vista_nuevo.php";
+        echo "<form action='usuario_nuevo.php' method='post'>";
+        echo "<p><button type='submit' name='btnNuevoUsuario'>Insertar nuevo Usuario</button></p>";
+        echo "</form>";
     }
     
     mysqli_close($conexion);
