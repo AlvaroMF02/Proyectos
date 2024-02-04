@@ -10,19 +10,20 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
         $error_usuario=$_POST["usuario"]==""|| strlen($_POST["usuario"])>20;
         if(!$error_usuario)
         {
-            try{
-                $conexion=mysqli_connect("localhost","jose","josefa","bd_foro");
-                mysqli_set_charset($conexion,"utf8");
-            }
-            catch(Exception $e)
-            {
-                die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
-            }
+            // ------------------------ COMPROBAR USUARIO REPE ------------------------
+            // try{
+            //     $conexion=mysqli_connect("localhost","jose","josefa","bd_foro");
+            //     mysqli_set_charset($conexion,"utf8");
+            // }
+            // catch(Exception $e)
+            // {
+            //     die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
+            // }
 
-            $error_usuario=repetido($conexion,"usuarios","usuario",$_POST["usuario"]);
+            // $error_usuario=repetido($conexion,"usuarios","usuario",$_POST["usuario"]);
             
-            if(is_string($error_usuario))
-                die($error_usuario);
+            // if(is_string($error_usuario))
+            //     die($error_usuario);
 
         }
 
@@ -30,39 +31,40 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
         $error_email=$_POST["email"]=="" || strlen($_POST["email"])>50 || !filter_var($_POST["email"],FILTER_VALIDATE_EMAIL);
         if(!$error_email)
         {
-            if(!isset($conexion))
-            {
-                try{
-                    $conexion=mysqli_connect("localhost","jose","josefa","bd_foro");
-                    mysqli_set_charset($conexion,"utf8");
-                }
-                catch(Exception $e)
-                {
-                    die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
-                }
-            }
-            $error_email=repetido($conexion,"usuarios","email",$_POST["email"]);
+            // ------------------------ COMPROBAR EMAIL REPE ------------------------
+            // if(!isset($conexion))
+            // {
+            //     try{
+            //         $conexion=mysqli_connect("localhost","jose","josefa","bd_foro");
+            //         mysqli_set_charset($conexion,"utf8");
+            //     }
+            //     catch(Exception $e)
+            //     {
+            //         die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
+            //     }
+            // }
+            // $error_email=repetido($conexion,"usuarios","email",$_POST["email"]);
             
-            if(is_string($error_email))
-                die($error_email);
+            // if(is_string($error_email))
+            //     die($error_email);
 
             
         }
         $error_form=$error_nombre||$error_usuario||$error_clave||$error_email;
 
-        if(!$error_form)
+        if(!$error_form)        // ----------------------- INSERTAR USUARIO -----------------------
         {
-            try{
-                $consulta="insert into usuarios (nombre,usuario,clave,email) values ('".$_POST["nombre"]."','".$_POST["usuario"]."','".md5($_POST["clave"])."','".$_POST["email"]."')";
-                mysqli_query($conexion,$consulta);
-            }
-            catch(Exception $e)
-            {
-                mysqli_close($conexion);
-                die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No se ha podido hacer la consulta: ".$e->getMessage()."</p>"));
-            }
+            // try{
+            //     $consulta="insert into usuarios (nombre,usuario,clave,email) values ('".$_POST["nombre"]."','".$_POST["usuario"]."','".md5($_POST["clave"])."','".$_POST["email"]."')";
+            //     mysqli_query($conexion,$consulta);
+            // }
+            // catch(Exception $e)
+            // {
+            //     mysqli_close($conexion);
+            //     die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No se ha podido hacer la consulta: ".$e->getMessage()."</p>"));
+            // }
             
-            mysqli_close($conexion);
+            // mysqli_close($conexion);
 
             header("Location:index.php");
             exit;

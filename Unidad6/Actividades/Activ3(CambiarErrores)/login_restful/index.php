@@ -57,4 +57,7 @@ $app->delete("/borrarUsuario/{idUsuario}",function($request){
 
 });
 
+// comprobar usuario repetido
+// comprobar email repetido
+
 $app->run();
