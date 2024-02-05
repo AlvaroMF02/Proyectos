@@ -2,7 +2,7 @@
 require "src/ctes_funciones.php";
 
 // Funcion para la conexion a la API
-define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/Activ3(CambiarErrores)/login_restful");
+define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/Activ3/login_restful");
 
 function consumir_servicios_REST($url, $metodo, $datos = null)
 {
