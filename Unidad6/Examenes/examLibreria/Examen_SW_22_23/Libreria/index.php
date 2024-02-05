@@ -62,7 +62,11 @@ function error_page($title, $cabecera, $mensaje)
     if(!$obj) die("Error en la API:" .$respuesta . "</body></html>");
     if(isset($obj->error)) die ("Error en la consulta:" . $obj->error. "</body></html>");
     
-    echo $obj->libros->descripcion;
+    echo $obj->libros[0]->descripcion;
+    
+    foreach ($obj->libros as $opciones) {
+        echo $opciones->descripcion;
+    }
 
     ?>
 
