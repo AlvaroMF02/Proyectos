@@ -100,8 +100,8 @@ if(isset($_POST["btnContBorrar"]))          // ME SALE METHOD NOT ALLOWED WTF
     if(!$obj) echo "Error en la API:" .$respuesta;
     if(isset($obj->error)) echo "Error en la consulta:" . $obj->error;
     
-    // header("Location:index.php");
-    // exit();
+    header("Location:index.php");
+    exit();
 }
 
 ?>

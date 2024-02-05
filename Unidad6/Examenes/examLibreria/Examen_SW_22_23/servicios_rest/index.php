@@ -6,19 +6,15 @@ require __DIR__ . '/Slim/autoload.php';
 $app= new \Slim\App;
 
 
+// recoger libros
+$app->get("/obtenerLibros",function(){
 
-$app->get('/conexion_PDO',function($request){
-
-    echo json_encode(conexion_pdo());
-});
-
-$app->get('/conexion_MYSQLI',function($request){
-    
-    echo json_encode(conexion_mysqli());
+    return json_encode(libros());
 });
 
 
 
-// Una vez creado servicios los pongo a disposición
+
+
 $app->run();
 ?>
