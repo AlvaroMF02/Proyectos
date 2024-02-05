@@ -10,21 +10,20 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
         $error_usuario=$_POST["usuario"]==""|| strlen($_POST["usuario"])>20;
         if(!$error_usuario)
         {
-            // ------------------------ COMPROBAR USUARIO REPE ------------------------
-            // try{
-            //     $conexion=mysqli_connect("localhost","jose","josefa","bd_foro");
-            //     mysqli_set_charset($conexion,"utf8");
-            // }
-            // catch(Exception $e)
-            // {
-            //     die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
-            // }
+            // ------------------------ COMPROBAR USUARIO REPE ------------------------         ( ME HE CARGADO EL XAMMP ???? )
+            $url = DIR_SERV . "/comprobarRepetido/usuarios/usuario/".$_POST["usuario"];
+            $respuesta = consumir_servicios_REST($url,"GET");
+            $obj = json_decode($respuesta);
+        
+            if(!$obj) echo "Error en la API:" .$respuesta;
+            if(isset($obj->error)) echo "Error en la consulta:" . $obj->error;
 
-            // $error_usuario=repetido($conexion,"usuarios","usuario",$_POST["usuario"]);
-            
-            // if(is_string($error_usuario))
+            // lo pone true si esta repe
+            $error_usuario = $obj->repetido;
+
+            // if ($obj->repetido){
             //     die($error_usuario);
-
+            // }
         }
 
         $error_clave=$_POST["clave"]=="" || strlen($_POST["clave"])>15;
@@ -32,50 +31,39 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
         if(!$error_email)
         {
             // ------------------------ COMPROBAR EMAIL REPE ------------------------
-            // if(!isset($conexion))
-            // {
-            //     try{
-            //         $conexion=mysqli_connect("localhost","jose","josefa","bd_foro");
-            //         mysqli_set_charset($conexion,"utf8");
-            //     }
-            //     catch(Exception $e)
-            //     {
-            //         die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No he podido conectarse a la base de batos: ".$e->getMessage()."</p>"));
-            //     }
+            $url = DIR_SERV . "/comprobarRepetido/usuarios/email/".$_POST["email"];
+            $respuesta = consumir_servicios_REST($url,"GET");
+            $obj = json_decode($respuesta);
+        
+            if(!$obj) echo "Error en la API:" .$respuesta;
+            if(isset($obj->error)) echo "Error en la consulta:" . $obj->error;
+            // lo pone true si esta repe
+            $error_email = $obj->repetido;
+            // if ($obj->repetido){
+            //     die($error_usuario);
             // }
-            // $error_email=repetido($conexion,"usuarios","email",$_POST["email"]);
-            
-            // if(is_string($error_email))
-            //     die($error_email);
-
-            
         }
+
         $error_form=$error_nombre||$error_usuario||$error_clave||$error_email;
 
         if(!$error_form)        // ----------------------- INSERTAR USUARIO -----------------------
         {
-            // try{
-            //     $consulta="insert into usuarios (nombre,usuario,clave,email) values ('".$_POST["nombre"]."','".$_POST["usuario"]."','".md5($_POST["clave"])."','".$_POST["email"]."')";
-            //     mysqli_query($conexion,$consulta);
-            // }
-            // catch(Exception $e)
-            // {
-            //     mysqli_close($conexion);
-            //     die(error_page("Práctica 1º CRUD","<h1>Práctica 1º CRUD</h1><p>No se ha podido hacer la consulta: ".$e->getMessage()."</p>"));
-            // }
-            
-            // mysqli_close($conexion);
+            $datos["nombre"] = $_POST["nombre"];
+            $datos["usuario"] = $_POST["usuario"];
+            $datos["clave"] = $_POST["clave"];
+            $datos["email"] = $_POST["email"];
+
+            $url = DIR_SERV . "/crearUsuario";
+            $respuesta = consumir_servicios_REST($url,"GET",$datos);
+            $obj = json_decode($respuesta);
+        
+            if(!$obj) echo "Error en la API:" .$respuesta;
+            if(isset($obj->error)) echo "Error en la consulta:" . $obj->error;
+
 
             header("Location:index.php");
             exit;
-            
         }
-
-        //Por aquí continuo sólo si hay errores en el formulario
-
-        if(isset($conexion))
-            mysqli_close($conexion);
-        
     }
 ?>
 <!DOCTYPE html>

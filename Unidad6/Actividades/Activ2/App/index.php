@@ -41,7 +41,6 @@ if (isset($_POST["btnContiEdit"])) {
 
         // true si esta repe
         if ($objEdit->repetido) {
-
             $error_nombre_corto = true;
         }
     }

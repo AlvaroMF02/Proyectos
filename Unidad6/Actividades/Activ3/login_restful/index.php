@@ -57,7 +57,18 @@ $app->delete("/borrarUsuario/{idUsuario}",function($request){
 
 });
 
-// comprobar usuario repetido
-// comprobar email repetido
+// comprobar valores repetido al insertar
+$app->get("/comprobarRepetido/{tabla}/{columna}/{valor}",function($request){
+
+    echo json_encode(comprobarRepe($request->getAttribute("tabla"),$request->getAttribute("columna"),$request->getAttribute("valor")));
+
+});
+// comprobar valores repetido al editar
+$app->get("/comprobarRepetidoEdit/{tabla}/{columna}/{valor}/{columnaId}/{valorId}",function($request){
+
+    echo json_encode(comprobarRepeEdit($request->getAttribute("tabla"),$request->getAttribute("columna"),$request->getAttribute("valor"),$request->getAttribute("columnaId"),$request->getAttribute("valorId")));
+
+});
+
 
 $app->run();
