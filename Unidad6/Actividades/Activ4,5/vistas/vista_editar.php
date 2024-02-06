@@ -5,29 +5,26 @@ else
     $id_usuario = $_POST["btnContEditar"];
 
 
-try {
-    $consulta = "select * from usuarios where id_usuario='" . $id_usuario . "'";
-    $resultado = mysqli_query($conexion, $consulta);
-} catch (Exception $e) {
-    mysqli_close($conexion);
-    die("<p>No se ha podido realizar la consulta: " . $e->getMessage() . "</p></body></html>");
-}
-if (mysqli_num_rows($resultado) > 0) {
-    if (isset($_POST["btnEditar"])) {    //Recojo datos obtenidos de la BD
-        $datos_usuario = mysqli_fetch_assoc($resultado);
-        $nombre = $datos_usuario["nombre"];
-        $usuario = $datos_usuario["usuario"];
-        //$clave=$datos_usuario["clave"];
-        $email = $datos_usuario["email"];
-    } else {
-        $nombre = $_POST["nombre"];
-        $usuario = $_POST["usuario"];
-        //$clave=$datos_usuario["clave"];
-        $email = $_POST["email"];
-    }
-    mysqli_free_result($resultado);
-} else {
+// RECOJER LOS DATOS DEL USUARIO POR EL ID PARA PONERLO EN LOS INPUTS
+
+$url = DIR_SERV . "/usuarios/" . $id_usuario;
+$respuesta = consumir_servicios_REST($url, "GET");
+$obj = json_decode($respuesta);
+
+if (!$obj) echo "Error en la API:" . $respuesta;
+if (isset($obj->error)) {
     $mensaje_error_usuario = "<p>El usuario seleccionado ya no se encuentra registrado en la BD</p>";
+    echo "Error en la consulta:" . $obj->error;
+}
+
+if (isset($_POST["btnEditar"])) {    //Recojo datos obtenidos de la BD
+    $nombre = $obj->usuario->nombre;
+    $usuario = $obj->usuario->usuario;
+    $email = $obj->usuario->email;
+} else {
+    $nombre = $_POST["nombre"];
+    $usuario = $_POST["usuario"];
+    $email = $_POST["email"];
 }
 
 if (isset($mensaje_error_usuario))

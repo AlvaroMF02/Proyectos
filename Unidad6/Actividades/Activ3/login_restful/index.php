@@ -21,10 +21,10 @@ $app->get("/usuarios/{id}",function($request){
 // b) Crea un usuario nuevo
 $app->post("/crearUsuario",function($request){
 
-    $datos["nombre"] = $request->getParam("nombre");
-    $datos["usuario"] = $request->getParam("usuario");
-    $datos["clave"] = $request->getParam("clave");
-    $datos["email"] = $request->getParam("email");
+    $datos[] = $request->getParam("nombre");
+    $datos[] = $request->getParam("usuario");
+    $datos[] = $request->getParam("clave");
+    $datos[] = $request->getParam("email");
 
     echo json_encode((crearUsuario($datos)));
 });
@@ -41,11 +41,11 @@ $app->post("/login",function($request){
 // d) Actualizar a un usuario
 $app->put("/actualizarUsuario/{idUsuario}",function($request){
 
-    $datos["nombre"] = $request->getParam("nombre");
-    $datos["usuario"] = $request->getParam("usuario");
-    $datos["clave"] = $request->getParam("clave");
-    $datos["email"] = $request->getParam("email");
-    $datos["id_usuario"] = $request->getAttribute("idUsuario");
+    $datos[] = $request->getParam("nombre");
+    $datos[] = $request->getParam("usuario");
+    $datos[] = $request->getParam("clave");
+    $datos[] = $request->getParam("email");
+    $datos[] = $request->getAttribute("idUsuario");
 
     echo json_encode(actualizarUsu($datos));
 });

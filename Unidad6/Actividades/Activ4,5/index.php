@@ -1,22 +1,6 @@
 <?php
 require "src/ctes_funciones.php";
 
-// Funcion para la conexion a la API
-define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Actividades/Activ3/login_restful");
-
-function consumir_servicios_REST($url, $metodo, $datos = null)
-{
-    $llamada = curl_init();
-    curl_setopt($llamada, CURLOPT_URL, $url);
-    curl_setopt($llamada, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($llamada, CURLOPT_CUSTOMREQUEST, $metodo);
-    if (isset($datos))
-        curl_setopt($llamada, CURLOPT_POSTFIELDS, http_build_query($datos));
-    $respuesta = curl_exec($llamada);
-    curl_close($llamada);
-    return $respuesta;
-}
-
 
 if (isset($_POST["btnContEditar"])) {
     //Errores cuándo edito
@@ -57,9 +41,9 @@ if (isset($_POST["btnContEditar"])) {
         $datos["usuario"] = $_POST["usuario"];
         $datos["clave"] = $_POST["clave"];
         $datos["email"] = $_POST["email"];
-
-        $url = DIR_SERV . "/actualizarUsuario/" . $_POST["btnContEditar"];
-        $respuesta = consumir_servicios_REST($url, "GET", $datos);
+        
+        $url = DIR_SERV . "/actualizarUsuario/" . urlencode($_POST["btnContEditar"]);
+        $respuesta = consumir_servicios_REST($url, "PUT", $datos);
         $obj = json_decode($respuesta);
 
         if (!$obj) echo "Error en la API:" . $respuesta;
@@ -67,8 +51,8 @@ if (isset($_POST["btnContEditar"])) {
 
         echo $obj->mensaje;     // METER ESTO EN UNA SESSION, BESOS
 
-        header("Location:index.php");
-        exit;
+        // header("Location:index.php");
+        // exit;
     }
 }
 

@@ -20,10 +20,6 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
 
             // lo pone true si esta repe
             $error_usuario = $obj->repetido;
-
-            // if ($obj->repetido){
-            //     die($error_usuario);
-            // }
         }
 
         $error_clave=$_POST["clave"]=="" || strlen($_POST["clave"])>15;
@@ -39,9 +35,6 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
             if(isset($obj->error)) echo "Error en la consulta:" . $obj->error;
             // lo pone true si esta repe
             $error_email = $obj->repetido;
-            // if ($obj->repetido){
-            //     die($error_usuario);
-            // }
         }
 
         $error_form=$error_nombre||$error_usuario||$error_clave||$error_email;
@@ -50,17 +43,17 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
         {
             $datos["nombre"] = $_POST["nombre"];
             $datos["usuario"] = $_POST["usuario"];
-            $datos["clave"] = $_POST["clave"];
+            $datos["clave"] = md5($_POST["clave"]);
             $datos["email"] = $_POST["email"];
 
             $url = DIR_SERV . "/crearUsuario";
-            $respuesta = consumir_servicios_REST($url,"GET",$datos);
+            $respuesta = consumir_servicios_REST($url,"POST",$datos);
             $obj = json_decode($respuesta);
         
             if(!$obj) echo "Error en la API:" .$respuesta;
             if(isset($obj->error)) echo "Error en la consulta:" . $obj->error;
 
-
+            echo "Se ha insertado al usuario con este id: " .$obj->ult_id;
             header("Location:index.php");
             exit;
         }
