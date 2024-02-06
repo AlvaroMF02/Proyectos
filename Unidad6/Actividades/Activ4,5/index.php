@@ -51,8 +51,8 @@ if (isset($_POST["btnContEditar"])) {
         if (!$obj) echo "Error en la API:" . $respuesta;
         if (isset($obj->error)) echo "Error en la consulta:" . $obj->error;
 
-        echo $obj->mensaje;     // METER ESTO EN UNA SESSION, BESOS
-
+        $_SESSION["mensajes"] = $obj->mensaje;
+        
         header("Location:index.php");
         exit;
     }
@@ -118,10 +118,6 @@ if (isset($_POST["btnContBorrar"])) {
 <body>
     <h1>Listado de los usuarios</h1>
     <?php
-    if(isset($_SESSION["mensaje"])){
-        echo "<span class = 'msj'>".$_SESSION["mensaje"]."</span>";
-        session_destroy();
-    }
     require "vistas/vista_tabla.php";
 
     if (isset($_POST["btnDetalle"])) {
@@ -139,7 +135,7 @@ if (isset($_POST["btnContBorrar"])) {
         echo "<p><button type='submit' name='btnNuevoUsuario'>Insertar nuevo Usuario</button></p>";
         echo "</form>";
     }
-
+    
     ?>
 </body>
 

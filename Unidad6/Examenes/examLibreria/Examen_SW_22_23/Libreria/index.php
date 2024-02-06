@@ -24,51 +24,75 @@ function error_page($title, $cabecera, $mensaje)
 }
 
 
+if (isset($_SESSION["usuario"])) {
+    
+} else {
 ?>
+    <!DOCTYPE html>
+    <html lang="en">
 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Libreria</title>
+        <style>
+            .biblio{
+                display: flex;
+                flex-flow: row wrap;
+            }
+            .libros {
+                display: flex;
+                flex-flow: column;
+                align-items: center;
+                flex:30% 0;
+                margin: 1rem;
+            }
 
-<!DOCTYPE html>
-<html lang="en">
+            img {
+                width: 200px;
+            }
+        </style>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Libreria</title>
-</head>
+    <body>
+        <h1>Librería</h1>
+        <form action="index.php" method="post">
+            <table>
+                <tr>
+                    <td><label for="usuario">Nombre de usuario</label></td>
+                    <td><input type="text" id="usuario" name="usuario"></td>
+                </tr>
+                <tr>
+                    <td><label for="clave">Contraseña</label></td>
+                    <td><input type="text" id="clave" name="clave"></td>
+                </tr>
+            </table>
+            <button>Entrar</button>
+        </form>
 
-<body>
-    <h1>Librería</h1>
-    <form action="index.php" method="post">
-        <p>
-            <label for="usuario">Nombre de usuario</label>
-            <input type="text" id="usuario" name="usuario">
-        </p>
-        <p>
-            <label for="clave">Contraseña</label>
-            <input type="text" id="clave" name="clave">
-        </p>
+        <h2>Listado de los Libros</h2>
 
-        <button>Entrar</button>
-    </form>
+        <?php
 
-    <h2>Listado de los Libros</h2>
+        $url = URLTOCHA . "/obtenerLibros";
+        $respuesta = consumir_servicios_REST($url, "GET");
+        $obj = json_decode($respuesta);
 
-    <?php
+        if (!$obj) die("Error en la API:" . $respuesta . "</body></html>");
+        if (isset($obj->error)) die("Error en la consulta:" . $obj->error . "</body></html>");
+        echo "<div class='biblio'>";
+        foreach ($obj->libros as $opciones) {
+            echo "<div class='libros'>";
+            echo "<img src='images/$opciones->portada' alt='imagen del libro'>";
+            echo $opciones->titulo . " - " . $opciones->precio;
+            echo "</div>";
+        }
+        echo "</div>";
+        ?>
 
-    $url = URLTOCHA . "/obtenerLibros";
-    $respuesta = consumir_servicios_REST($url,"GET");
-    $obj = json_decode($respuesta);
+    </body>
 
-    if(!$obj) die("Error en la API:" .$respuesta . "</body></html>");
-    if(isset($obj->error)) die ("Error en la consulta:" . $obj->error. "</body></html>");
-    
-    echo $obj->libros[0]->descripcion;
-    
-    foreach ($obj->libros as $opciones) {
-        echo $opciones->descripcion;
-    }
-
-    ?>
-
-</body>
-</html>
+    </html>
+<?php
+}
+?>
