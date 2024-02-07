@@ -1,6 +1,6 @@
 <?php
 
-define("URLTOCHA", "http://localhost/Proyectos/Unidad6/Examenes/examLibreria/Examen_SW_22_23/servicios_rest");
+define("URLTOCHA", "http://localhost/Proyectos/Unidad6/Examenes/ExamenLibreria/servicios_rest");
 
 function consumir_servicios_REST($url, $metodo, $datos = null)
 {
