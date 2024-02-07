@@ -44,7 +44,7 @@ if (isset($_SESSION["usuario"])) {
                 display: flex;
                 flex-flow: column;
                 align-items: center;
-                flex:30% 0;
+                flex:33% 0;
                 margin: 1rem;
             }
 
