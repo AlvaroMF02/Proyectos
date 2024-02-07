@@ -73,6 +73,7 @@ if (isset($_POST["btnContBorrar"])) {
     exit();
 }
 
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
