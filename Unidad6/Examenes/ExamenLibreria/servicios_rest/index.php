@@ -52,7 +52,7 @@ $app->post("/crearLibro", function ($request) {
 
     $token = $request->getParam("api_session");     //  ????????????????????????? no entiendo nada de esto
     session_id($token);                             // no hace session_start pq ya esta iniicado ????????????????????????????
-
+    session_start();
     if (isset($_SESSION["usuario"]) && $_SESSION["tipo"] == "admin") {
         $datos[] = $request->getParam("referencia");
         $datos[] = $request->getParam("titulo");
@@ -68,15 +68,17 @@ $app->post("/crearLibro", function ($request) {
 });
 
 $app->get("repetido/{tabla}/{columna}/{valor}", function($request){
+    
     $token = $request->getParam("api_session");
     session_id($token);
+    session_start();
 
     if(isset($_SESSION["usuario"]) && $_SESSION["tipo"] == "admin"){
-        $datos[] = $request->getAttribute("tabla");
-        $datos[] = $request->getAttribute("columna");
-        $datos[] = $request->getAttribute("valor");
+        $tabla = $request->getAttribute("tabla");
+        $columna = $request->getAttribute("columna");
+        $valor = $request->getAttribute("valor");
 
-        echo json_encode(repetido($datos));
+        echo json_encode(comprobRepetido($tabla,$columna,$valor));
     }else{
         session_destroy();
         echo json_encode(array("no_auth" => "No tienes permisos"));

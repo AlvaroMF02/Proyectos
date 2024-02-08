@@ -1,6 +1,6 @@
 <?php
-define("SERVIDOR_BD", "localhost:3307");
-// define("SERVIDOR_BD","localhost");
+// define("SERVIDOR_BD", "localhost:3307");
+define("SERVIDOR_BD","localhost");
 define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_libreria_exam");
@@ -116,5 +116,29 @@ function insertar($datos){
     $respuesta["mensaje"] = "Libro insertado correctamente";
     $conexion = null;
     $sentencia = null;
+    return $respuesta;
+}
+
+// Devuelve tr o fl si esta repe
+function comprobRepetido($tabla,$columna,$valor){
+    try {
+        $conexion = new PDO("mysql:host=" . SERVIDOR_BD . ";dbname=" . NOMBRE_BD, USUARIO_BD, CLAVE_BD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+    } catch (PDOException $e) {
+        $respuesta["error"] = "Error en la conexión: " . $e->getMessage();
+    }
+
+    try {
+        $consulta = "select * from $tabla where $columna = ?";              // no termino de entender esto ????????????????????????
+        $sentencia = $conexion->prepare($consulta);
+        $sentencia->execute($valor);
+    } catch (PDOException $e) {
+        $consulta = null;
+        $conexion = null;
+        $respuesta["error"] = "Error en la consulta: " . $e->getMessage();
+    }
+
+    $respuesta["repetido"] = $sentencia->rowCount()>0;
+    $consulta = null;
+    $conexion = null;
     return $respuesta;
 }
