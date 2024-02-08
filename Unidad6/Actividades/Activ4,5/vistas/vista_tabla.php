@@ -1,7 +1,7 @@
 <?php
 // ------------------------ MOSTRAR A LOS USUARIOS ------------------------
-if(isset($_SESSION["mensaje"])){
-    echo "<span class = 'msj'>".$_SESSION["mensaje"]."</span>";
+if(isset($_SESSION["mensajes"])){
+    echo "<span class = 'msj'>".$_SESSION["mensajes"]."</span>";
     session_destroy();
 }
 // Consultar a la API

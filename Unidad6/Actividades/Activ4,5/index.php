@@ -113,6 +113,9 @@ if (isset($_POST["btnContBorrar"])) {
         .error {
             color: red
         }
+        .msj{
+            color: blue;
+        }
     </style>
 </head>
 
