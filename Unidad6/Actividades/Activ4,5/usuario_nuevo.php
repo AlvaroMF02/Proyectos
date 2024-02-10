@@ -53,7 +53,7 @@ if(isset($_POST["btnNuevoUsuario"]) || isset($_POST["btnContInsertar"]) )
             if(!$obj) echo "Error en la API:" .$respuesta;
             if(isset($obj->error)) echo "Error en la consulta:" . $obj->error;
 
-            echo "Se ha insertado al usuario con este id: " .$obj->ult_id;
+            $_SESSION["mensajes"] = "Se ha insertado al usuario con este id: " .$obj->ult_id;
             header("Location:index.php");
             exit;
         }

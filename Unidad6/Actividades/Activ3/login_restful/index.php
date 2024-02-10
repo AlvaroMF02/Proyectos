@@ -32,10 +32,35 @@ $app->post("/crearUsuario",function($request){
 // c) Pasa el usuario y clave para hacer el login
 $app->post("/login",function($request){
 
-    $datos["usuario"] = $request->getParam("usuario");
-    $datos["clave"] = $request->getParam("clave"); // Viene encriptada del index
+    $datos[] = $request->getParam("usuario");
+    $datos[] = $request->getParam("clave"); // Viene encriptada del index
 
     echo json_encode(login($datos));
+});
+
+$app->get('/logueado',function($request){
+
+    $token=$request->getParam("api_session");
+    session_id($token);
+    session_start();
+    if(isset($_SESSION["usuario"]))
+    {
+        echo json_encode(logueado($_SESSION["usuario"],$_SESSION["clave"]));
+    }
+    else
+    {
+        session_destroy();
+        echo json_encode(array("no_auth"=>"No tienes permisos para usar este servicio"));
+    }
+});
+
+$app->post('/salir',function($request){
+
+    $token=$request->getParam("api_session");
+    session_id($token);
+    session_start();
+    session_destroy();
+    echo json_encode(array("log_out"=>"Cerrada sesión en la API"));
 });
 
 // d) Actualizar a un usuario
