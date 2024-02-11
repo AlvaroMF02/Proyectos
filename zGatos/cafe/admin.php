@@ -71,10 +71,10 @@ session_start();
     echo "<th>Nombre</th><th>Color</th><th>Edad</th><th><form action='admin.php' method='post'><button name='btnInser' class='enlace'><3 Añadir <3</button></form></th>";
     foreach ($obj->gatos as $michi) {
         echo "<tr>";
-        echo "<td><form action='admin.php' method='post'><button name='btnDetall' class='enlace' value='" . $michi->id . "'>" . $michi->nombre . "</button></form></td>";
+        echo "<td><form action='admin.php' method='post'><button name='btnDetall' class='enlace' value='" . $michi->id . "'>" . $michi->nombre . "</form></td>";
         echo "<td>" . $michi->color . "</td>";
         echo "<td>" . $michi->edad . "</td>";
-        echo "<td><form action='admin.php' method='post'><button name='btnElim' class='enlace' value='" . $michi->id . "'>Borrar</button></form></td>";
+        echo "<td><form action='admin.php' method='post'><button name='btnElim' class='enlace' value='" . $michi->id . "'>Borrar</button></button> - <button name='btnEdit' class='enlace' value='" . $michi->id . "'>Editar</button></form></td>";
         echo "</tr>";
     }
     echo "</table>";
@@ -100,6 +100,78 @@ session_start();
 
         echo "<form action='admin.php' method='post'><p><button>Volver</button></p></form>";
     }
+
+    if (isset($_POST["btnEdit"])) {        // ---------------- EDITAR UN GATO ----------------
+
+        $datos["id"] = $_POST["btnDetall"];
+        $datos["api_session"] = $_SESSION["api_session"];
+
+        $url = DIR_SERV . "/detalle";
+        $respuesta = consumir_servicios_REST($url, "POST", $datos);
+        $obj = json_decode($respuesta);
+
+        if (!$obj) die("<p>No se ha hecho nada chique:" . $respuesta . "</p></body></html>");                                                         // poner session destroy ???????
+        if (isset($obj->error)) die("<p>Error de lo que sea lit: " . $obj->error . "</p></body></html>");
+
+        ?>
+        
+        <h2>Edicion</h2> <!-- FORMULARIO INSERCION -->
+        <form action="admin.php" method='post'>
+            <p>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" value="<?php echo $obj->gatos->nombre?>">
+                <?php
+                // if (isset($_POST["btnContInser"]) && $errroNom) {
+                //     if ($_POST["nombre"] == "") {
+                //         echo "<span class='error'>Campo vacío</span>";
+                //     } else {
+                //         echo "<span class='error'>Nombre repetido</span>";
+                //     }
+                // }
+                ?>
+            </p>
+            <p>
+                <label for="color">Color</label>
+                <input type="text" id="color" name="color" value="<?php if (isset($_POST["color"])) echo $_POST["color"] ?>">
+                <?php
+                // if (isset($_POST["btnContInser"]) && $errroCol) {
+                //     echo "<span class='error'>Campo vacío</span>";
+                // }
+                ?>
+            </p>
+            <p>
+                <label for="edad">Edad</label>
+                <input type="text" id="edad" name="edad" value="<?php if (isset($_POST["edad"])) echo $_POST["edad"] ?>">
+                <?php
+                // if (isset($_POST["btnContInser"]) && $errroEda) {
+                //     echo "<span class='error'>Campo vacío</span>";
+                // }
+                ?>
+            </p>
+            <p>
+                <label for="salud">Salud</label>
+                <input type="text" id="salud" name="salud" value="<?php if (isset($_POST["salud"])) echo $_POST["salud"] ?>">
+                <?php
+                // if (isset($_POST["btnContInser"]) && $errroSal) {
+                //     echo "<span class='error'>Campo vacío</span>";
+                // }
+                ?>
+            </p>
+            <p>
+                <label for="adopcion">Adopcion</label>
+                <select name="adopcion" id="adopcion">
+                    <option>adoptado</option>
+                    <option>en proceso</option>
+                    <option>en espera</option>
+                </select>
+            </p>
+            <button name="btnContInser">Insertar</button>
+        </form>
+        
+        <?php
+
+    }
+
 
     if (isset($_POST["btnElim"]) || isset($_POST["btnContElim"])) {                // ---------------- ELIMINAR UN GATO ----------------
 
