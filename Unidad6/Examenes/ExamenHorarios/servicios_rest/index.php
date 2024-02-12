@@ -30,7 +30,6 @@ $app->get("/logueado", function ($request) {
 });
 
 $app->post('/salir', function ($request) {
-
     $token = $request->getParam("api_session");
     session_id($token);
     session_start();
@@ -38,9 +37,25 @@ $app->post('/salir', function ($request) {
     echo json_encode(array("log_out" => "Se ha cerrado sesión"));
 });
 
-$app->get('/obtener_profesores', function ($request) {
+// ve el horario pasandole el usuario
+$app->post('/horario_usuario', function ($request) {
+    $id  = $request->getParam("usuario");
+    echo json_encode(ver_horario($id));
+});
 
-    echo json_encode(obtener_profesores());
+// Ver todos los profesores
+$app->post('/obtener_profesores', function ($request) {
+    $token = $request->getParam("api_session");
+    session_id($token);
+    session_start();
+    if(isset($_SESSION["usuario"]) && $_SESSION["tipo"] == "admin"){
+        echo json_encode(obtener_profesores());
+    }else{
+        session_destroy();
+        echo json_encode(array("no_auth"=>"No tienes permisos"));
+    }
+
+    
 });
 
 

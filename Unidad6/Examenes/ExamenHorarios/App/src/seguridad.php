@@ -1,8 +1,10 @@
 <?php
+
 $url = DIR_SERV . "/logueado";
 $datos["api_session"] = $_SESSION["api_session"];
 $respuesta = consumir_servicios_REST($url, "GET", $datos);
 $obj = json_decode($respuesta);
+
 if (!$obj) {
     session_destroy();
     die(error_page("ERROR", "<h1>ERROR</h1><p>Error consumiendo el servicio: " . $url . "</p>"));
@@ -11,14 +13,14 @@ if (isset($obj->error)) {
     session_destroy();
     die(error_page("ERROR", "<h1>ERROR</h1><p>" . $obj->error . "</p>"));
 }
-// pq se le ha acabdo el tiempo de la API
+
+// pq se le ha acbado el tiempo de la API
 if (isset($obj->no_auth)) {
     session_unset();
     $_SESSION["seguridad"] = "El tiempo de sesión de la API ha caducado";
     header("Location:index.php");
     exit;
 }
-
 // baneado
 if (isset($obj->mensaje)) {
     session_unset();

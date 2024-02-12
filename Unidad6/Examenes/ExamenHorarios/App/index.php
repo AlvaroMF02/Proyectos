@@ -5,7 +5,7 @@ require "src/funciones_ctes.php";
 
 if(isset($_POST["btnSalir"])){
     $datos["api_session"] = $_SESSION["api_session"];
-    consumir_servicios_REST(DIR_SERV . "/salir","POST");
+    consumir_servicios_REST(DIR_SERV . "/salir","POST",$datos);
     session_destroy();
     header("Location:index.php");
     exit;
