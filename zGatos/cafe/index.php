@@ -62,7 +62,11 @@ if (isset($_SESSION["usuario"])) {  // ---------------- LOGUEADO NORMAL --------
         $respuesta = consumir_servicios_REST($url, "GET");
         $obj = json_decode($respuesta);
 
-        if (!$obj) die("<p>No se ha hecho nada " . $respuesta . "</p></body></html>");                                                          // poner session destroy ???????
+        if (!$obj){
+            session_destroy();
+            die("<p>No se ha hecho nada " . $respuesta . "</p></body></html>");                                                          // poner session destroy ???????
+        }
+        
         if (isset($obj->error)) {
             die("<p>No se ha hecho nada " . $obj->error . "</p></body></html>");
         }

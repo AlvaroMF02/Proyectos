@@ -56,7 +56,7 @@ session_start();
     <?php
     if (isset($_SESSION["mensaje"])) {
         echo "<span class='msj'>" . $_SESSION["mensaje"] . "</span>";
-        // session_unset();                                             con session destroy da error ns q poner ???????????????????
+        unset($_SESSION["mensaje"]);                                             // con session destroy da error ns q poner ???????????????????
     }
     $url = DIR_SERV . "/mostrar";                               // ---------------- MOSTRAR A TODOS LOS GATOS ----------------
     $respuesta = consumir_servicios_REST($url, "GET");
