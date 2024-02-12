@@ -1,6 +1,7 @@
 <?php
-// arriba por le header
-$datos["usuario"] = $datos_usuario_log->id_usuario;
+// Se pone arriba por los errores al hacer el header ( se tiene que hacer fuera de html ) 
+
+// $datos["usuario"] = $datos_usuario_log->id_usuario;
 // $url = DIR_SERV . "/horario_usuario";
 // $respuesta = consumir_servicios_REST($url, "POST", $datos);
 // $obj = json_decode($respuesta);
@@ -11,6 +12,7 @@ $datos["usuario"] = $datos_usuario_log->id_usuario;
 //     header("Location:index.php");
 //     exit;
 // }
+
 // if (isset($obj->error)) {
 //     session_unset();
 //     $_SESSION["seguridad"] = "lo que sea: " . $obj->error;
@@ -62,7 +64,6 @@ $datos["usuario"] = $datos_usuario_log->id_usuario;
 
     $horas = array("8:15 - 9:15", "9:15 - 10:15", "10:15 - 11:15", "11:15 - 11:45", "11:45 - 12:45", "12:45 - 13:45", "13:45 - 14:45");
     $dias = array("Lunes", "Martes", "Miercoles", "Jueves", "Viernes");
-    $prueb = array("2DAW","1DAW","1SMR");
 
     echo "<table>";
     echo "<tr>";
@@ -72,27 +73,24 @@ $datos["usuario"] = $datos_usuario_log->id_usuario;
     }
     echo "</tr>";
 
-    for ($i=0; $i < count($horas); $i++) { 
+    for ($i = 0; $i < count($horas); $i++) {
         echo "<tr>";
         echo "<th>" . $horas[$i] . "</th>";
-        for ($j= 0; $j< count($dias); $j++) {
-            // tengo el dia hora y prof
-            // ver clase hora dia
-            // pasar ind +1
-            //consulta 
-            $texto = "";
-            foreach ($prueb as $clase) {
-                $texto .= " - " .$clase;
-            }
-            echo "<td>$texto</td>";
-            // if(!$obj || isset($obj->error)){    // por si hay error
-            //     echo "<td>Error Servicio</td>";
-            // }else{
+        for ($j = 0; $j < count($dias); $j++) {
 
-            // }
+            if (!$obj || isset($obj->error)) {    // por si hay error
+                echo "<td>Error Servicio</td>";
+            } else {
+                // Aqui va el codigo
+                // tengo el dia hora y prof
+                // ver clase hora dia
+                // pasar ind +1
+                //consulta 
+
+                
+            }
         }
         echo "</tr>";
-
     }
 
     echo "</table>";

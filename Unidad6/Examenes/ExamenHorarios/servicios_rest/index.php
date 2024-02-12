@@ -37,13 +37,28 @@ $app->post('/salir', function ($request) {
     echo json_encode(array("log_out" => "Se ha cerrado sesión"));
 });
 
-// ve el horario pasandole el usuario
-$app->post('/horario_usuario', function ($request) {
-    $id  = $request->getParam("usuario");
-    echo json_encode(ver_horario($id));
+// Funcion con la que se rellenará toda la tabla
+// se le pasa el usuario la hora y el dia
+$app->post('/horario', function ($request) {
+    $token = $request->getParam("api_session");
+    session_id($token);
+    session_start();
+
+    if(isset($_SESSION["usuario"])){
+        $usuario  = $request->getParam("usuario");
+        $hora  = $request->getParam("hora");
+        $dia  = $request->getParam("dia");
+        echo json_encode(ver_horario($usuario,$hora,$dia));
+    }else{
+        session_destroy();
+        echo json_encode(array("no_auth"=>"No tienes permisos"));
+    }
+
+
 });
 
-// Ver todos los profesores
+
+// Ver todos los profesores 
 $app->post('/obtener_profesores', function ($request) {
     $token = $request->getParam("api_session");
     session_id($token);
@@ -54,8 +69,6 @@ $app->post('/obtener_profesores', function ($request) {
         session_destroy();
         echo json_encode(array("no_auth"=>"No tienes permisos"));
     }
-
-    
 });
 
 

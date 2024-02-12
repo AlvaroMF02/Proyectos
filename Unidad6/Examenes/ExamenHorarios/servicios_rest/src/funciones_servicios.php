@@ -78,7 +78,8 @@ function logueado($usuario, $clave)
     return $respuesta;
 }
 
-function ver_horario($id)
+
+function ver_horario($usuario,$hora,$dia)
 {
     try {
         $conexion = new PDO("mysql:host=" . SERVIDOR_BD . ";dbname=" . NOMBRE_BD, USUARIO_BD, CLAVE_BD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -90,7 +91,7 @@ function ver_horario($id)
     try {
         $consulta = "select * from horario_lectivo where usuario = ? && hora = ? && dia = ?";
         $sentencia = $conexion->prepare($consulta);
-        $sentencia->execute([$id]);
+        $sentencia->execute([$usuario,$hora,$dia]);
     } catch (PDOException $e) {
         $respuesta["error"] = "Error en la consulta:" . $e->getMessage();
         $conexion = null;
@@ -115,10 +116,19 @@ function obtener_profesores(){
     }
 
     try {
-        $conexion = new PDO("mysql:host=" . SERVIDOR_BD . ";dbname=" . NOMBRE_BD, USUARIO_BD, CLAVE_BD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+        $consulta = "select * from usuarios";
+        $sentencia = $conexion->prepare($consulta);
+        $sentencia->execute();
     } catch (PDOException $e) {
         $respuesta["error"] = "Imposible conectar:" . $e->getMessage();
         $conexion = null;
         return $respuesta;
     }
+
+    $respuesta["profesores"] = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+    $conexion = null;
+    $sentencia = null;
+
+    return $respuesta;
 }
