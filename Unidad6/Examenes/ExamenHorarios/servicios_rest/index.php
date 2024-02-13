@@ -71,5 +71,39 @@ $app->post('/obtener_profesores', function ($request) {
     }
 });
 
+// Ver grupos de un (profesor) de una (hora) y un (dia) exactos
+$app->post("obtener_grupo",function($request){
+    $token = $request->getParam("api_session");
+    session_id($token);
+    session_start();
+    if(isset($_SESSION["usuario"]) && $_SESSION["tipo"] == "admin"){
+        $datos[] = $request->getParam("profesor");
+        $datos[] = $request->getParam("dia");
+        $datos[] = $request->getParam("hora");
+        echo json_encode(obtener_grupo($datos));
+    }else{
+        session_destroy();
+        echo json_encode(array("no_auth"=>"No tienes permisos"));
+    }
+});
+// Quitar un grupo de un (profesor) a una (hora) y (dia) exactos
+
+// Listado de grupos de que no estan en la (hora) y (dia) de un (profesor)
+$app->post("obtener_grupo_faltan",function($request){
+    $token = $request->getParam("api_session");
+    session_id($token);
+    session_start();
+    if(isset($_SESSION["usuario"]) && $_SESSION["tipo"] == "admin"){
+        $datos[] = $request->getParam("profesor");
+        $datos[] = $request->getParam("dia");
+        $datos[] = $request->getParam("hora");
+        echo json_encode(obtener_grupo_faltan($datos));
+    }else{
+        session_destroy();
+        echo json_encode(array("no_auth"=>"No tienes permisos"));
+    }
+});
+
+// Añadir un grupo a una (hora) y (dia) especificos de un (profesor)
 
 $app->run();

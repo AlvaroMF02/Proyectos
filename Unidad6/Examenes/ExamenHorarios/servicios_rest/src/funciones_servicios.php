@@ -1,6 +1,6 @@
 <?php
-// define("SERVIDOR_BD", "localhost:3307");
-define("SERVIDOR_BD", "localhost");
+define("SERVIDOR_BD", "localhost:3307");
+// define("SERVIDOR_BD", "localhost");
 define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_horarios_exam2");
@@ -130,6 +130,60 @@ function obtener_profesores(){
     }
 
     $respuesta["profesores"] = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+    $conexion = null;
+    $sentencia = null;
+
+    return $respuesta;
+}
+
+// Ver grupos de un profesor dia hora
+function obtener_grupo($datos){
+    try {
+        $conexion = new PDO("mysql:host=" . SERVIDOR_BD . ";dbname=" . NOMBRE_BD, USUARIO_BD, CLAVE_BD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+    } catch (PDOException $e) {
+        $respuesta["error"] = "Imposible conectar:" . $e->getMessage();
+        return $respuesta;
+    }
+
+    try {
+        $consulta = "select grupos.nombre grupos.id_grupo from horario_lectivo,grupos where horario_lectivo.grupo = grupos.id_grupo && horario_lectivo.usuario = ? && horario_lectivo.dia = ? && horario_lectivo.hora = ?";
+        $sentencia = $conexion->prepare($consulta);
+        $sentencia->execute($datos);
+    } catch (PDOException $e) {
+        $respuesta["error"] = "Imposible conectar:" . $e->getMessage();
+        $conexion = null;
+        return $respuesta;
+    }
+
+    $respuesta["grupos"] = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+    $conexion = null;
+    $sentencia = null;
+
+    return $respuesta;
+}
+
+// Ver grupos de un profesor dia hora que no estan
+function obtener_grupo_faltan($datos){
+    try {
+        $conexion = new PDO("mysql:host=" . SERVIDOR_BD . ";dbname=" . NOMBRE_BD, USUARIO_BD, CLAVE_BD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+    } catch (PDOException $e) {
+        $respuesta["error"] = "Imposible conectar:" . $e->getMessage();
+        return $respuesta;
+    }
+
+    try {
+        $consulta = "select grupos.nombre, grupos.id_grupo  from horario_lectivo,grupos where horario_lectivo.grupo = grupos.id_grupo && horario_lectivo.usuario != ? && horario_lectivo.dia != ? && horario_lectivo.hora != ?";
+        $sentencia = $conexion->prepare($consulta);
+        $sentencia->execute($datos);
+    } catch (PDOException $e) {
+        $respuesta["error"] = "Imposible conectar:" . $e->getMessage();
+        $conexion = null;
+        return $respuesta;
+    }
+
+    $respuesta["grupos"] = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
     $conexion = null;
     $sentencia = null;

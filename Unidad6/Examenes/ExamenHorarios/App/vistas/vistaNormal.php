@@ -54,7 +54,10 @@
             background-color: lightskyblue;
         }
         table {
-            margin: 2rem;
+            margin: 0 auto;
+        }
+        .centrado{
+            text-align: center;
         }
     </style>
     <title>Normal</title>
@@ -65,6 +68,7 @@
     <?php
     echo "Bienvenido a la página: " . $datos_usuario_log->usuario . "<form action='index.php' method='post' class='fila'><button class='enlace' name='btnSalir'>Salir</button></form>";
 
+    echo "<h2 class='centrado'>Su horario</h2>";
     $horas = array("8:15 - 9:15", "9:15 - 10:15", "10:15 - 11:15", "11:15 - 11:45", "11:45 - 12:45", "12:45 - 13:45", "13:45 - 14:45");
     $dias = array("Lunes", "Martes", "Miercoles", "Jueves", "Viernes");
 

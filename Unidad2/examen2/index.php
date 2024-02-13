@@ -52,7 +52,6 @@ function error_page($title, $body)
         $conexion = mysqli_connect("localhost", "jose", "josefa", "bd_horarios_exam");
         mysqli_set_charset($conexion, "utf8");
     } catch (Exception $e) {
-        session_destroy();
         die(error_page("Sin conexion", ""));
     }
 

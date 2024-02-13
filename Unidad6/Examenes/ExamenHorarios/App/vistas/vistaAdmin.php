@@ -60,7 +60,11 @@ if (isset($obj->no_auth)) {
         }
 
         table {
-            margin: 2rem;
+            margin: 0 auto;
+        }
+
+        .centrado {
+            text-align: center;
         }
     </style>
     <title>Admin</title>
@@ -71,62 +75,80 @@ if (isset($obj->no_auth)) {
     <?php
     echo "Bienvenido a la página: " . $datos_usuario_log->usuario . "<form action='index.php' method='post' class='fila'><button class='enlace' name='btnSalir'>Salir</button></form>";
 
-    ?>
-    <form action="index.php" method="post">
-        <p>
-            <select name="profesores" id="profesores">
-                <?php
-                foreach ($obj->profesores as $profe) {
-                    echo "<option value='" . $profe->id_usuario . "'>" . $profe->nombre . "</option>";
-                }
-                ?>
-            </select>
-            <button name="btnProf">Buscar</button>
-        </p>
-    </form>
-    <?php
-
-
-    $horas = array("8:15 - 9:15", "9:15 - 10:15", "10:15 - 11:15", "11:15 - 11:45", "11:45 - 12:45", "12:45 - 13:45", "13:45 - 14:45");
-    $dias = array("Lunes", "Martes", "Miercoles", "Jueves", "Viernes");
-
-    echo "<table>";
-    echo "<tr>";
-    echo "<th></th>";
-    for ($i = 0; $i < count($dias); $i++) {
-        echo "<th>" . $dias[$i] . "</th>";
-    }
-    echo "</tr>";
-
-    for ($i = 0; $i < count($horas); $i++) {
-        echo "<tr>";
-        echo "<th>" . $horas[$i] . "</th>";
-        for ($j = 0; $j < count($dias); $j++) {
-
-            if ($i == 3) {
-                echo "<th>RECREO</th>";                 // poner el colspan
+    echo "<form action='index.php' method='post'>";
+    echo "<p>";
+    echo "<select name='profesores' id='profesores'>";
+    foreach ($obj->profesores as $profe) {
+        if ($profe->tipo != "admin") {
+            if (isset($_POST["profesores"]) && $_POST["profesores"] == $profe->id_usuario) {
+                echo "<option selected value='" . $profe->id_usuario . "'>" . $profe->nombre . "</option>";
+                $nombreProfe = $profe->nombre;
             } else {
-                $datos["api_session"] = $_SESSION["api_session"];
-                $datos["usuario"] = $_POST["profesores"];
-                $datos["dia"] = $j + 1;
-                $datos["hora"] = $i + 1;
-                $url = DIR_SERV . "/obtener_horario";
-                $respuesta = consumir_servicios_REST($url, "POST", $datos);
-                $obj = json_decode($respuesta);
-
-                if (!$obj || isset($obj->error)) {    // por si hay error
-                    echo "<td>Error Servicio</td>";
-                } else if (isset($obj->mensaje)) {
-                    echo "<td></td>";
-                } else {
-                    echo "<td>" . $obj->horario[0]->nombre . "</td>";
-                }
+                echo "<option value='" . $profe->id_usuario . "'>" . $profe->nombre . "</option>";
             }
         }
+    }
+    echo "</select>";
+    echo "<button name='btnHorario'>Ver horario</button>";
+    echo "</p>";
+    echo "</form>";
+
+    if (isset($_POST['profesores'])) {
+        echo "<h2 class='centrado'>Horario de " . $nombreProfe . "</h2>";
+        $horas = array("8:15 - 9:15", "9:15 - 10:15", "10:15 - 11:15", "11:15 - 11:45", "11:45 - 12:45", "12:45 - 13:45", "13:45 - 14:45");
+        $dias = array("Lunes", "Martes", "Miercoles", "Jueves", "Viernes");
+
+        echo "<table>";
+        echo "<tr>";
+        echo "<th></th>";
+        for ($i = 0; $i < count($dias); $i++) {
+            echo "<th>" . $dias[$i] . "</th>";
+        }
         echo "</tr>";
+
+        for ($i = 0; $i < count($horas); $i++) {
+            echo "<tr>";
+            echo "<th>" . $horas[$i] . "</th>";
+            for ($j = 0; $j < count($dias); $j++) {
+
+                if ($i == 3) {
+                    echo "<th>RECREO</th>";                 // poner el colspan
+                } else {
+                    $datos["api_session"] = $_SESSION["api_session"];
+                    $datos["usuario"] = $_POST["profesores"];
+                    $datos["dia"] = $j + 1;
+                    $datos["hora"] = $i + 1;
+                    $url = DIR_SERV . "/obtener_horario";
+                    $respuesta = consumir_servicios_REST($url, "POST", $datos);
+                    $obj = json_decode($respuesta);
+
+                    if (!$obj || isset($obj->error)) {    // por si hay error
+                        echo "<td>Error Servicio</td>";
+                    } else if (isset($obj->mensaje)) {
+                        echo "<td>";
+                        echo "<form action='index.php' method='post'><button class=enlace name='btnEditar'>Editar</button></form>";
+                        echo "</td>";
+                    } else {
+                        echo "<td>";
+                        echo $obj->horario[0]->nombre;
+                        echo "<form action='index.php' method='post'><button class=enlace name='btnEditar'>Editar</button></form>";
+                        echo "</td>";
+                    }
+                }
+            }
+            echo "</tr>";
+        }
+
+        echo "</table>";
+
     }
 
-    echo "</table>";
+    if (isset($_POST["btnEditar"])) {
+        echo "holaa";
+    }
+
+
+
     ?>
 </body>
 
