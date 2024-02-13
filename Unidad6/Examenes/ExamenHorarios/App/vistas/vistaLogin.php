@@ -9,7 +9,7 @@ if (isset($_POST["btnLogin"])) {
         $datos = array("usuario" => $_POST["usuario"], "clave" => md5($_POST["clave"]));
         $respuesta = consumir_servicios_REST($url, "POST", $datos);
         $obj = json_decode($respuesta);
-        var_dump($obj);
+
         if (!$obj) {
             session_destroy();
             die(error_page("ERROR", "<p>Error al consumir el servicio: " . $url . "</p>"));

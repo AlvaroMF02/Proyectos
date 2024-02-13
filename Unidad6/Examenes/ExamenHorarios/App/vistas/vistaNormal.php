@@ -53,6 +53,9 @@
         th {
             background-color: lightskyblue;
         }
+        table {
+            margin: 2rem;
+        }
     </style>
     <title>Normal</title>
 </head>
@@ -78,16 +81,24 @@
         echo "<th>" . $horas[$i] . "</th>";
         for ($j = 0; $j < count($dias); $j++) {
 
-            if (!$obj || isset($obj->error)) {    // por si hay error
-                echo "<td>Error Servicio</td>";
+            if ($i == 3) {
+                echo "<th>RECREO</th>";                 // poner el colspan
             } else {
-                // Aqui va el codigo
-                // tengo el dia hora y prof
-                // ver clase hora dia
-                // pasar ind +1
-                //consulta 
+                $datos["api_session"] = $_SESSION["api_session"];
+                $datos["usuario"] = $datos_usuario_log->id_usuario;
+                $datos["dia"] = $j + 1;
+                $datos["hora"] = $i + 1;
+                $url = DIR_SERV . "/obtener_horario";
+                $respuesta = consumir_servicios_REST($url, "POST", $datos);
+                $obj = json_decode($respuesta);
 
-                
+                if (!$obj || isset($obj->error)) {    // por si hay error
+                    echo "<td>Error Servicio</td>";
+                } else if (isset($obj->mensaje)) {
+                    echo "<td></td>";
+                } else {
+                    echo "<td>" . $obj->horario[0]->nombre . "</td>";
+                }
             }
         }
         echo "</tr>";

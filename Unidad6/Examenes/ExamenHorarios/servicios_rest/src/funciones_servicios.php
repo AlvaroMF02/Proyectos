@@ -1,6 +1,6 @@
 <?php
-define("SERVIDOR_BD", "localhost:3307");
-// define("SERVIDOR_BD", "localhost");
+// define("SERVIDOR_BD", "localhost:3307");
+define("SERVIDOR_BD", "localhost");
 define("USUARIO_BD", "jose");
 define("CLAVE_BD", "josefa");
 define("NOMBRE_BD", "bd_horarios_exam2");
@@ -88,8 +88,8 @@ function ver_horario($usuario,$hora,$dia)
         return $respuesta;
     }
 
-    try {
-        $consulta = "select * from horario_lectivo where usuario = ? && hora = ? && dia = ?";
+    try {// con el Join para que nos de tmb el nombre del grupo
+        $consulta = "select grupos.nombre from horario_lectivo,grupos where horario_lectivo.grupo = grupos.id_grupo && horario_lectivo.usuario = ? && horario_lectivo.hora = ? && horario_lectivo.dia = ?";
         $sentencia = $conexion->prepare($consulta);
         $sentencia->execute([$usuario,$hora,$dia]);
     } catch (PDOException $e) {
@@ -97,8 +97,12 @@ function ver_horario($usuario,$hora,$dia)
         $conexion = null;
         return $respuesta;
     }
-
-    $respuesta["horario"] = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    if($sentencia->rowCount()>0){
+        $respuesta["horario"] = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }else{
+        $respuesta["mensaje"]="";
+    }
+    
 
     $conexion = null;
     $sentencia = null;

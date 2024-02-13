@@ -39,7 +39,7 @@ $app->post('/salir', function ($request) {
 
 // Funcion con la que se rellenará toda la tabla
 // se le pasa el usuario la hora y el dia
-$app->post('/horario', function ($request) {
+$app->post('/obtener_horario', function ($request) {
     $token = $request->getParam("api_session");
     session_id($token);
     session_start();
