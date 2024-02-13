@@ -81,7 +81,7 @@ if (isset($obj->no_auth)) {
                 }
                 ?>
             </select>
-            <button>Buscar</button>
+            <button name="btnProf">Buscar</button>
         </p>
     </form>
     <?php
