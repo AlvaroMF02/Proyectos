@@ -80,7 +80,7 @@ if (isset($obj->no_auth)) {
     echo "<select name='profesores' id='profesores'>";
     foreach ($obj->profesores as $profe) {
         if ($profe->tipo != "admin") {
-            if (isset($_POST["profesores"]) && $_POST["profesores"] == $profe->id_usuario) {
+            if (isset($_POST["profesores"]) && $_POST["profesores"] == $profe->id_usuario || isset($_POST['btnEditar']) && $_POST['btnEditar'] == $profe->id_usuario) {
                 echo "<option selected value='" . $profe->id_usuario . "'>" . $profe->nombre . "</option>";
                 $nombreProfe = $profe->nombre;
             } else {
@@ -93,8 +93,15 @@ if (isset($obj->no_auth)) {
     echo "</p>";
     echo "</form>";
 
-    if (isset($_POST['profesores'])) {
+    if (isset($_POST['profesores']) || isset($_POST['btnEditar'])) {
+        
+        if(isset($_POST['btnEditar'])){
+            $profesores = $_POST['btnEditar'];
+        }else{
+            $profesores = $_POST['profesores'];
+        }
         echo "<h2 class='centrado'>Horario de " . $nombreProfe . "</h2>";
+
         $horas = array("8:15 - 9:15", "9:15 - 10:15", "10:15 - 11:15", "11:15 - 11:45", "11:45 - 12:45", "12:45 - 13:45", "13:45 - 14:45");
         $dias = array("Lunes", "Martes", "Miercoles", "Jueves", "Viernes");
 
@@ -130,21 +137,21 @@ if (isset($obj->no_auth)) {
                         echo "<button class=enlace name='btnEditar'>Editar</button>";
                         echo "<input type='hidden' name='dia' value='".($j+1)."'>";
                         echo "<input type='hidden' name='hora' value='".($i+1)."'>";
-                        echo "<input type ='hidden' name='profesor' value='".$_POST['profesores']."'>";
+                        echo "<input type ='hidden' name='profesor' value='".$profesores."'>";
                         echo "</form>";
                         echo "</td>";
                     } else {
                         echo "<td>";
                         echo $obj->horario[0]->nombre;
-                        echo "<form action='index.php' method='post'><button class=enlace name='btnEditar'>Editar</button></form>";
+                        echo "<form action='index.php' method='post'><button class=enlace value='".$profesores."' name='btnEditar'>Editar</button></form>";
                         echo "</td>";
 
                         echo "<td>";
                         echo "<form action='index.php' method='post'>";
-                        echo "<button class=enlace name='btnEditar'>Editar</button>";
+                        echo "<button class=enlace name='btnEditar' value='".$profesores."'>Editar</button>";
                         echo "<input type='hidden' name='dia' value='".($j+1)."'>";
                         echo "<input type='hidden' name='hora' value='".($i+1)."'>";
-                        echo "<input type ='hidden' name='profesor' value='".$_POST['profesores']."'>";
+                        echo "<input type ='hidden' name='profesor' value='".$profesores."'>";
                         echo "</form>";
                         echo "</td>";
                     }

@@ -1,5 +1,5 @@
 <?php
-define("DIR_SERV", "http://localhost/Proyectos/Profesores2_SW/servicios_rest");
+define("DIR_SERV", "http://localhost/Proyectos/Unidad6/Examenes/ExamenTablas2/servicios_rest/");
 define("MINUTOS", 10);
 $DIAS[1] = "Lunes";
 $DIAS[] = "Martes";

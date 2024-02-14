@@ -146,8 +146,6 @@ $app->delete('/borrarGrupo/{id_horario}',function($request){
     session_start();
     if(isset($_SESSION["usuario"]) && $_SESSION["tipo"]=="admin")
     {
-  
-        
         echo json_encode(borrar_grupo($request->getAttribute("id_horario")));
     }
     else
