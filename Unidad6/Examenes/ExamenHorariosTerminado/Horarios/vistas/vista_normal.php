@@ -70,8 +70,6 @@ if (isset($obj2->no_auth)) {
     </div>
     <?php
 
-    var_dump($obj2->horario);
-
     foreach ($obj2->horario as $tupla) {
         if (isset($horario[$tupla->dia][$tupla->hora])){
             $horario[$tupla->dia][$tupla->hora] .= "/" . $tupla->nombre;
@@ -87,6 +85,7 @@ if (isset($obj2->no_auth)) {
     $dias[] = "Miércoles";
     $dias[] = "Jueves";
     $dias[] = "Viernes";
+    
     $horas[1] = "8:15 - 9:15";
     $horas[] = "9:15 - 10:15";
     $horas[] = "10:15 - 11:15";
