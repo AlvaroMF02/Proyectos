@@ -124,14 +124,28 @@ if (isset($obj->no_auth)) {
 
                     if (!$obj || isset($obj->error)) {    // por si hay error
                         echo "<td>Error Servicio</td>";
-                    } else if (isset($obj->mensaje)) {
+                    } else if (isset($obj->mensaje)) {          // le paso todos los datos por input hidden
                         echo "<td>";
-                        echo "<form action='index.php' method='post'><button class=enlace name='btnEditar'>Editar</button></form>";
+                        echo "<form action='index.php' method='post'>";
+                        echo "<button class=enlace name='btnEditar'>Editar</button>";
+                        echo "<input type='hidden' name='dia' value='".($j+1)."'>";
+                        echo "<input type='hidden' name='hora' value='".($i+1)."'>";
+                        echo "<input type ='hidden' name='profesor' value='".$_POST['profesores']."'>";
+                        echo "</form>";
                         echo "</td>";
                     } else {
                         echo "<td>";
                         echo $obj->horario[0]->nombre;
                         echo "<form action='index.php' method='post'><button class=enlace name='btnEditar'>Editar</button></form>";
+                        echo "</td>";
+
+                        echo "<td>";
+                        echo "<form action='index.php' method='post'>";
+                        echo "<button class=enlace name='btnEditar'>Editar</button>";
+                        echo "<input type='hidden' name='dia' value='".($j+1)."'>";
+                        echo "<input type='hidden' name='hora' value='".($i+1)."'>";
+                        echo "<input type ='hidden' name='profesor' value='".$_POST['profesores']."'>";
+                        echo "</form>";
                         echo "</td>";
                     }
                 }
@@ -140,11 +154,10 @@ if (isset($obj->no_auth)) {
         }
 
         echo "</table>";
-
     }
 
     if (isset($_POST["btnEditar"])) {
-        echo "holaa";
+        echo $_POST["dia"];
     }
 
 
