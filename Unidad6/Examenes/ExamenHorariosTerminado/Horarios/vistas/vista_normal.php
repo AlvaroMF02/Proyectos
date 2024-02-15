@@ -52,7 +52,7 @@ if (isset($obj2->no_auth)) {
         .tabla_hor,
         .tabla_hor th,
         .tabla_hor td {
-            border: 1px solid black
+            border: 1px solid
         }
 
         .tabla_hor th {
