@@ -18,22 +18,22 @@ $voto = $_GET['voto'];
 
 //actualizamos los votos añadiendo el recibido a los anteriores
 switch ($voto) {
-  case 0:
+  case 1:
     $tipo1++;
     break;
-  case 1:
+  case 2:
     $tipo2++;
     break;
-  case 2:
+  case 3:
     $tipo3++;
     break;
-  case 3:
+  case 4:
     $tipo4++;
     break;
-  case 4:
+  case 5:
     $tipo5++;
     break;
-  case 5:
+  case 6:
     $tipo6++;
     break;
 }
@@ -55,5 +55,5 @@ $totalTipo4 = 100 * round($tipo4 / $denominador, 2);
 $totalTipo5 = 100 * round($tipo5 / $denominador, 2);
 $totalTipo6 = 100 * round($tipo6 / $denominador, 2);
 
-echo json_encode([$totalTipo1,$totalTipo2,$totalTipo3,$totalTipo4,$totalTipo5,$totalTipo6]);
+echo json_encode([round($totalTipo1),round($totalTipo2),round($totalTipo3),round($totalTipo4),round($totalTipo5),round($totalTipo6)]);
 ?>
