@@ -1,6 +1,6 @@
 const DIR_SERV = "http://localhost/Proyectos/Unidad6/Actividades/Activ2/servicios_rest"
 
-$(document).ready(function(){
+$(function(){
     obtener_prod()
 })
 
@@ -20,10 +20,11 @@ function obtener_prod () {
 
                 $.each(data.productos, function (key, tupla) {
                     tablaProd += "<tr>"
-                    tablaProd += "<td>" + tupla["cod"] + "</td>"
+                    tablaProd += "<td><button class='enlace' onClick='verDetalle(\""+tupla['cod']+"\")'>" + tupla["cod"] + "</button></td>"
                     tablaProd += "<td>" + tupla["nombre_corto"] + "</td>"
                     tablaProd += "<td>" + tupla["PVP"] + "</td>"
-                    tablaProd += "<td> Borrar - Editar </td>"
+                    tablaProd += "<td><button class='enlace' >Borrar</button> - "
+                    tablaProd += "<button class='enlace' >Editar</button></td>"
                     tablaProd += "</tr>"
                 })
 
@@ -35,6 +36,35 @@ function obtener_prod () {
 
         .fail(function (a, b) {
             $("#tabla").html(error_ajax_jquery(a, b))
+        })
+
+}
+function verDetalle (codProd) {
+    let detalle = ''
+    $.ajax({
+        url: DIR_SERV + "/producto/" + codProd,
+        dataType: "json",
+        type: "GET"
+    })
+        .done(function (data) {
+            if (data.mensaje_error) {
+                $("#detalles").html(data.mensaje_error)
+            } else if(data.mensaje){
+                $("#detalles").html(data.mensaje_error)
+            }else{
+                detalle = "<p><strong>Codigo:</strong>" + codProd + "<br>"
+                detalle += "<strong>Nombre corto:</strong>" + data["producto"]["nombre_corto"] + "<br>"
+                detalle += "<strong>Descripción:</strong>" + data["producto"]["descripcion"] + "<br>"
+                detalle += "<strong>PVP:</strong>" + data["producto"]["PVP"] + "<br>"
+                detalle += "<strong>Familia:</strong>" + data["producto"]["familia"] + "</p>"
+            }
+
+            $("#detalles").html(detalle)
+
+        })
+
+        .fail(function (a, b) {
+            $("#detalles").html(error_ajax_jquery(a, b))
         })
 
 }
