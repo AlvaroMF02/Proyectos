@@ -1,4 +1,4 @@
-const DIR_SERV = "http://localhost/Proyectos/Unidad6/Actividades/Activ2/servicios_rest"
+const DIR_SERV = "http://localhost/Proyectos/Unidad7/Ejercicio/servicios_rest";
 
 $(function(){
     obtener_prod()
