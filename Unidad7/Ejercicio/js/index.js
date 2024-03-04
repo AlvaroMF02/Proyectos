@@ -41,11 +41,35 @@ function mostrar_tabla () {
 
 }
 
-function formInsertar(){
+function formInsertar () {
 
-    let form = ""
+    $.ajax({
+        url: DIR_SERV + "/familias",
+        dataType: "json",
+        type: "GET"
+    })
+        .done(function (data) {
+            if (data.mensaje_error) {
+                $("#errores").html(data.mensaje_error)
+                $("#detalles").html("")
 
-    $("#detalles").html(form)
+            } else {
+                let form = "<h2>Inserción</h2>"
+                form += "<form onsubmit='event.preventDefault()'>"
+                form += "<p><label>Código</label><input type='text' id='cod' required/></p>"
+                form += "</form>"
+                $("#detalles").html(form)
+
+            }
+
+        })
+
+        .fail(function (a, b) {
+            $("#detalles").html(error_ajax_jquery(a, b))
+            mostrar_tabla()
+        })
+
+
 
 }
 
@@ -85,7 +109,7 @@ function verDetalle (codProd) {
 // PREGUNTA SI QUIERE BORRAR EL PRODUCTO
 function dudaBorr (cod) {
 
-    let texto = "¿Está seguro de que desea borrar el producto " + cod +"? <br>"
+    let texto = "¿Está seguro de que desea borrar el producto " + cod + "? <br>"
     texto += "<button onClick='vaciar()'>Volver</button> "
     texto += "<button onClick='borrar(\"" + cod + "\")'>Borrar</button>"
 
