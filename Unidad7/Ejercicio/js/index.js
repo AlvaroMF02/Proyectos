@@ -41,6 +41,14 @@ function mostrar_tabla () {
 
 }
 
+function formInsertar(){
+
+    let form = ""
+
+    $("#detalles").html(form)
+
+}
+
 // VER DETALLES DE X PRODUCTO
 function verDetalle (codProd) {
     let detalle = ''
@@ -69,6 +77,7 @@ function verDetalle (codProd) {
 
         .fail(function (a, b) {
             $("#detalles").html(error_ajax_jquery(a, b))
+            mostrar_tabla()
         })
 
 }

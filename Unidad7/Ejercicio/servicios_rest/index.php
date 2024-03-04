@@ -16,6 +16,11 @@ $app->get("/producto/{cod}", function ($request) { // A la function le tenemos q
     $producto = $request->getAttribute("cod");
     echo json_encode(obtener_producto($producto));
 });
+// Familia específica
+$app->get("/familia/{cod}", function ($request) { // A la function le tenemos que pasar una request si tenemos un parámetro en la url
+    $producto = $request->getAttribute("cod");
+    echo json_encode(obtener_famil_cod($producto));
+});
 
 // Insertaremos los productos que le pasaremos por un formulario
 $app->post("/producto/insertar", function ($request) {

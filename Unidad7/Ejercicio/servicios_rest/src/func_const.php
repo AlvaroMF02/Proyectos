@@ -65,6 +65,38 @@ function obtener_producto($codigo)
     return $respuesta;
 }
 
+// devuelve un producto con el mismo codigo
+function obtener_famil_cod($codigo)
+{
+    try {
+        $conexion = new PDO("mysql:host=" . SERVIDOR_BD . ";dbname=" . NOMBRE_BD, USUARIO_BD, CLAVE_BD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+    } catch (PDOException $e) {
+        $respuesta["mensaje_error"] = "No se ha podido conectar a la base de datos: " . $e->getMessage();
+        return $respuesta;
+    }
+
+    try {
+        $consulta = "select * from familia where cod=?";
+        $sentencia = $conexion->prepare($consulta);
+        $sentencia->execute([$codigo]);
+    } catch (PDOException $e) {
+        $sentencia = null;
+        $conexion = null;
+        $respuesta["mensaje_error"] = "No se ha podido conectar a la base de datos: " . $e->getMessage();
+        return $respuesta;
+    }
+
+    if ($sentencia->rowCount() > 0) {
+        $respuesta["producto"] = $sentencia->fetch(PDO::FETCH_ASSOC);
+    } else {
+        $respuesta["mensaje"] = "El producto con código $codigo no se encuentra en la BD";
+    }
+
+    $sentencia = null;
+    $conexion = null;
+    return $respuesta;
+}
+
 // inserta un producto
 function insertar_producto($datos)
 {
