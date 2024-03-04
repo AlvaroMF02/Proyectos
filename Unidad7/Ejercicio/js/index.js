@@ -1,10 +1,11 @@
 const DIR_SERV = "http://localhost/Proyectos/Unidad7/Ejercicio/servicios_rest";
 
 $(function () {
-    obtener_prod()
+    mostrar_tabla()
 })
 
-function obtener_prod () {
+// MUSTRA LA TABLA CON TODOS LOS PRODUCTOS DE LA BD
+function mostrar_tabla () {
     $.ajax({
         url: DIR_SERV + "/productos",
         dataType: "json",
@@ -16,7 +17,7 @@ function obtener_prod () {
             } else {
 
                 let tablaProd = "<table>"
-                tablaProd += "<tr><th>COD</th><th>Nombre corto</th><th>PVP</th><th><button class='enlace' onClick=''>Producto+</button></th></tr>"
+                tablaProd += "<tr><th>COD</th><th>Nombre corto</th><th>PVP</th><th><button class='enlace' onClick='formInsertar()'>Producto+</button></th></tr>"
 
                 $.each(data.productos, function (key, tupla) {
                     tablaProd += "<tr>"
@@ -39,6 +40,8 @@ function obtener_prod () {
         })
 
 }
+
+// VER DETALLES DE X PRODUCTO
 function verDetalle (codProd) {
     let detalle = ''
     $.ajax({
@@ -70,6 +73,7 @@ function verDetalle (codProd) {
 
 }
 
+// PREGUNTA SI QUIERE BORRAR EL PRODUCTO
 function dudaBorr (cod) {
 
     let texto = "¿Está seguro de que desea borrar el producto " + cod +"? <br>"
@@ -79,9 +83,7 @@ function dudaBorr (cod) {
     $("#detalles").html(texto)
 }
 
-function vaciar () {
-    $("#detalles").html("")
-}
+// BORRA EL PRODUCTO POR SI CÓDIGO
 function borrar (cod) {
     $.ajax({
         url: DIR_SERV + "/producto/borrar/" + cod,
@@ -97,11 +99,13 @@ function borrar (cod) {
             $("#errores").html(error_ajax_jquery(a, b))
         })
 }
+
+// PONE DETALLES VACIO
 function vaciar () {
     $("#detalles").html("")
 }
 
-
+// ERROR DE AJAX
 function error_ajax_jquery (jqXHR, textStatus) {
     var respuesta;
     if (jqXHR.status === 0) {
