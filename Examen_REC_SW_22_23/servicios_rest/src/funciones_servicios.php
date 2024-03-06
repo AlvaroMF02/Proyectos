@@ -107,7 +107,7 @@ function obtenerUsuGuardi($dia, $hora)
     }
 
     try {
-        $consulta = "select *.usuarios from usuarios,horario_guardias where horario_guardias.id_hor_gua == usuarios.id_usuario && horario_guardias.dia = ? && horario_guardias.hora = ?";
+        $consulta = "select usuarios.* from usuarios,horario_guardias where horario_guardias.id_hor_gua = usuarios.id_usuario && horario_guardias.dia = ? && horario_guardias.hora = ?";
         $sentencia = $conexion->prepare($consulta);
         $sentencia->execute([$dia, $hora]);
     } catch (PDOException $e) {
@@ -116,7 +116,7 @@ function obtenerUsuGuardi($dia, $hora)
         return $respuesta;
     }
 
-    $respuesta["usuarios"] = $sentencia->fetch(PDO::FETCH_ASSOC);
+    $respuesta["usuarios"] = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
     $conexion = null;
     $sentencia = null;
@@ -134,7 +134,7 @@ function deGuardia($dia,$hora,$id_usuario)
     }
 
     try {
-        $consulta = "select *.usuarios from usuarios,horario_guardias where horario_guardias.id_hor_gua == usuarios.id_usuario && horario_guardias.dia = ? && horario_guardias.hora = ? && usuarios.id_usuario = ?";
+        $consulta = "select *.usuarios from usuarios.horario_guardias where horario_guardias.id_hor_gua = usuarios.id_usuario && horario_guardias.dia = ? && horario_guardias.hora = ? && usuarios.id_usuario = ?";
         $sentencia = $conexion->prepare($consulta);
         $sentencia->execute([$dia, $hora,$id_usuario]);
     } catch (PDOException $e) {
