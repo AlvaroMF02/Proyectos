@@ -3,6 +3,7 @@ if (isset($_POST["btnLogin"])) {
 
     $error_usuario = $_POST["usuario"] == "";
     $error_clave = $_POST["clave"] == "";
+
     $error_form = $error_usuario || $error_clave;
 
     if (!$error_form) {
@@ -12,15 +13,15 @@ if (isset($_POST["btnLogin"])) {
         $datos["clave"] = md5($_POST["clave"]);
         $respuesta = consumir_servicios_REST($url, "POST", $datos);
         $obj = json_decode($respuesta);
-        
+
         if (!$obj) {
             session_destroy();
-            die(error_page("Examen4 DWESE Curso 23-24", "<h1>Notas de los alumnos</h1><p>Error consumiendo el servicio: " . $url . "</p>"));
+            die(error_page("Gestión de Guardias", "<h1>Gestión de Guardias</h1><p>Error consumiendo el servicio: " . $url . "</p>"));
         }
 
         if (isset($obj->error)) {
             session_destroy();
-            die(error_page("Examen4 DWESE Curso 23-24", "<h1>Notas de los alumnos</h1><p>" . $obj->error . "</p>"));
+            die(error_page("Gestión de Guardias", "<h1>Gestión de Guardias</h1><p>" . $obj->error . "</p>"));
         }
 
         if (isset($obj->mensaje)) {
@@ -32,11 +33,7 @@ if (isset($_POST["btnLogin"])) {
             $_SESSION["ult_accion"] = time();
             $_SESSION["api_session"] = $obj->api_session;
 
-            if ($obj->usuario->tipo == "tutor")
-                header("Location:admin/index.php");
-            else
-                header("Location:index.php");
-
+            header("Location:index.php");
             exit;
         }
     }
@@ -48,7 +45,7 @@ if (isset($_POST["btnLogin"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Examen4 DWESE Curso 23-24</title>
+    <title>Gestión de Guardias</title>
     <style>
         .error {
             color: red
@@ -62,7 +59,7 @@ if (isset($_POST["btnLogin"])) {
 </head>
 
 <body>
-    <h1>Gestión de guardias</h1>
+    <h1>Gestión de Guardias</h1>
     <form action="index.php" method="post">
         <p>
             <label for="usuario">Usuario:</label>
@@ -74,6 +71,7 @@ if (isset($_POST["btnLogin"])) {
                 else
                     echo "<span class='error'> Usuario/clave incorrectos</span>";
             }
+
             ?>
         </p>
         <p>
@@ -85,7 +83,7 @@ if (isset($_POST["btnLogin"])) {
             ?>
         </p>
         <p>
-            <button type="submit" name="btnLogin">Login</button>
+            <button type="submit" name="btnLogin">Entrar</button>
         </p>
     </form>
 
@@ -94,9 +92,7 @@ if (isset($_POST["btnLogin"])) {
         echo "<p class='mensaje'>" . $_SESSION["seguridad"] . "</p>";
         session_destroy();
     }
-
-
     ?>
-</body>
 
+</body>
 </html>

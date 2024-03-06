@@ -5,14 +5,13 @@ if (isset($_POST["btnLogin"])) {
     $error_form = $error_usuario || $error_clave;
     if (!$error_form) {
 
-        $url = DIR_SERV . "/login";
-
         $datos["usuario"] = $_POST["usuario"];
         $datos["clave"] = md5($_POST["clave"]);
 
+        $url = DIR_SERV . "/login";
         $respuesta = consumir_servicios_REST($url, "POST", $datos);
         $obj = json_decode($respuesta);
-        
+
         if (!$obj) {
             session_destroy();
             die(error_page("Examen2 23_24 SW", "<h1>Examen2 23_24 SW</h1><p>Error consumiendo el servicio: " . $url . "</p>"));
@@ -32,9 +31,7 @@ if (isset($_POST["btnLogin"])) {
             $_SESSION["ult_accion"] = time();
             $_SESSION["api_session"] = $obj->api_session;
 
-
             header("Location:index.php");
-
             exit;
         }
     }
@@ -93,8 +90,6 @@ if (isset($_POST["btnLogin"])) {
         echo "<p class='mensaje'>" . $_SESSION["seguridad"] . "</p>";
         session_destroy();
     }
-
-
     ?>
 </body>
 
