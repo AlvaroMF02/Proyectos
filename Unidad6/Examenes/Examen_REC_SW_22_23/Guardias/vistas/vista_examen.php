@@ -1,7 +1,5 @@
 <?php
 
-use Psr\Http\Message\UploadedFileInterface;
-
 if (isset($_POST["equipo"])) {
     $url = DIR_SERV . "/deGuardia/" . $_POST["dia"] . "/" . $_POST["hora"] . "/" . $datos_usuario_log->id_usuario;
     $respuesta = consumir_servicios_REST($url, "GET", $datos);

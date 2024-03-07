@@ -31,7 +31,6 @@ $app->get('/logueado', function ($request) {
 });
 
 $app->post('/salir', function ($request) {
-
     $token = $request->getParam("api_session");
     session_id($token);
     session_start();
