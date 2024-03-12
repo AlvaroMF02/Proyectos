@@ -77,10 +77,10 @@ function cargar_vista_oportuna (datos_usu_log) {
 
 
     if (datos_usu_log["tipo"] == "admin") {
-        obtener_productos();
+        vista_productos();
     }
     else {
-        obtener_productos_normal();
+        vista_productos_normal();
     }
 
 }
