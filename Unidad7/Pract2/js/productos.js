@@ -17,14 +17,14 @@ function vista_productos () {
             else {
                 // creo la tabla 
                 let html_tabla_prod = "<table class='centrado'>";
-                html_tabla_prod += "<tr><th>COD</th><th>Nombre</th><th>PVP</th><th><button class='enlace' onclick='formInsertar();'>Productos+</button></th></tr>";
+                html_tabla_prod += "<tr><th>COD</th><th>Nombre</th><th>PVP</th><th><button class='enlace' onclick='seguridad(formInsertar);'>Productos+</button></th></tr>";
 
                 $.each(data.productos, function (key, tupla) {
                     html_tabla_prod += "<tr>";
-                    html_tabla_prod += "<td><button class='enlace' onclick='detalles(\"" + tupla["cod"] + "\")'>" + tupla["cod"] + "</button></td>";
+                    html_tabla_prod += "<td><button class='enlace' onclick='seguridad(detalles,\"" + tupla["cod"] + "\")'>" + tupla["cod"] + "</button></td>";
                     html_tabla_prod += "<td>" + tupla["nombre_corto"] + "</td>";
                     html_tabla_prod += "<td>" + tupla["PVP"] + "</td>";
-                    html_tabla_prod += "<td><button class='enlace' onclick='dudaBorrar(\"" + tupla["cod"] + "\");'>Borrar</button> - <button class='enlace' onclick='formEditar(\"" + tupla["cod"] + "\");'>Editar</button></td>";
+                    html_tabla_prod += "<td><button class='enlace' onclick='seguridad(dudaBorrar,\"" + tupla["cod"] + "\");'>Borrar</button> - <button class='enlace' onclick='seguridad(formEditar,\"" + tupla["cod"] + "\");'>Editar</button></td>";
                     html_tabla_prod += "</tr>";
                 });
 
@@ -38,6 +38,7 @@ function vista_productos () {
             $('#errores').html(error_ajax_jquery(a, b));
             $('#respuestas').html("");
             $('#productos').html("");
+            localStorage.clear()
         });
 }
 
@@ -64,7 +65,7 @@ function vista_productos_normal () {
 
                 $.each(data.productos, function (key, tupla) {
                     html_tabla_prod += "<tr>";
-                    html_tabla_prod += "<td><button class='enlace' onclick='detalles(\"" + tupla["cod"] + "\")'>" + tupla["cod"] + "</button></td>";
+                    html_tabla_prod += "<td><button class='enlace' onclick='seguridad(detalles,\"" + tupla["cod"] + "\")'>" + tupla["cod"] + "</button></td>";
                     html_tabla_prod += "<td>" + tupla["nombre_corto"] + "</td>";
                     html_tabla_prod += "<td>" + tupla["PVP"] + "</td>";
                     html_tabla_prod += "</tr>";
@@ -79,6 +80,7 @@ function vista_productos_normal () {
             $('#errores').html(error_ajax_jquery(a, b));
             $('#respuestas').html("");
             $('#productos').html("");
+            localStorage.clear()
         });
 }
 
@@ -131,7 +133,7 @@ function detalles (cod) {
                             else
                                 html_respuesta += data2.familia["nombre"];
                             html_respuesta += "</p>";
-                            html_respuesta += "<p><button onclick='volver();'>Volver</button></p>";
+                            html_respuesta += "<p><button onclick='seguridad(volver)'>Volver</button></p>";
 
                             $('#respuestas').html(html_respuesta);
 
@@ -141,6 +143,7 @@ function detalles (cod) {
                         $('#errores').html(error_ajax_jquery(a, b));
                         $('#respuestas').html("");
                         $('#productos').html("");
+                        localStorage.clear()
                     });
             }
         })
@@ -148,6 +151,7 @@ function detalles (cod) {
             $('#errores').html(error_ajax_jquery(a, b));
             $('#respuestas').html("");
             $('#productos').html("");
+            localStorage.clear()
         });
 }
 // Borrar el div
@@ -159,7 +163,7 @@ function volver () {
 // Confirmación del borrado del producto
 function dudaBorrar (cod) {
     html_conf_borrar = "<p class='centrado'>¿Está seguro de que quiere borrar el producto: <strong>" + cod + "</strong>?</p>";
-    html_conf_borrar += "<p class='centrado'><button onclick='volver();'>Volver</button> <button onclick='borrar(\"" + cod + "\")'>Continuar</button></p>";
+    html_conf_borrar += "<p class='centrado'><button onclick='seguridad(volver)'>Volver</button> <button onclick='seguridad(borrar,\"" + cod + "\")'>Continuar</button></p>";
     $('#respuestas').html(html_conf_borrar);
 }
 
@@ -187,6 +191,7 @@ function borrar (cod) {
             $('#errores').html(error_ajax_jquery(a, b));
             $('#respuestas').html("");
             $('#productos').html("");
+            localStorage.clear()
         });
 }
 
@@ -222,7 +227,7 @@ function formInsertar () {
                     mostrarFormInsert += "<option value='" + tupla["cod"] + "'>" + tupla["nombre"] + "</option>"
                 });
                 mostrarFormInsert += "</select></p>";
-                mostrarFormInsert += "<p><button onclick='event.preventDefault();volver();'>Volver</button>";
+                mostrarFormInsert += "<p><button onclick='event.preventDefault();seguridad(volver)';>Volver</button>";
                 mostrarFormInsert += "<button>Continuar</button></p>"
 
                 mostrarFormInsert += "</form>";
@@ -234,6 +239,7 @@ function formInsertar () {
             $('#errores').html(error_ajax_jquery(a, b));
             $('#respuestas').html("");
             $('#productos').html("");
+            localStorage.clear()
         });
 }
 
@@ -281,6 +287,7 @@ function insertarProduct () {
                         $('#errores').html(error_ajax_jquery(a, b));
                         $('#respuestas').html("");
                         $('#productos').html("");
+                        localStorage.clear()
                     });
             } else {
                 // Si el código no está repetido pregunto por le nombre corto
@@ -326,6 +333,7 @@ function insertarProduct () {
                                     $('#errores').html(error_ajax_jquery(a, b));
                                     $('#respuestas').html("");
                                     $('#productos').html("");
+                                    localStorage.clear()
                                 });
                         }
                     })
@@ -333,6 +341,7 @@ function insertarProduct () {
                         $('#errores').html(error_ajax_jquery(a, b));
                         $('#respuestas').html("");
                         $('#productos').html("");
+                        localStorage.clear()
                     });
 
             }
@@ -342,6 +351,7 @@ function insertarProduct () {
             $('#errores').html(error_ajax_jquery(a, b));
             $('#respuestas').html("");
             $('#productos').html("");
+            localStorage.clear()
         });
 }
 
@@ -383,6 +393,7 @@ function editarProd (cod) {
                     .fail(function (a, b) {
                         $('#errores').html(error_ajax_jquery(a, b));
                         $('#principal').html("");
+                        localStorage.clear()
                     });
 
             }
@@ -395,6 +406,7 @@ function editarProd (cod) {
         .fail(function (a, b) {
             $('#errores').html(error_ajax_jquery(a, b));
             $('#principal').html("");
+            localStorage.clear()
         });
 }
 
@@ -443,7 +455,7 @@ function formEditar (cod) {
                             });
                             formEditar += "</select>";
                             formEditar += "</p>";
-                            formEditar += "<p><button onclick='volver();event.preventDefault();'>Volver</button> <button>Continuar</button></p>";
+                            formEditar += "<p><button onclick='seguridad(volver);event.preventDefault();'>Volver</button> <button>Continuar</button></p>";
                             formEditar += "</form>";
                             $('#respuestas').html(formEditar);
                         }
@@ -452,6 +464,7 @@ function formEditar (cod) {
                     .fail(function (a, b) {
                         $('#errores').html(error_ajax_jquery(a, b));
                         $('#principal').html("");
+                        localStorage.clear()
                     });
 
             } else {
@@ -465,5 +478,55 @@ function formEditar (cod) {
         .fail(function (a, b) {
             $('#errores').html(error_ajax_jquery(a, b));
             $('#principal').html("");
+            localStorage.clear()
         });
 }
+
+// Funcion de seguridad
+function seguridad (nombre_func, param_func=undefined) {
+    if (localStorage.ultima_accion && localStorage.api_session) {
+        //Pasar la seguridad y cargar vista oportuna
+        // Si ha pasado el tiempo
+        if (((new Date() / 1000) - localStorage.ultima_accion) < TIEMPO_SESION_MINUTOS * 60) {
+            $.ajax({
+                url: "servicios_rest_key/logueado",
+                type: "GET",
+                dataType: "json",
+                data: { "api_session": localStorage.api_session }
+            })
+                .done(function (data) {
+                    if (data.usuario) {
+                        localStorage.setItem("ultima_accion", (new Date() / 1000));
+                        nombre_func(param_func)
+                    }
+                    else if (data.mensaje) {
+                        localStorage.clear();
+                        cargar_vista_login("Usted ya no se encuentra registrado en la BD");
+
+                    }
+                    else if (data.no_auth) {
+                        localStorage.clear();
+                        cargar_vista_login("El tiempo de sesión de la API ha expirado.");
+                    }
+                    else {
+                        $('#errores').html(data.mensaje_error);
+                        $('#principal').html("");
+                    }
+                })
+                .fail(function (a, b) {
+                    $('#errores').html(error_ajax_jquery(a, b));
+                    $('#principal').html("");
+                    localStorage.clear()
+                });
+        }
+        else {
+            localStorage.clear();
+            cargar_vista_login("Su tiempo de sesión ha expirado");
+        }
+    }
+    else {
+        cargar_vista_login("");
+    }
+}
+
+

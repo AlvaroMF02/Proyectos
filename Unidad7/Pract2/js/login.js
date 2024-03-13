@@ -1,9 +1,10 @@
 
-const TIEMPO_SESION_MINUTOS = 5
+const TIEMPO_SESION_MINUTOS = 1
 
 $(document).ready(function () {
     if (localStorage.ultima_accion && localStorage.api_session) {
         //Pasar la seguridad y cargar vista oportuna
+        // Si ha pasado el tiempo
         if (((new Date() / 1000) - localStorage.ultima_accion) < TIEMPO_SESION_MINUTOS * 60) {
             $.ajax({
                 url: "servicios_rest_key/logueado",
